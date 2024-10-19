@@ -20,9 +20,9 @@ export interface IFormData {
     idFiscal: string;
 }
 
-interface IEntityAddHookProps {
+// interface IEntityAddHookProps {
 
-}
+// }
 
 interface IEntityAddHook {
     formData: IFormData

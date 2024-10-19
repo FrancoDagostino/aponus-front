@@ -11,7 +11,7 @@ export const EntityAddStack = () => [
         exact
         key="/entity-add"
         path="/entity-add"
-        render={(route) => (
+        render={() => (
             <EntityAddModule />
 
         )}

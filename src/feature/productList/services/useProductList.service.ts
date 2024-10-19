@@ -1,4 +1,4 @@
-import { IListadoComponentes, IListadoPadre, IListadoProducto } from "../model/product.model";
+import { IListadoComponentes, IListadoPadre } from "../model/product.model";
 import { IRestClient, urlBase } from "../../../utils/clients/useRest.client";
 import { createResponseUtil, TResponse } from "../../../utils/response.util";
 

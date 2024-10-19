@@ -43,10 +43,12 @@ export const MovementListableComponent: FC<IActivityDataGridComponentProps> = (p
 
 
     const handleView = (row: any) => {
+        row
         // props.handleOpen(row, true)
     }
 
     const handleEdit = (row: any) => {
+        row
         // props.handleOpen(row, false)
     }
 

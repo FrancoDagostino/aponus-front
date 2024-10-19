@@ -1,4 +1,4 @@
-import { IListadoPadre, IListadoProducto, IStockFormateado } from "../model/product.model";
+import { IListadoPadre, IStockFormateado } from "../model/product.model";
 import { createResultUtil, TResult } from '../../../utils/result.util';
 import { IProductListService } from '../services/useProductList.service';
 import { useState } from "react";
