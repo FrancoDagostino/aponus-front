@@ -7,6 +7,7 @@ import { IFormData } from '../hook/useModule.hook';
 interface IEntityAddFormProps {
     formData: IFormData
     onChangeFormData: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+    onSaveHandler: () => void
 }
 
 export const EntityAddFormComponent: FC<IEntityAddFormProps> = (props) => {
@@ -71,7 +72,7 @@ export const EntityAddFormComponent: FC<IEntityAddFormProps> = (props) => {
                         <TextField fullWidth onChange={props.onChangeFormData} value={props.formData.idFiscal} label="ID Fiscal" name="idFiscal" variant="outlined" required />
                     </Grid>
                     <Grid item xs={12}>
-                        <Button type="submit" variant="contained" color="primary" fullWidth>
+                        <Button type="submit" variant="contained" color="primary" fullWidth onClick={() => props.onSaveHandler()}>
                             Submit
                         </Button>
                     </Grid>

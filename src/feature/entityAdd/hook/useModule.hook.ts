@@ -1,4 +1,6 @@
 import { useState } from "react"
+import { IEntityAddStore } from "../store/useEntityAdd.store";
+import { IUiHook } from "../../ui/hooks/useUi.hook";
 
 
 export interface IFormData {
@@ -20,16 +22,19 @@ export interface IFormData {
     idFiscal: string;
 }
 
-// interface IEntityAddHookProps {
-
-// }
+interface IEntityAddHookProps {
+    entityAddStore: IEntityAddStore;
+    uiHook: IUiHook
+    onNavigate: (url: string) => void;
+}
 
 interface IEntityAddHook {
     formData: IFormData
     onChangeFormDataHandler: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+    onSaveHandler: () => void
 }
 
-export const useEntityAddHook = (): IEntityAddHook => {
+export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => {
 
     const [formData, setFormData] = useState<IFormData>({
         altura: "",
@@ -58,8 +63,15 @@ export const useEntityAddHook = (): IEntityAddHook => {
         })
     }
 
+    const onSaveHandler = () => {
+        props.uiHook.showLoading()
+        props.entityAddStore.addNewEntityAction(formData)
+        props.uiHook.hideLoading()
+    }
+
     return {
         formData,
-        onChangeFormDataHandler
+        onChangeFormDataHandler,
+        onSaveHandler
     }
 }

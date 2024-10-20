@@ -19,6 +19,8 @@ import { useMovementAddService } from "./feature/movementAdd/service/useMovement
 import { IUiHook, useUiHook } from "./feature/ui/hooks/useUi.hook";
 import { IEntityListStore, useEntityListStore } from "./feature/entityList/store/useEntityList.store";
 import { useEntityListService } from "./feature/entityList/service/useEntityList.service";
+import { IEntityAddStore, useEntityAddStore } from "./feature/entityAdd/store/useEntityAdd.store";
+import { useEntityAddService } from "./feature/entityAdd/service/useEntityAdd.service";
 
 
 export interface IStores {
@@ -32,6 +34,7 @@ export interface IStores {
     movementListStore: IMovementListStore
     movementAddStore: IMovementAddStore
     entityListStore: IEntityListStore
+    entityAddStore: IEntityAddStore
     uiHook: IUiHook
 }
 
@@ -92,6 +95,13 @@ export const useStore = (): IStores => {
         })
     })
 
+
+    const entityAddStore = useEntityAddStore({
+        entityAddService: useEntityAddService({
+            restClient: useRestClient()
+        })
+    })
+
     const uiHook = useUiHook()
     const navigationStore = useNavigationStore()
 
@@ -106,6 +116,7 @@ export const useStore = (): IStores => {
         componentAddStore,
         movementAddStore,
         entityListStore,
+        entityAddStore,
         uiHook
     }
 }

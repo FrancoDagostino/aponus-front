@@ -1,15 +1,22 @@
+import { FC } from "react";
+import { IUiHook } from "../ui/hooks/useUi.hook";
 import { EntityAddFormComponent } from "./components/EntityAddForm.component"
 import { useEntityAddHook } from "./hook/useModule.hook"
+import { IEntityAddStore } from "./store/useEntityAdd.store";
+
+interface IEntityAddModuleProps {
+    entityAddStore: IEntityAddStore;
+    uiHook: IUiHook
+    onNavigate: (url: string) => void;
+}
 
 
+export const EntityAddModule: FC<IEntityAddModuleProps> = (props) => {
 
-
-export const EntityAddModule = () => {
-
-    const useModule = useEntityAddHook()
+    const useModule = useEntityAddHook(props)
 
     return (
 
-        <EntityAddFormComponent formData={useModule.formData} onChangeFormData={useModule.onChangeFormDataHandler} />
+        <EntityAddFormComponent onSaveHandler={useModule.onSaveHandler} formData={useModule.formData} onChangeFormData={useModule.onChangeFormDataHandler} />
     )
 }

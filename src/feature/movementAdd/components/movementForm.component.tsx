@@ -1,61 +1,42 @@
-import { useState, useRef, ChangeEvent, FC } from 'react'
+import { useState, useRef, ChangeEvent, FC, useEffect } from 'react'
 import { Box, FormControl, InputLabel, MenuItem, Select, Button, Typography, IconButton, TextField, List, ListItem, ListItemText, Chip, SelectChangeEvent, Grid } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AddIcon from '@mui/icons-material/Add'
 import AttachFileIcon from '@mui/icons-material/AttachFile'
+import { ISuppliesList } from '../model/movement.model';
+import { IFormData, IProviderList, ISupplyItem } from '../hooks/useModule.hook';
 
-interface Supply {
-    id: number;
-    name: string;
-}
-
-const availableSupplies: Supply[] = [
-    { id: 1, name: 'Supply A' },
-    { id: 2, name: 'Supply B' },
-    { id: 3, name: 'Supply C' },
-    { id: 4, name: 'Supply D' },
-]
-
-interface FormData {
-    sourceProvider: string;
-    destinationProvider: string;
-    sourceProcess: string;
-    destinationProcess: string;
-    files: File[];
-}
 
 interface SupplyItem {
-    id: number;
+    id: string;
     name: string;
     quantity: string;
 }
 
 interface IMovementFormProps {
-
+    availableSupplies: ISuppliesList[]
+    formData: IFormData
+    providerList: IProviderList[]
+    onAddInputFilesHanlder: (files: File[]) => void
+    onRemoveFileHandler: (fileToDelete: File) => void
+    onChangeFormDataHandler: (event: SelectChangeEvent<string>) => void
+    onAddSupplyItemHandler: (supplyItem: ISupplyItem[]) => void
+    onSaveHandler: () => void
 }
 
-export const MovementFormComponent: FC<IMovementFormProps> = () => {
-    const [formData, setFormData] = useState<FormData>({
-        sourceProvider: '',
-        destinationProvider: '',
-        sourceProcess: '',
-        destinationProcess: '',
-        files: [],
-    })
+export const MovementFormComponent: FC<IMovementFormProps> = (props) => {
+
     const [fileError, setFileError] = useState<string>('')
     const fileInputRef = useRef<HTMLInputElement>(null)
     const [selectedSupply, setSelectedSupply] = useState<string>('')
     const [supplyQuantity, setSupplyQuantity] = useState<string>('')
-    const [supplyList, setSupplyList] = useState<SupplyItem[]>([])
+    const [supplyList, setSupplyList] = useState<ISupplyItem[]>([])
 
-    const handleChange = (event: SelectChangeEvent<string>) => {
-        const { name, value } = event.target
-        setFormData(prevData => ({
-            ...prevData,
-            [name]: value
-        }))
-    }
+    useEffect(() => {
+        setSupplyList(props.formData.supplyItem)
+    }, [])
+
 
     const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -63,14 +44,11 @@ export const MovementFormComponent: FC<IMovementFormProps> = () => {
             const files = Array.from(event.target.files)
             const validFiles = files.filter(file => file.type === 'application/pdf')
             const invalidFiles = files.filter(file => file.type !== 'application/pdf')
-
             if (invalidFiles.length > 0) {
                 setFileError(`${invalidFiles.length} Solo estan permitidos archivos pdfs.`)
             }
-            setFormData(prevData => ({
-                ...prevData,
-                files: [...prevData.files, ...validFiles]
-            }))
+
+            props.onAddInputFilesHanlder(validFiles)
 
             if (fileInputRef.current) {
                 fileInputRef.current.value = ''
@@ -79,34 +57,38 @@ export const MovementFormComponent: FC<IMovementFormProps> = () => {
     }
 
     const handleFileDelete = (fileToDelete: File) => {
-        setFormData(prevData => ({
-            ...prevData,
-            files: prevData.files.filter(file => file !== fileToDelete)
-        }))
+        props.onRemoveFileHandler(fileToDelete)
     }
 
     const handleAddSupply = () => {
-        const availableSupplyFound = availableSupplies.find(supply => supply.id === parseInt(selectedSupply))!
+        const availableSupplyFound = props.availableSupplies.find(supply => supply.idInsumo === selectedSupply)!
 
         const newSupply: SupplyItem = {
-            id: availableSupplyFound.id,
-            name: availableSupplyFound.name,
+            id: availableSupplyFound.idInsumo,
+            name: availableSupplyFound.nombre,
             quantity: supplyQuantity
         }
 
         const supplyFound = supplyList.find(supply => supply.id === newSupply.id)
-        setSupplyList(supplyFound !== undefined && supplyList.length ? supplyList.map(supply => {
+        const supply = supplyFound !== undefined && supplyList.length ? supplyList.map(supply => {
             return supply.id === newSupply.id ? newSupply : supply
-        }) : [...supplyList, newSupply])
+        }) : [...supplyList, newSupply]
+        setSupplyList(supply)
 
         setSelectedSupply('')
         setSupplyQuantity('')
 
+        props.onAddSupplyItemHandler(supply)
+
 
     }
 
-    const handleDeleteSupply = (id: number) => {
+    const handleDeleteSupply = (id: string) => {
         setSupplyList(prevList => prevList.filter(item => item.id !== id))
+    }
+
+    const onSaveHandler = () => {
+        props.onSaveHandler()
     }
 
     return (
@@ -116,67 +98,55 @@ export const MovementFormComponent: FC<IMovementFormProps> = () => {
                     <Typography variant="h5" gutterBottom>
                         Informacion del Proveedor
                     </Typography>
-                    <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="source-provider-label">Source Provider</InputLabel>
-                        <Select
-                            labelId="source-provider-label"
-                            id="source-provider"
-                            name="sourceProvider"
-                            value={formData.sourceProvider}
-                            label="Source Provider"
-                            onChange={handleChange}
-                        >
-                            <MenuItem value="provider1">Provider 1</MenuItem>
-                            <MenuItem value="provider2">Provider 2</MenuItem>
-                            <MenuItem value="provider3">Provider 3</MenuItem>
-                        </Select>
-                    </FormControl>
 
                     <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="destination-provider-label">Destination Provider</InputLabel>
+                        <InputLabel id="destination-provider-label">Proveedor Destino</InputLabel>
                         <Select
                             labelId="destination-provider-label"
-                            id="destination-provider"
-                            name="destinationProvider"
-                            value={formData.destinationProvider}
+                            id="idProvider"
+                            name="idProvider"
+                            value={props.formData.idProvider.toString()}
                             label="Destination Provider"
-                            onChange={handleChange}
+                            onChange={props.onChangeFormDataHandler}
                         >
-                            <MenuItem value="provider1">Provider 1</MenuItem>
-                            <MenuItem value="provider2">Provider 2</MenuItem>
-                            <MenuItem value="provider3">Provider 3</MenuItem>
+                            <MenuItem value="0">Seleccionar Proveedor</MenuItem>
+                            {
+                                props.providerList.map(provider => (
+                                    <MenuItem key={provider.id} value={provider.id}>{provider.name}</MenuItem>
+                                ))
+                            }
                         </Select>
                     </FormControl>
 
                     <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="source-process-label">Source Process</InputLabel>
+                        <InputLabel id="source-process-label">Proceso Origen</InputLabel>
                         <Select
                             labelId="source-process-label"
                             id="source-process"
                             name="sourceProcess"
-                            value={formData.sourceProcess}
+                            value={props.formData.sourceProcess}
                             label="Source Process"
-                            onChange={handleChange}
+                            onChange={props.onChangeFormDataHandler}
                         >
-                            <MenuItem value="process1">Process 1</MenuItem>
-                            <MenuItem value="process2">Process 2</MenuItem>
-                            <MenuItem value="process3">Process 3</MenuItem>
+                            <MenuItem value="recibido">Recibido</MenuItem>
+                            <MenuItem value="pintura">Pintura</MenuItem>
+                            <MenuItem value="granallado">Granallado</MenuItem>
                         </Select>
                     </FormControl>
 
                     <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="destination-process-label">Destination Process</InputLabel>
+                        <InputLabel id="destination-process-label">Proceso Destino</InputLabel>
                         <Select
                             labelId="destination-process-label"
                             id="destination-process"
                             name="destinationProcess"
-                            value={formData.destinationProcess}
+                            value={props.formData.destinationProcess}
                             label="Destination Process"
-                            onChange={handleChange}
+                            onChange={props.onChangeFormDataHandler}
                         >
-                            <MenuItem value="process1">Process 1</MenuItem>
-                            <MenuItem value="process2">Process 2</MenuItem>
-                            <MenuItem value="process3">Process 3</MenuItem>
+                            <MenuItem value="recibido">Recibido</MenuItem>
+                            <MenuItem value="pintura">Pintura</MenuItem>
+                            <MenuItem value="granallado">Granallado</MenuItem>
                         </Select>
                     </FormControl>
 
@@ -213,7 +183,7 @@ export const MovementFormComponent: FC<IMovementFormProps> = () => {
                         </Typography>
                     )}
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 2 }}>
-                        {formData.files.map((file, index) => (
+                        {props.formData.files.map((file, index) => (
                             <Chip
                                 key={index}
                                 label={file.name}
@@ -230,22 +200,22 @@ export const MovementFormComponent: FC<IMovementFormProps> = () => {
                     </Typography>
                     <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
                         <FormControl fullWidth>
-                            <InputLabel id="supply-label">Supply</InputLabel>
+                            <InputLabel id="supply-label">Componente</InputLabel>
                             <Select
                                 labelId="supply-label"
                                 value={selectedSupply}
                                 label="Componentes"
                                 onChange={(e) => setSelectedSupply(e.target.value)}
                             >
-                                {availableSupplies.map((supply) => (
-                                    <MenuItem key={supply.id} value={supply.id.toString()}>
-                                        {supply.name}
+                                {props.availableSupplies.map((supply) => (
+                                    <MenuItem key={supply.idInsumo} value={supply.idInsumo.toString()}>
+                                        {supply.nombre}
                                     </MenuItem>
                                 ))}
                             </Select>
                         </FormControl>
                         <TextField
-                            label="Quantity"
+                            label="Cantidad"
                             type="number"
                             value={supplyQuantity}
                             onChange={(e) => setSupplyQuantity(e.target.value)}
@@ -265,7 +235,7 @@ export const MovementFormComponent: FC<IMovementFormProps> = () => {
                     <List>
                         {supplyList.map((item) => (
                             <ListItem key={item.id} divider>
-                                <ListItemText primary={item.name} secondary={`Quantity: ${item.quantity}`} />
+                                <ListItemText primary={item.name} secondary={`Cantidad: ${item.quantity}`} />
                                 <IconButton edge="end" aria-label="delete" onClick={() => handleDeleteSupply(item.id)}>
                                     <DeleteIcon />
                                 </IconButton>
@@ -276,7 +246,9 @@ export const MovementFormComponent: FC<IMovementFormProps> = () => {
                 <Grid item justifyContent={"flex-end"} xs={12}>
                     <Button
                         variant="contained"
-                        onClick={handleAddSupply}
+                        fullWidth
+                        onClick={() => onSaveHandler()}
+                        disabled={supplyList.length === 0 || props.formData.files.length === 0}
                     >
                         Guardar
                     </Button>

@@ -31,6 +31,7 @@ export const Router: FC<IRouterProps> = ({
         movementListStore,
         movementAddStore,
         entityListStore,
+        entityAddStore,
         uiHook
 
     },
@@ -60,9 +61,9 @@ export const Router: FC<IRouterProps> = ({
                                                 ComponentListStack({ componentListStore, stockStore }),
                                                 ComponentAddStack({ componentAddStore, stockStore }),
                                                 MovementListStack({ movementListStore }),
-                                                MovementAddtStack({ movementAddStore }),
+                                                MovementAddtStack({ movementAddStore, uiHook }),
                                                 EntityListStack({ entityListStore, uiHook }),
-                                                EntityAddStack()
+                                                EntityAddStack({ entityAddStore, uiHook })
                                             ]
                                         }
                                     </Switch>

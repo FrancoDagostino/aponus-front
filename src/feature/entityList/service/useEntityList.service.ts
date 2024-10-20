@@ -10,6 +10,7 @@ export interface IEntityListServiceProps {
 export interface IEntityListService {
     getEntityList: () => Promise<TResponse<IEntity[], null>>
     getEntityListById: (id: number) => Promise<TResponse<IEntity, null>>
+    deleteEntity: (idEntity: number) => Promise<TResponse<null, null>>
 }
 
 
@@ -32,8 +33,16 @@ export const useEntityListService = (props: IEntityListServiceProps): IEntityLis
         return createResponseUtil.error(response.data, response.status)
     }
 
+    const deleteEntity: IEntityListService["deleteEntity"] = async (idEntity: number) => {
+        const url = `${urlBase}/Entities/Delete/${idEntity}`
+        const response = await props.restClient.post<null, null>(url, undefined, undefined)
+        if (response.isSuccess) return createResponseUtil.success(response.data, response.status)
+        return createResponseUtil.error(response.data, response.status)
+    }
+
     return {
         getEntityList,
-        getEntityListById
+        getEntityListById,
+        deleteEntity
     }
 }
