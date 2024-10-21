@@ -6,6 +6,7 @@ import TabsCategoryComponentType from "./components/TabsCategoryType.component";
 import { useStockModuleHook } from "./hooks/useStockModule.hook";
 import { IStockStore } from "./store/useStock.store";
 import { ICategoryStore } from "../categoryList/store/useCategory.store";
+import ProductCategorySelectsComponent from "../productList/components/ProductCategorySelects.component";
 
 
 interface IStockProps {
@@ -66,13 +67,13 @@ export const StockListModule: React.FC<IStockProps> = (props) => {
                     display: `${moduleStock.valueTabs === 1 ? "none" : "block"}`,
                 }}
             >
-                {/* <ProductCategorySelectsComponent
-              categoryList={props.categoryHook.categoryList}
-              onSelectCategoryTypeHandler={onSelectCategoryTypeHandler}
-              descriptionList={props.categoryHook.descriptionList}
-              onSelectDescriptionTypeHandler={onSelectDescriptionTypeHandler}
-            /> */}
-                {props.stockStore.productList.map((product, index) => (
+                <ProductCategorySelectsComponent
+                    categoryList={props.categoryStore.categoryList}
+                    onSelectCategoryTypeHandler={moduleStock.onSelectCategoryTypeHandler}
+                    descriptionList={props.categoryStore.descriptionList}
+                    onSelectDescriptionTypeHandler={moduleStock.onSelectDescriptionTypeHandler}
+                />
+                {/* {props.stockStore.productList.map((product, index) => (
                     <div style={{ width: "100%", marginTop: "50px" }} key={index}>
                         <h3 style={{}}>{product.descripcionTipo}</h3>
                         {
@@ -84,8 +85,19 @@ export const StockListModule: React.FC<IStockProps> = (props) => {
                             ))
                         }
                     </div>
-                ))}
-            </Box>
+                ))} */}
+
+                {
+                    props.stockStore.productList.map((product, index) => (
+                        <div style={{ width: "100%", marginTop: "50px" }} key={index}>
+                            <h3>{product.descripcionProducto}</h3>
+                            <StockProductListTableComponent
+                                data={product.productos}
+                                onOpenEditModalHandler={moduleStock.onOpenEditModalHandler}
+                            />
+                        </div>
+                    ))
+                }            </Box>
             {/* <SnackBarConfirmed
             openSnackBar={openSnackBar}
             onCloseSnackBar={onCloseSnackBarHandler}

@@ -82,7 +82,6 @@ export const useMovementAddHook = (props: IMovementAddHookProps): IMovementAddHo
 
     const onChangeFormDataHandler = (event: SelectChangeEvent<string>) => {
         const { name, value } = event.target
-        console.log(value, name)
         setFormData(prevData => ({
             ...prevData,
             [name]: value

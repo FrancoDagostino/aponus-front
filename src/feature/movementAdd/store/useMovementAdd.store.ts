@@ -33,7 +33,6 @@ export const useMovementAddStore = (props: IMovementAddStoreProps): IMovementAdd
     const getEntityListAction: IMovementAddStore["getEntityListAction"] = async () => {
         const result = await props.movementAddService.getProviderList()
         if (result.isError) return createResultUtil.error(result.data)
-        console.log(result.data)
         return createResultUtil.success(result.data)
     }
 

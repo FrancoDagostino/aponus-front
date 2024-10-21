@@ -2,17 +2,18 @@ import DataTable, {
   TableColumn,
 } from "../../../components/DataTable/DataTable";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import { IPostUpdateStock, IProducto } from "../model/stockList.model";
+import { IPostUpdateStock } from "../model/stockList.model";
+import { Producto } from "../../productList/model/product.model";
 
 interface IProductListComponentProps {
-  data: IProducto[];
+  data: Producto[];
   onOpenEditModalHandler: (newStock: IPostUpdateStock) => void;
 }
 
 const StockProductListTableComponent: React.FC<IProductListComponentProps> = (
   props
 ) => {
-  const columns: Array<TableColumn<IProducto>> = [
+  const columns: Array<TableColumn<Producto>> = [
     {
       name: "Diametro Nominal",
       cell: (row) => (
@@ -77,7 +78,7 @@ const StockProductListTableComponent: React.FC<IProductListComponentProps> = (
     },
   ];
 
-  const onEditHandler = (row: IProducto, columnName: string) => {
+  const onEditHandler = (row: Producto, columnName: string) => {
     const newStock: IPostUpdateStock = {
       destino: columnName,
       id: row.idProducto,

@@ -26,7 +26,7 @@ const FormComponentAdd: FC<IFormComponentAddProps> = (props) => {
         idFraccionamiento: "",
         idDescripcion: 1,
     })
-    const [description, setDescription] = useState<string>("");
+    const [description, setDescription] = useState<string>("BRIDA");
     const onChangeComponentFormHandler = (value: string, nameProperty: string) => {
 
         if (nameProperty === 'idDescripcion') {
@@ -45,6 +45,7 @@ const FormComponentAdd: FC<IFormComponentAddProps> = (props) => {
         })
     }
     const handlerSave = () => {
+        console.log(description)
         props.onSave(componentForm, description);
     }
 

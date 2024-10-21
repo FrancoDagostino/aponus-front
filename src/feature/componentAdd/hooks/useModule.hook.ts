@@ -23,6 +23,7 @@ export const useComponentAddHook = (props: IComponentAddModuleProps): IComponent
     }
 
     const onAddOrUpdateComponentHandler = (newComponent: IComponentAdd, description: string) => {
+        console.log(description)
         props.componentAddStore.postCreateComponentAction(newComponent, description);
     }
 

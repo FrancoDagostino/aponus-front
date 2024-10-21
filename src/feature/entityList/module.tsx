@@ -18,7 +18,6 @@ interface IEntityListProps {
 export const EntityListModule: FC<IEntityListProps> = (props) => {
     const useModule = useEntityListHook(props)
 
-    console.log(props.entityListStore.entityListState[0])
 
     return (
         <>

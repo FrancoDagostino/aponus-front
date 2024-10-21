@@ -8,11 +8,8 @@ interface IProductListComponentProps {
   data: Producto[];
 }
 
-const ProductListTableComponent: React.FC<IProductListComponentProps> = (
-  props
-) => {
+const ProductListTableComponent: React.FC<IProductListComponentProps> = (props) => {
 
-  console.log(props)
   const columns: Array<TableColumn<Producto>> = [
     {
       name: "Diametro Nominal",

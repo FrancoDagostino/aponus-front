@@ -1,11 +1,11 @@
-import { IListadoPadre, IStockFormateado } from "../model/product.model";
+import { IListadoProducto, IStockFormateado } from "../model/product.model";
 import { createResultUtil, TResult } from '../../../utils/result.util';
 import { IProductListService } from '../services/useProductList.service';
 import { useState } from "react";
 import { componentProductMapper } from "../mappers/componentProduct";
 
 export interface IProductListStore {
-    productList: IListadoPadre[];
+    productList: IListadoProducto[];
     componentList: IStockFormateado[];
     getProductListAction: (idType: string) => Promise<TResult<null, null>>;
     getProductListForTypeAndDescriptionAction: (idType: string, idDescription: string) => Promise<TResult<null, null>>;
@@ -17,13 +17,12 @@ export interface IProductListStoreProps {
 }
 
 export const useProductListStore = (props: IProductListStoreProps): IProductListStore => {
-    const [productList, setProductList] = useState<IListadoPadre[]>([]);
+    const [productList, setProductList] = useState<IListadoProducto[]>([]);
 
     const [componentList, setComponentList] = useState<IStockFormateado[]>([]);
 
     const getProductListAction: IProductListStore["getProductListAction"] = async (idType: string) => {
         const result = await props.productListService.getProductList(idType)
-        console.log(result)
         if (result.isError) return createResultUtil.error(null)
         setProductList(result.data)
         return createResultUtil.success(null)

@@ -18,17 +18,16 @@ export interface IStockFormateado {
     total: string;
     granallado?: string;
     moldeado?: string;
+    NombreInsumo: string
 }
 
-export interface IListadoPadre {
-    idTipo: string,
-    descripcionTipo: string
-    descripcionProductos: IListadoProducto[]
-}
+
 
 export interface IListadoProducto {
     idDescripcion: number;
     descripcionProducto: string;
+    idEstado: number,
+    idEstadoNavigation: { idEstado: 0, descripcion: '', productosDescripcions: [] }
     productos: Producto[];
 }
 

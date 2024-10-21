@@ -25,15 +25,14 @@ export const ProductListModule: React.FC<IProductListProps> = (props) => {
                 descriptionList={props.categoryStore.descriptionList}
                 onSelectDescriptionTypeHandler={moduleHook.onSelectDescriptionTypeHandler}
             />
-            {props.productListStore.productList.map((product, index) => {
-                product.descripcionProductos.map(descProduc => (
+            {
+                props.productListStore.productList.map((product, index) => (
                     <div style={{ width: "100%", marginTop: "50px" }} key={index}>
-                        <h3 style={{}}>{descProduc.descripcionProducto}</h3>
-                        <ProductListTableComponent data={descProduc.productos} />
+                        <h3>{product.descripcionProducto}</h3>
+                        <ProductListTableComponent data={product.productos} />
                     </div>
                 ))
-
-            })}
+            }
         </>
     );
 };

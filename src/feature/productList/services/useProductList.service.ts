@@ -1,10 +1,10 @@
-import { IListadoComponentes, IListadoPadre } from "../model/product.model";
+import { IListadoComponentes, IListadoProducto } from "../model/product.model";
 import { IRestClient, urlBase } from "../../../utils/clients/useRest.client";
 import { createResponseUtil, TResponse } from "../../../utils/response.util";
 
 export interface IProductListService {
-    getProductList: (idType: string) => Promise<TResponse<IListadoPadre[], null>>;
-    getProductListForTypeAndDescription: (idType: string, idDescription: string) => Promise<TResponse<IListadoPadre[], null>>;
+    getProductList: (idType: string) => Promise<TResponse<IListadoProducto[], null>>;
+    getProductListForTypeAndDescription: (idType: string, idDescription: string) => Promise<TResponse<IListadoProducto[], null>>;
     postProductComponent: (idProduct: string, quantity: number) => Promise<TResponse<IListadoComponentes, null>>;
 }
 
@@ -17,7 +17,7 @@ export const useProductListService = (props: IProductListServiceProps): IProduct
     const getProductList: IProductListService["getProductList"] = async (idType: string) => {
 
         const url = `${urlBase}/Products/List/${idType}`
-        const response = await props.restClient.get<IListadoPadre[], null>(url, undefined)
+        const response = await props.restClient.get<IListadoProducto[], null>(url, undefined)
         if (response.isSuccess) return createResponseUtil.success(response.data, response.status)
         return createResponseUtil.error(response.data, response.status)
     }
@@ -25,7 +25,7 @@ export const useProductListService = (props: IProductListServiceProps): IProduct
     const getProductListForTypeAndDescription: IProductListService["getProductListForTypeAndDescription"] = async (idType: string, idDescription: string) => {
 
         const url = `${urlBase}/Products/List/${idType}/${idDescription}`
-        const response = await props.restClient.get<IListadoPadre[], null>(url, undefined)
+        const response = await props.restClient.get<IListadoProducto[], null>(url, undefined)
         if (response.isSuccess) return createResponseUtil.success(response.data, response.status)
         return createResponseUtil.error(response.data, response.status)
     }

@@ -15,8 +15,13 @@ export const useEntityAddService = (props: IEntityAddServiceProps): IEntityAddSe
 
     const newEntity = async (dataInput: IFormData) => {
         const url = `${urlBase}/Entities/Save`
-
-        const response = await props.restClient.post<null, null>(url, dataInput, undefined)
+        const body = {
+            ...dataInput,
+            idUsuarioRegistro: "Prueba",
+            idTipo: 1,
+            idCategoria: 1
+        }
+        const response = await props.restClient.post<null, null>(url, body, undefined)
         if (response.isSuccess) return createResponseUtil.success(response.data, response.status);
         return createResponseUtil.error(response.data, response.status);
     }

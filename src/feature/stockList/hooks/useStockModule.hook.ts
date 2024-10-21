@@ -83,16 +83,21 @@ export const useStockModuleHook = (props: IStockModuleProps): IStockModule => {
   };
 
   const onEditStockHandler = async (valueNewStock: number) => {
+    console.log(newStock)
     const newStockUpdate: IPostUpdateStock = {
       ...newStock,
       valor: valueNewStock,
     };
-    await props.stockStore.postDbUpdateStockAction(newStockUpdate);
-    if (newStock.destino !== "Cantidad")
+    if (newStock.destino !== "Cantidad") {
+      await props.stockStore.postDbUpdateStockAction(newStockUpdate);
       await props.stockStore.getDbStockListForDescriptionAction(
         idDescriptionFounded
       );
-    else await props.stockStore.getStockProductListAction(idTypeProductFounded);
+    }
+    else {
+      await props.stockStore.getStockProductListForTypeAndDescriptionAction(idTypeProductFounded, idDescriptionFounded);
+      await props.stockStore.updateStockProductAction(valueNewStock, newStock.id)
+    }
 
     onCloseEditModalHandler();
     setOpenSnackBar(true);
@@ -101,7 +106,6 @@ export const useStockModuleHook = (props: IStockModuleProps): IStockModule => {
   const onCloseSnackBarHandler = () => {
     setOpenSnackBar(false);
   };
-
 
   return {
     isOpen,

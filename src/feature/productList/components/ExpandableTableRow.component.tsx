@@ -23,6 +23,12 @@ const ExpandableTableRowComponent: FC<ExpanderComponentProps<Producto>> = (
 
   const columns: Array<TableColumn<IStockFormateado>> = [
     {
+      name: "Nombre Componente",
+      cell: (row) => <p>{row.NombreInsumo}</p>,
+      sortable: true,
+      reorder: true,
+    },
+    {
       name: "Granallado",
       cell: (row) => <p>{row.granallado}</p>,
       sortable: true,

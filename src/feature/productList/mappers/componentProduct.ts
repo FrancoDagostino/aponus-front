@@ -15,6 +15,8 @@ export const componentProductMapper = (
           proceso: componente.proceso,
           total: componente.total,
           granallado: componente.granallado,
+          moldeado: componente.moldeado,
+          NombreInsumo: componente.NombreInsumo
         };
       })
     );
