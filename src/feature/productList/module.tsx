@@ -14,11 +14,10 @@ export const ProductListModule: React.FC<IProductListProps> = (props) => {
 
     const moduleHook = useModuleProductListHook(props)
 
-    console.log(props.productListStore.productList)
 
     return (
         <>
-            <h1>Título de la Sección</h1>
+            <h1>Listado de Productos</h1>
             <ProductCategorySelectsComponent
                 categoryList={props.categoryStore.categoryList}
                 onSelectCategoryTypeHandler={moduleHook.onSelectCategoryTypeHandler}
