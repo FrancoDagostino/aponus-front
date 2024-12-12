@@ -15,6 +15,8 @@ interface IEntityListHook {
     isOpen: boolean
     onViewEntityHandler: (row: IEntity) => void
     handleClose: () => void
+    onRemoveEntityHandler: (id: number) => void
+    onEditEntityHandler: (id: number) => void
 }
 
 export const useEntityListHook = (props: IEntityListHookProps): IEntityListHook => {
@@ -56,13 +58,22 @@ export const useEntityListHook = (props: IEntityListHookProps): IEntityListHook 
         setIsOpen(true)
     }
 
+
+    const onEditEntityHandler = (id: number) => {
+        props.onNavigate(`entity-add/${id}`)
+    }
     const handleClose = () => setIsOpen(false);
 
+    const onRemoveEntityHandler = (id: number) => {
+        props.entityListStore.deleteEntityByIdAction(id)
+    }
 
     return {
         entityState,
         isOpen,
         handleClose,
-        onViewEntityHandler
+        onViewEntityHandler,
+        onRemoveEntityHandler,
+        onEditEntityHandler
     }
 }

@@ -18,7 +18,16 @@ export const EntityAddStack = (props: IEntityAddStackProps) => [
         key="/entity-add"
         path="/entity-add"
         render={(route) => (
-            <EntityAddModule onNavigate={route.history.push} entityAddStore={props.entityAddStore} uiHook={props.uiHook} />
+            <EntityAddModule entityId="0" onNavigate={route.history.push} entityAddStore={props.entityAddStore} uiHook={props.uiHook} />
+
+        )}
+    />,
+    <Route
+        exact
+        key="/entity-add/:entityId"
+        path="/entity-add/:entityId"
+        render={(route) => (
+            <EntityAddModule entityId={route.match.params.entityId} onNavigate={route.history.push} entityAddStore={props.entityAddStore} uiHook={props.uiHook} />
 
         )}
     />,

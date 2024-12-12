@@ -4,6 +4,7 @@ import { IFormData } from "../hook/useModule.hook";
 
 export interface IEntityAddStore {
     addNewEntityAction: (dataInput: IFormData) => Promise<TResult<null, null>>
+    getNewEntityAction: (entityId: string) => Promise<TResult<null, null>>
 }
 
 interface IEntityAddStoreProps {
@@ -18,8 +19,15 @@ export const useEntityAddStore = (props: IEntityAddStoreProps): IEntityAddStore 
         return createResultUtil.success(null)
     }
 
+    const getNewEntityAction = async (entityId: string) => {
+        const result = await props.entityAddService.getEntity(entityId)
+        if (result.isError) return createResultUtil.error(null)
+        return createResultUtil.success(null)
+    }
+
 
     return {
-        addNewEntityAction
+        addNewEntityAction,
+        getNewEntityAction
     }
 }

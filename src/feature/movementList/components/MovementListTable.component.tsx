@@ -1,34 +1,34 @@
 import { FC, useEffect, useState } from "react";
-import VisibilityIcon from '@mui/icons-material/Visibility'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import './dataGrid.css'
-import { Tooltip, IconButton, TablePagination } from "@mui/material";
+import { Tooltip, IconButton, TablePagination, TableContainer, Table, TableHead, Grid, Paper, TableBody, TableCell, TableRow, useMediaQuery } from "@mui/material";
 import { IMovementListView } from "../hooks/useModule.hook";
+import { Search } from "@mui/icons-material";
 
 interface IActivityDataGridComponentProps {
-    activityList: IMovementListView[]
+    movementList: IMovementListView[]
     searchValue: string
+    onEditMovementHandler: (id: number) => void
+
     // handleOpen: (row: any, isDisabled: boolean) => void
-}
-const Chip = ({ status }: { status: string }) => {
-    return <span className={`chip ${status.toLowerCase().replace(' ', '-')}`}>{status}</span>
 }
 
 export const MovementListableComponent: FC<IActivityDataGridComponentProps> = (props) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const totalPages = props.activityList.length
-
+    const totalPages = props.movementList.length
+    const minScreen = useMediaQuery('(min-width: 1300px)');
+    console.log(props.movementList.length)
     useEffect(() => {
         setPage(0)
     }, [props.searchValue])
 
 
-    const startIndex = (page) * rowsPerPage
+    const startIndex = (page + 1) * rowsPerPage
     const endIndex = startIndex + rowsPerPage
-    const currentData = props.activityList.slice(startIndex, endIndex)
-
+    const currentData = props.movementList.slice(startIndex, endIndex)
+    console.log(currentData)
     const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => {
         event?.preventDefault()
         setPage(newPage);
@@ -42,165 +42,75 @@ export const MovementListableComponent: FC<IActivityDataGridComponentProps> = (p
     };
 
 
-    const handleView = (row: any) => {
-        row
-        // props.handleOpen(row, true)
-    }
-
-    const handleEdit = (row: any) => {
-        row
-        // props.handleOpen(row, false)
-    }
-
-    const handleDelete = (id: number) => {
-        console.log(`Eliminar tarea con ID: ${id}`)
-    }
-    const columns = [
-        {
-            label: "Fecha",
-            key: "date",
-            style: ""
-        },
-        {
-            label: "Proveedor",
-            key: "provider",
-            style: "hide-mobile"
-        },
-        {
-            label: "Tipo",
-            key: "type",
-            style: "hide-tablet"
-        },
-        {
-            label: "Usuario Creacion",
-            key: "userCreation",
-            style: "hide-mobile hide-tablet"
-        },
-        {
-            label: "Usuario Modificacion",
-            key: "userMod",
-            style: "hide-mobile hide-tablet"
-        },
-        {
-            label: "Estado",
-            key: "status",
-            style: "",
-        },
-        {
-            label: "Acciones",
-            key: "Acciones",
-            style: ""
-        },
-    ]
     return (
         <>
-            <div className="table-container">
-                <div className="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-
-                                {
-                                    columns.map(col => (
-                                        <th className={col.style} style={{ width: col.key === "description" ? "4000px" : "" }} key={col.key}>{col.label}</th>
-                                    ))
-                                }
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {currentData.map((row: any) => (
-                                <tr key={row.id}>
-                                    <>
-                                        {
-                                            columns.map(col => (
-                                                col.key !== "Acciones"
-                                                    ? (
-                                                        <td className={col.style} style={{ width: col.key === "Descripcion" ? "4000px" : "" }}
-                                                            key={col.key}>
-
-                                                            {
-                                                                col.key === "status"
-                                                                    ? <Chip status={row[col.key]} />
-                                                                    : (row as any)[col.key]
-                                                            }
-
-                                                        </td>)
-                                                    : (
-                                                        <td key={col.key}>
-                                                            <div className="action-buttons">
-                                                                <Tooltip title="Ver" onClick={() => handleView(row)}>
-                                                                    <IconButton color="primary">
-                                                                        <VisibilityIcon />
-                                                                    </IconButton>
-                                                                </Tooltip>
-                                                                <Tooltip title="Editar">
-                                                                    <IconButton color="primary" onClick={() => handleEdit(row)}>
-                                                                        <EditIcon />
-                                                                    </IconButton>
-                                                                </Tooltip>
-                                                                <Tooltip title="Eliminar" onClick={() => handleDelete(row.id)}>
-                                                                    <IconButton color="error">
-                                                                        <DeleteIcon />
-                                                                    </IconButton>
-                                                                </Tooltip>
-                                                            </div>
-                                                        </td>
-                                                    )
-                                            ))
-
-                                        }
-                                    </>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-
-                <div className="mobile-cards">
-                    {currentData.map((item: any) => (
-                        <div key={item.id} className="card">
-                            <p className="card-meta">{item.dateActivity} - {item.orden}</p>
-                            <p>{item.description}</p>
-                            <p>Responsable: {item.responsible}</p>
-                            <div className="card-status">
-                                <Chip status={item.status} />
-                            </div>
-                            <div className="card-actions">
-                                <Tooltip title="Ver">
-                                    <IconButton aria-label="ver" color="primary">
-                                        <VisibilityIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Editar">
-                                    <IconButton aria-label="editar" color="primary">
-                                        <EditIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                <Tooltip title="Eliminar">
-                                    <IconButton aria-label="eliminar" color="error">
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                <div className="pagination">
-                    <TablePagination
-                        component="div"
-                        labelRowsPerPage={"Cantidad de filas por página"}
-                        count={totalPages}
-                        rowsPerPageOptions={[10, 25, 50]}
-                        size={"small"}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        rowsPerPage={rowsPerPage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-
-                    />
-                </div>
-            </div>
+            {minScreen ? (
+                <>
+                    <TableContainer component={Paper} sx={{ marginTop: "10px" }}>
+                        <Table sx={{ tableLayout: "auto" }}>
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Fecha</TableCell>
+                                    <TableCell>Proveedor</TableCell>
+                                    <TableCell>Estado</TableCell>
+                                    <TableCell>Tipo Expediente</TableCell>
+                                    <TableCell>Usuario Creacion</TableCell>
+                                    <TableCell>Usuario Modificacion</TableCell>
+                                    <TableCell>Acciones</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {currentData.map((row) => (
+                                    <TableRow key={row.idMovement}>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.date}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.provider}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.status}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.type}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.userCreation}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.userMod}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>
+                                            <Tooltip title="Ver">
+                                                <IconButton color="primary" onClick={() => { }}>
+                                                    <Search />
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title="Editar">
+                                                <IconButton color="primary" onClick={() => props.onEditMovementHandler(row.idMovement)}>
+                                                    <EditIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title="Eliminar">
+                                                <IconButton color="error" onClick={() => { }}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                    <Grid item xs={12} sx={{ mb: 5 }}>
+                        <TablePagination
+                            component="div"
+                            labelRowsPerPage={"Cantidad de filas por página"}
+                            count={totalPages}
+                            rowsPerPageOptions={[10, 25, 50]}
+                            size={"small"}
+                            page={page}
+                            onPageChange={handleChangePage}
+                            rowsPerPage={rowsPerPage}
+                            onRowsPerPageChange={handleChangeRowsPerPage}
+                        />
+                    </Grid>
+                </>
+            ) : (
+                <>
+                    {/* {currentData.map((item) => (
+                        <ExpedientListDataGridMobile key={item.id} item={item} navigateEdit={props.navigateEdit} navigateView={props.navigateView} onRemoveAgenda={props.onRemoveAgenda} />
+                    ))} */}
+                </>
+            )}
         </>
     )
 }

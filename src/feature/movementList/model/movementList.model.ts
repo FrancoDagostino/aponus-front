@@ -9,13 +9,24 @@ export interface IMovimientoStock {
     origen: string;
     destino: string;
     tipo: string;
-    proveedorDestino: string;
-    proveedorOrigen: string;
+    proveedorDestino: IProveedorDestino;
     suministros: ISuministrosMovimientosStock[];
     infoArchivos: IDatosArchivosMovimientosStock[];
     archivos: File[];
     idEstado: number;
     estado: string;
+}
+
+interface IProveedorDestino {
+    apellido: string,
+    nombre: string,
+    nombreClave: string,
+    idFiscal: string,
+    idTipo: number,
+    idCategoria: number,
+    tipo: {},
+    categoria: {},
+    idEntidad: number
 }
 
 export interface ISuministrosMovimientosStock {
@@ -34,6 +45,5 @@ export interface IDatosArchivosMovimientosStock {
     nombreArchivo: string;
     path: string;
     mimeType: string;
-    extension: string;
-    datosArchivo: Promise<ArrayBuffer>;
+    Extension: string;
 }

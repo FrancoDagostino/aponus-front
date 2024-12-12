@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { IEntityAddStore } from "../store/useEntityAdd.store";
 import { IUiHook } from "../../ui/hooks/useUi.hook";
 
@@ -25,6 +25,7 @@ export interface IFormData {
 interface IEntityAddHookProps {
     entityAddStore: IEntityAddStore;
     uiHook: IUiHook
+    entityId: string
     onNavigate: (url: string) => void;
 }
 
@@ -35,6 +36,23 @@ interface IEntityAddHook {
 }
 
 export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => {
+
+
+
+
+    useEffect(() => {
+        if (props.entityId !== "0") {
+            onPreload()
+        }
+    }, [])
+
+
+    const onPreload = async () => {
+        props.uiHook.showLoading()
+        props.entityAddStore.getNewEntityAction(props.entityId)
+        props.uiHook.hideLoading()
+    }
+
 
     const [formData, setFormData] = useState<IFormData>({
         altura: "",

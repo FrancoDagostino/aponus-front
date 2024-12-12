@@ -23,9 +23,12 @@ interface IProductCategorySelectsComponentProps {
   ) => void;
 }
 
+
+
 const ProductCategorySelectsComponent: React.FC<
   IProductCategorySelectsComponentProps
 > = (props) => {
+
   const [productsType, setProductsType] = useState<string>("AB_PVC");
   const [productsDescription, setProductsDescription] = useState("");
 

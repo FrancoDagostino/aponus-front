@@ -35,7 +35,7 @@ export const EntityListModule: FC<IEntityListProps> = (props) => {
                     </Button>
                 </Grid>
             </Grid>
-            <EntityTableListComponent data={props.entityListStore.entityListState} onViewEntityHandler={useModule.onViewEntityHandler} />
+            <EntityTableListComponent onEditEntityHandler={useModule.onEditEntityHandler} data={props.entityListStore.entityListState} onRemoveEntity={useModule.onRemoveEntityHandler} onViewEntityHandler={useModule.onViewEntityHandler} />
             <EntityViewModalComponent entity={useModule.entityState} isOpen={useModule.isOpen} handleClose={useModule.handleClose} />
 
         </>

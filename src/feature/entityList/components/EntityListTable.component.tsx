@@ -11,6 +11,9 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 interface IEntityListComponentProps {
     data: IEntity[];
     onViewEntityHandler: (row: IEntity) => void
+    onRemoveEntity: (id: number) => void
+    onEditEntityHandler: (id: number) => void
+
 }
 
 export const EntityTableListComponent: FC<IEntityListComponentProps> = (props) => {
@@ -40,13 +43,13 @@ export const EntityTableListComponent: FC<IEntityListComponentProps> = (props) =
             name: "Acciones",
             cell: (row) => (
                 <>
-                    <IconButton aria-label="edit">
+                    <IconButton aria-label="edit" onClick={() => props.onEditEntityHandler(row.idEntidad)}>
                         <EditIcon color={"primary"} />
                     </IconButton>
-                    <IconButton aria-label="view">
-                        <RemoveRedEyeIcon color={"primary"} onClick={() => props.onViewEntityHandler(row)} />
+                    <IconButton aria-label="view" onClick={() => props.onViewEntityHandler(row)} >
+                        <RemoveRedEyeIcon color={"primary"} />
                     </IconButton>
-                    <IconButton aria-label="delete">
+                    <IconButton aria-label="delete" onClick={() => props.onRemoveEntity(row.idEntidad)}>
                         <DeleteIcon color={"error"} />
                     </IconButton>
                 </>

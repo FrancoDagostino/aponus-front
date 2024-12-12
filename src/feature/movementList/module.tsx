@@ -29,7 +29,7 @@ export const MovementListModule = (props: IMovementListProps) => {
                     </Button>
                 </Grid>
             </Grid>
-            <MovementListableComponent activityList={useModule.movementListState} searchValue="" />
+            <MovementListableComponent onEditMovementHandler={useModule.onEditMovementHandler} movementList={useModule.movementListState} searchValue="" />
         </>
 
     )

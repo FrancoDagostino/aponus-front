@@ -15,7 +15,8 @@ export const useComponentAddService = (props: IComponentAddServiceProps): ICompo
 
     const postCreateComponent: IComponentAddService["postCreateComponent"] = async (newComponent: IComponentAdd, description: string) => {
 
-        let url = `${urlBase}/Supplies/new-id/${description}`
+
+        let url = `${urlBase}/Supplies/new-id/${description === "CUERPO DE CAÑO" ? 'CUERPO_DE_CANIO' : description.replaceAll(' ', '_')}`
         const responseId = await props.restClient.get<any, any>(url, undefined)
 
         const idComponent = responseId.isError ? 0 : responseId.data;

@@ -15,6 +15,9 @@ import { MovementListStack } from "./feature/movementList/stacks/movementList.st
 import { MovementAddtStack } from "./feature/movementAdd/stacks/movementAdd.stacks";
 import { EntityListStack } from "./feature/entityList/stacks/entityList.stacks";
 import { EntityAddStack } from "./feature/entityAdd/stack/EntityAdd.stacks";
+import { ProductAddStack } from "./feature/productadd/stacks/productAdd.stacks";
+import { PucharseListStack } from "./feature/purchaseList/stacks/pucharseList.stacks";
+import { PucharseAddStack } from "./feature/purchaseAdd/stacks/purchaseAdd.stacks";
 
 interface IRouterProps {
     stores: IStores
@@ -32,10 +35,21 @@ export const Router: FC<IRouterProps> = ({
         movementAddStore,
         entityListStore,
         entityAddStore,
+        productAddStore,
+        pucharseListStore,
+        pucharseAddStore,
         uiHook
 
     },
 }) => {
+    // const permisos = {
+    //     stockList: ["admin", "gestor_stock"],
+    //     categoryList: ["admin", "gestor_stock"],
+    //     productList: ["admin", "gestor_stock"],
+    //     productAdd: ["admin", "gestor_stock"],
+    //     componentList: ["admin", "gestor_stock"],
+    //     componentAdd: ["admin", "gestor_stock"]
+    // }
     return (
         <ExpandableTableProvider categoryStore={categoryStore} productListStore={productListStore} >
             <BrowserRouter basename={import.meta.env.BASE_URL} >
@@ -63,7 +77,10 @@ export const Router: FC<IRouterProps> = ({
                                                 MovementListStack({ movementListStore }),
                                                 MovementAddtStack({ movementAddStore, uiHook }),
                                                 EntityListStack({ entityListStore, uiHook }),
-                                                EntityAddStack({ entityAddStore, uiHook })
+                                                EntityAddStack({ entityAddStore, uiHook }),
+                                                ProductAddStack({ productAddStore, uiHook }),
+                                                PucharseListStack({ pucharseListStore, uiHook }),
+                                                PucharseAddStack({ pucharseAddStore, uiHook, movementAddStore })
                                             ]
                                         }
                                     </Switch>

@@ -1,0 +1,24 @@
+import { FC } from "react";
+
+import { IProductAddStore } from "./store/productAdd.store";
+import { IUiHook } from "../ui/hooks/useUi.hook";
+import { useProductAddModule } from "./hooks/useModule.hook";
+import { ProductAddForm } from "./components/ProductAdd.component";
+
+interface IProductAddModule {
+    productAddStore: IProductAddStore;
+    uiHook: IUiHook
+    onNavigate: (url: string) => void;
+    productId: string
+}
+
+export const ProductAddModule: FC<IProductAddModule> = (props) => {
+
+    const useModule = useProductAddModule(props)
+
+    return (
+        <ProductAddForm componentId={useModule.idComponent} componentQuantity={useModule.componentQuantity}
+            components={useModule.components} handleAddComponent={useModule.handleAddComponent} handleRemoveComponent={useModule.handleRemoveComponent} handleSetIdComponent={useModule.handleSetIdComponent} handleSetQuantity={useModule.handleSetQuantity}
+            onSaveHandler={useModule.onSaveHandler} onChangeProductDescription={useModule.onChangeProductDescription} formData={useModule.formData} handleInputChange={useModule.handleInputChange} componentCategory={useModule.componentCategory} onChangeComponentCategory={useModule.onChangeComponentCategory} onChangeTypeProduct={useModule.onChangeTypeProduct} productDescription={props.productAddStore.productDescription} productTypeList={props.productAddStore.productTypeList} suppliesListComputed={useModule.suppliesListComputed} supplieStorageList={props.productAddStore.storageSupplie} />
+    )
+}

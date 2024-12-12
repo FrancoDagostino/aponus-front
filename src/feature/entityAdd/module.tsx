@@ -7,6 +7,7 @@ import { IEntityAddStore } from "./store/useEntityAdd.store";
 interface IEntityAddModuleProps {
     entityAddStore: IEntityAddStore;
     uiHook: IUiHook
+    entityId: string
     onNavigate: (url: string) => void;
 }
 

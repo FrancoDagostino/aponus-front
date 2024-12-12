@@ -42,13 +42,8 @@ export const MovementFormComponent: FC<IMovementFormProps> = (props) => {
         if (event.target.files) {
             setFileError('')
             const files = Array.from(event.target.files)
-            const validFiles = files.filter(file => file.type === 'application/pdf')
-            const invalidFiles = files.filter(file => file.type !== 'application/pdf')
-            if (invalidFiles.length > 0) {
-                setFileError(`${invalidFiles.length} Solo estan permitidos archivos pdfs.`)
-            }
 
-            props.onAddInputFilesHanlder(validFiles)
+            props.onAddInputFilesHanlder(files)
 
             if (fileInputRef.current) {
                 fileInputRef.current.value = ''
@@ -168,7 +163,7 @@ export const MovementFormComponent: FC<IMovementFormProps> = (props) => {
                             type="file"
                             hidden
                             ref={fileInputRef}
-                            accept=".pdf"
+                            accept=".jpg"
                             onChange={handleFileUpload}
                             multiple
                         />

@@ -14,6 +14,7 @@ const getCookieHelper = (cName: string): string => {
 }
 
 const setCookieHelper = (name: string, value: string, days: number) => {
+    console.log(name)
     var expires = "";
     if (days) {
         var date = new Date();

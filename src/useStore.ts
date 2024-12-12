@@ -21,6 +21,12 @@ import { IEntityListStore, useEntityListStore } from "./feature/entityList/store
 import { useEntityListService } from "./feature/entityList/service/useEntityList.service";
 import { IEntityAddStore, useEntityAddStore } from "./feature/entityAdd/store/useEntityAdd.store";
 import { useEntityAddService } from "./feature/entityAdd/service/useEntityAdd.service";
+import { IProductAddStore, useProductAddStore } from "./feature/productadd/store/productAdd.store";
+import { useProductAddService } from "./feature/productadd/service/useProductAdd.service";
+import { IPurchaseListStore, usePurchaseListStore } from "./feature/purchaseList/store/usePurcharseList.store";
+import { usePurchaseListService } from "./feature/purchaseList/services/usePurcharseList.service";
+import { IPurchaseAddStore, usePurchaseAddStore } from "./feature/purchaseAdd/store/usePurchaseAdd.store";
+import { usePurchaseAddService } from "./feature/purchaseAdd/service/usePurchaseAdd.service";
 
 
 export interface IStores {
@@ -35,7 +41,11 @@ export interface IStores {
     movementAddStore: IMovementAddStore
     entityListStore: IEntityListStore
     entityAddStore: IEntityAddStore
+    productAddStore: IProductAddStore
+    pucharseListStore: IPurchaseListStore
+    pucharseAddStore: IPurchaseAddStore
     uiHook: IUiHook
+
 }
 
 export const useStore = (): IStores => {
@@ -60,6 +70,12 @@ export const useStore = (): IStores => {
 
     const productListStore = useProductListStore({
         productListService: useProductListService({
+            restClient: useRestClient()
+        })
+    })
+
+    const productAddStore = useProductAddStore({
+        productAddService: useProductAddService({
             restClient: useRestClient()
         })
     })
@@ -102,6 +118,17 @@ export const useStore = (): IStores => {
         })
     })
 
+    const pucharseListStore = usePurchaseListStore({
+        usePurchaseListService: usePurchaseListService({
+            restClient: useRestClient()
+        })
+    })
+
+    const pucharseAddStore = usePurchaseAddStore({
+        usePurchaseAddService: usePurchaseAddService({
+            restClient: useRestClient()
+        })
+    })
     const uiHook = useUiHook()
     const navigationStore = useNavigationStore()
 
@@ -117,6 +144,9 @@ export const useStore = (): IStores => {
         movementAddStore,
         entityListStore,
         entityAddStore,
+        productAddStore,
+        pucharseListStore,
+        pucharseAddStore,
         uiHook
     }
 }

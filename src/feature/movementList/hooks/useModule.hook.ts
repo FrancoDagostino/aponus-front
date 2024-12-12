@@ -18,6 +18,8 @@ interface IMovementListProps {
 
 interface IMovementListHook {
     movementListState: IMovementListView[]
+    onEditMovementHandler: (id: number) => void
+
 }
 
 export const useMovementListHook = (props: IMovementListProps): IMovementListHook => {
@@ -33,12 +35,12 @@ export const useMovementListHook = (props: IMovementListProps): IMovementListHoo
     const onInit = async () => {
         const result = await props.movementListStore.getMovementListAction()
         if (result.isError) return;
-
+        console.log(result.data)
         const newObj: IMovementListView[] = result.data.map(movement => {
             return {
                 idMovement: movement.idMovimiento,
-                date: movement.fechaHoraCreado.toDateString(),
-                provider: movement.proveedorDestino,
+                date: movement.fechaHoraCreado.toString(),
+                provider: movement.proveedorDestino.nombre + movement.proveedorDestino.apellido,
                 status: movement.estado,
                 type: movement.tipo,
                 userCreation: movement.usuarioCreacion,
@@ -49,8 +51,13 @@ export const useMovementListHook = (props: IMovementListProps): IMovementListHoo
         setMovementListState(newObj)
     }
 
+
+    const onEditMovementHandler = (id: number) => {
+        console.log(id)
+    }
     return {
-        movementListState
+        movementListState,
+        onEditMovementHandler
     }
 
 }

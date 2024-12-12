@@ -31,7 +31,7 @@ export const useAuthModuleHook = (props: IUseAuthModuleHookProps): IUseAuthModul
     const onLoginHandler: IUseAuthModuleHook['onLoginHandler'] = async (e) => {
         e.preventDefault();
         setIsLoading(true)
-        const response = await props.authStore.loginAction({ username, password });
+        const response = await props.authStore.loginAction({ usuario: username, contraseña: password });
         setIsLoading(false)
         if (response.isError) {
             setError(true);

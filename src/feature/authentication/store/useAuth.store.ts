@@ -8,8 +8,8 @@ export interface IUserParams {
 }
 
 export interface IAuthStore {
-    loginAction: (userParam: ILoginUserPost) => Promise<TResult<any, null>>;
-    logOutAction: () => Promise<TResult<any, null>>;
+    loginAction: (userParam: ILoginUserPost) => Promise<TResult<null, null>>;
+    logOutAction: () => Promise<TResult<null, null>>;
     status: TStatus
 }
 
@@ -20,6 +20,7 @@ interface IUseAuthStoreProps {
 type TStatus = 'starting' | 'is not authenticated' | 'is authenticated'
 
 export const useAuthStore = (props: IUseAuthStoreProps): IAuthStore => {
+    const [status, setStatus] = useState<TStatus>('starting');
 
     useEffect(() => {
         onInit();
@@ -27,11 +28,10 @@ export const useAuthStore = (props: IUseAuthStoreProps): IAuthStore => {
 
     const onInit = async () => {
         const token = tokenUtil.get()
-        if (!token) return setStatus('is authenticated')
+        if (!token) return setStatus('is not authenticated')
         setStatus('is authenticated')
     }
 
-    const [status, setStatus] = useState<TStatus>('is authenticated');
 
     const loginAction: IAuthStore["loginAction"] = async (userParam: ILoginUserPost) => {
         const response = await props.useAuthService.onLogin(userParam)
@@ -39,9 +39,10 @@ export const useAuthStore = (props: IUseAuthStoreProps): IAuthStore => {
             setStatus('is not authenticated');
             return createResultUtil.error(null)
         }
-        tokenUtil.set(response.data.tkn);
+        console.log(response.data)
+        tokenUtil.set(response.data);
         setStatus('is authenticated');
-        return createResultUtil.success(response.data)
+        return createResultUtil.success(null)
     }
 
     const logOutAction: IAuthStore["logOutAction"] = async () => {
