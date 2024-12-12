@@ -15,7 +15,7 @@ export const ModuleAuth: FC<IAuthProps> = (props) => {
     return (
         <div className="login-container">
             <div className="login-head">
-                <img src="src\assets\images\logo-vertical.svg" alt="Logo" className="login-logo" />
+                <img src="https://aponus.com.ar/images/logo_chico.png" alt="Logo" className="login-logo" />
             </div>
             <div className="login-form">
                 <Box
