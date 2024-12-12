@@ -3,6 +3,8 @@ import ProductListTableComponent from "./components/ProductListTable.component";
 import { IProductListStore } from "./store/useProductList.store";
 import { ICategoryStore } from "../categoryList/store/useCategory.store";
 import { useModuleProductListHook } from './hooks/useModule.hook';
+import { Box, Button } from '@mui/material';
+import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 
 interface IProductListProps {
     productListStore: IProductListStore;
@@ -17,7 +19,17 @@ export const ProductListModule: React.FC<IProductListProps> = (props) => {
 
     return (
         <>
-            <h1>Listado de Productos</h1>
+            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+                <h1>Listado de Productos</h1>
+                <Button
+                    sx={{ height: 50, width: 300, marginLeft: "20px", marginTop: "15px", gap: 1 }}
+                    variant="contained"
+                    onClick={() => props.onNavigate('/product-add')}
+                    startIcon={<AddCircleOutlinedIcon />}
+                >
+                    Nuevo Producto
+                </Button>
+            </Box>
             <ProductCategorySelectsComponent
                 categoryList={props.categoryStore.categoryList}
                 onSelectCategoryTypeHandler={moduleHook.onSelectCategoryTypeHandler}
