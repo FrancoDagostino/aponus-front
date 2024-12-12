@@ -6,5 +6,5 @@ export interface IListadoCategorias {
 
 export interface IListadoDescripciones {
     idDescripcion: number;
-    descripcion: string;
+    NombreDescripcion: string;
 }

@@ -30,7 +30,7 @@ const FormComponentAdd: FC<IFormComponentAddProps> = (props) => {
     const onChangeComponentFormHandler = (value: string, nameProperty: string) => {
 
         if (nameProperty === 'idDescripcion') {
-            const textDescription = props.componentTypes.find(type => type.idDescripcion === Number(value))!.descripcion
+            const textDescription = props.componentTypes.find(type => type.idDescripcion === Number(value))!.NombreDescripcion
             setDescription(textDescription);
         }
         const isNumber = regexSoloNumeros.test(value)
@@ -66,7 +66,7 @@ const FormComponentAdd: FC<IFormComponentAddProps> = (props) => {
                         >
                             {props.componentTypes.map((type) => (
                                 <MenuItem value={type.idDescripcion} key={type.idDescripcion}>
-                                    {type.descripcion}
+                                    {type.NombreDescripcion}
                                 </MenuItem>
                             ))}
 

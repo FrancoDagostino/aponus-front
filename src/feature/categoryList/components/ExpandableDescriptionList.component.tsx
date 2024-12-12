@@ -38,7 +38,7 @@ const ExpandableDescriptionListComponentProps: FC<
 
   const onEditDescriptionHandler = async (row: IListadoDescripciones) => {
     setIsEdit(true);
-    setInputValue(row.descripcion);
+    setInputValue(row.NombreDescripcion);
     setIdDescription(row.idDescripcion)
     setIsEnabledInput(false);
   };
@@ -56,7 +56,7 @@ const ExpandableDescriptionListComponentProps: FC<
   const columnDescriptionComputed: Array<TableColumn<IListadoDescripciones>> = [
     {
       name: "Listado de Descripciones",
-      cell: (row) => <p>{row.descripcion}</p>,
+      cell: (row) => <p>{row.NombreDescripcion}</p>,
     },
     {
       name: "Acciones",

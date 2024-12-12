@@ -96,7 +96,7 @@ const ProductCategorySelectsComponent: React.FC<
                     value={description.idDescripcion}
                     key={description.idDescripcion}
                   >
-                    {description.descripcion}
+                    {description.NombreDescripcion}
                   </MenuItem>
                 ))}
             </Select>
