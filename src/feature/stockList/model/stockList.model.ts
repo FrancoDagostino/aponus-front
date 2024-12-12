@@ -1,6 +1,6 @@
 export interface IStockTypes {
   idDescripcion: number;
-  descripcion: string;
+  NombreDescripcion: string;
 }
 
 export interface IListadoComponentes {
@@ -44,7 +44,7 @@ export interface IStockProductList {
 
 export interface DescripcionProducto {
   idDescripcion: number;
-  nombreDescripcion: string;
+  NombreDescripcion: string;
   productos: IProducto[];
   columnas: string[];
 }

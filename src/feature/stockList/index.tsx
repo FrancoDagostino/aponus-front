@@ -22,7 +22,7 @@ export const StockListModule: React.FC<IStockProps> = (props) => {
 
     return (
         <>
-            <h1>Título de la Sección</h1>
+            <h1>Listado de Stock</h1>
             <Box sx={{ bgcolor: "background.paper", width: "100%" }}>
                 <AppBar position="static">
                     <Tabs

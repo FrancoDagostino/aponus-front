@@ -44,7 +44,7 @@ const TabsCategoryComponentType: React.FC<TabsCategoryComponentTypeProps> = (
 
             {props.categoryTypeList.map((category) => (
               <Tab
-                label={category.descripcion}
+                label={category.NombreDescripcion}
                 value={category.idDescripcion}
                 key={category.idDescripcion}
                 sx={{ fontFamily: "Rubik-SemiBold" }}
