@@ -42,14 +42,20 @@ export const Router: FC<IRouterProps> = ({
 
     },
 }) => {
-    // const permisos = {
-    //     stockList: ["admin", "gestor_stock"],
-    //     categoryList: ["admin", "gestor_stock"],
-    //     productList: ["admin", "gestor_stock"],
-    //     productAdd: ["admin", "gestor_stock"],
-    //     componentList: ["admin", "gestor_stock"],
-    //     componentAdd: ["admin", "gestor_stock"]
-    // }
+    const permissions = {
+        stockList: ["admin", "gestor_stock", "consultor_stock"],
+        categoryList: ["admin", "gestor_stock"],
+        productList: ["admin", "gestor_stock", "consultor_stock"],
+        productAdd: ["admin", "gestor_stock"],
+        componentList: ["admin", "gestor_stock"],
+        componentAdd: ["admin", "gestor_stock"],
+        movementList: ["admin"],
+        movementAdd: ["admin"],
+        purchaseList: ["admin", "vendedor"],
+        purchaseAdd: ["admin", "vendedor"],
+        entityList: ["admin"],
+        entityAdd: ["admin"]
+    }
     return (
         <ExpandableTableProvider categoryStore={categoryStore} productListStore={productListStore} >
             <BrowserRouter basename={import.meta.env.BASE_URL} >
@@ -69,18 +75,18 @@ export const Router: FC<IRouterProps> = ({
                                     <Switch>
                                         {
                                             [
-                                                StockListStack({ stockStore, categoryStore }),
-                                                CategoryListStack({ categoryStore, uiHook }),
-                                                ProductListStack({ categoryStore, productListStore }),
-                                                ComponentListStack({ componentListStore, stockStore }),
-                                                ComponentAddStack({ componentAddStore, stockStore }),
-                                                MovementListStack({ movementListStore }),
-                                                MovementAddtStack({ movementAddStore, uiHook }),
-                                                EntityListStack({ entityListStore, uiHook }),
-                                                EntityAddStack({ entityAddStore, uiHook }),
-                                                ProductAddStack({ productAddStore, uiHook }),
-                                                PucharseListStack({ pucharseListStore, uiHook }),
-                                                PucharseAddStack({ pucharseAddStore, uiHook, movementAddStore })
+                                                StockListStack({ permissions: permissions.stockList, rol: authStore.rol, stockStore, categoryStore }),
+                                                CategoryListStack({ permissions: permissions.categoryList, rol: authStore.rol, categoryStore, uiHook }),
+                                                ProductListStack({ permissions: permissions.productList, rol: authStore.rol, categoryStore, productListStore }),
+                                                ComponentListStack({ permissions: permissions.componentList, rol: authStore.rol, componentListStore, stockStore }),
+                                                ComponentAddStack({ permissions: permissions.componentAdd, rol: authStore.rol, componentAddStore, stockStore }),
+                                                MovementListStack({ permissions: permissions.movementList, rol: authStore.rol, movementListStore }),
+                                                MovementAddtStack({ permissions: permissions.movementAdd, rol: authStore.rol, movementAddStore, uiHook }),
+                                                EntityListStack({ permissions: permissions.entityList, rol: authStore.rol, entityListStore, uiHook }),
+                                                EntityAddStack({ permissions: permissions.entityAdd, rol: authStore.rol, entityAddStore, uiHook }),
+                                                ProductAddStack({ permissions: permissions.productAdd, rol: authStore.rol, productAddStore, uiHook }),
+                                                PucharseListStack({ permissions: permissions.purchaseList, rol: authStore.rol, pucharseListStore, uiHook }),
+                                                PucharseAddStack({ permissions: permissions.purchaseAdd, rol: authStore.rol, pucharseAddStore, uiHook, movementAddStore }),
                                             ]
                                         }
                                     </Switch>

@@ -4,15 +4,22 @@ import { IProductAddStore } from "./store/productAdd.store";
 import { IUiHook } from "../ui/hooks/useUi.hook";
 import { useProductAddModule } from "./hooks/useModule.hook";
 import { ProductAddForm } from "./components/ProductAdd.component";
+import { UnAuthorizedModule } from "../unAuthorized/module";
 
 interface IProductAddModule {
     productAddStore: IProductAddStore;
     uiHook: IUiHook
-    onNavigate: (url: string) => void;
     productId: string
+    permissions: string[]
+    rol: string
+    onNavigate: (url: string) => void;
 }
 
 export const ProductAddModule: FC<IProductAddModule> = (props) => {
+
+    if (!props.permissions.includes(props.rol)) {
+        return <UnAuthorizedModule />
+    }
 
     const useModule = useProductAddModule(props)
 

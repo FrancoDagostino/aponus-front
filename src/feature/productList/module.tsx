@@ -5,17 +5,23 @@ import { ICategoryStore } from "../categoryList/store/useCategory.store";
 import { useModuleProductListHook } from './hooks/useModule.hook';
 import { Box, Button } from '@mui/material';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
+import { UnAuthorizedModule } from "../unAuthorized/module";
 
 interface IProductListProps {
     productListStore: IProductListStore;
     categoryStore: ICategoryStore;
+    permissions: string[]
+    rol: string
     onNavigate: (url: string) => void;
 }
 
 export const ProductListModule: React.FC<IProductListProps> = (props) => {
 
-    const moduleHook = useModuleProductListHook(props)
+    if (!props.permissions.includes(props.rol)) {
+        return <UnAuthorizedModule />
+    }
 
+    const moduleHook = useModuleProductListHook(props)
 
     return (
         <>

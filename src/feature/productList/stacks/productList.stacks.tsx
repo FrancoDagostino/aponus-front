@@ -8,6 +8,8 @@ import { ProductListModule } from "../module";
 interface IProductListStackProps {
     productListStore: IProductListStore;
     categoryStore: ICategoryStore;
+    permissions: string[]
+    rol: string
 }
 
 export const ProductListStack = (props: IProductListStackProps) => [
@@ -17,6 +19,8 @@ export const ProductListStack = (props: IProductListStackProps) => [
         path="/product-list"
         render={(route) => (
             <ProductListModule
+                permissions={props.permissions}
+                rol={props.rol}
                 productListStore={props.productListStore}
                 categoryStore={props.categoryStore}
                 onNavigate={route.history.push}

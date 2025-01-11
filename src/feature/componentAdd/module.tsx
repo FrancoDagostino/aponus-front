@@ -4,14 +4,21 @@ import { IComponentAddStore } from './store/useComponentAdd.store';
 import { IStockStore } from '../stockList/store/useStock.store';
 import { useComponentAddHook } from './hooks/useModule.hook';
 import LoaderComponent from '../../components/Loader/Loader.component';
+import { UnAuthorizedModule } from '../unAuthorized/module';
 
 interface IComponentAddModuleProps {
     componentAddStore: IComponentAddStore
     stockStore: IStockStore
+    permissions: string[]
+    rol: string
     onNavigate: (url: string) => void
 }
 
 export const ComponentAddModule: FC<IComponentAddModuleProps> = (props) => {
+
+    if (!props.permissions.includes(props.rol)) {
+        return <UnAuthorizedModule />
+    }
 
     const useModule = useComponentAddHook(props)
 

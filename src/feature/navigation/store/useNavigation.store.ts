@@ -7,12 +7,13 @@ export interface IMenuItem {
 }
 
 const menuItem: IMenuItem[] = [
-    { id: 1, label: "Listado Categorias", icon: "Category", path: "/category-list", tooltip: "Categorias" },
-    { id: 2, label: "Listado Stock", icon: "Stock", path: "/stock-list", tooltip: "Listado de Stock" },
-    { id: 5, label: "Listado Productos", icon: "ProductList", path: "/product-list", tooltip: "Listado de Productos" },
-    { id: 6, label: "Listado Componentes", icon: "ComponentList", path: "component-list", tooltip: "Listado de Componentes" },
-    { id: 7, label: "Listado Movimientos", icon: "MovementList", path: "movements-list", tooltip: "Listado de Movimientos" },
-    { id: 8, label: "Listado Entidades", icon: "EntityList", path: "entity-list", tooltip: "Listado de Entidades" },
+    { id: 1, label: "Gestion  Categorias", icon: "Category", path: "/category-list", tooltip: "Categorias" },
+    { id: 2, label: "Gestion  Stock", icon: "Stock", path: "/stock-list", tooltip: "Gestion  de Stock" },
+    { id: 5, label: "Gestion  Productos", icon: "ProductList", path: "/product-list", tooltip: "Gestion  de Productos" },
+    { id: 6, label: "Gestion  Componentes", icon: "ComponentList", path: "component-list", tooltip: "Gestion  de Componentes" },
+    { id: 7, label: "Gestion  Movimientos", icon: "MovementList", path: "movements-list", tooltip: "Gestion  de Movimientos" },
+    { id: 8, label: "Gestion  Entidades", icon: "EntityList", path: "entity-list", tooltip: "Gestion  de Entidades" },
+    { id: 9, label: "Gestion  Compras", icon: "PucharseList", path: "pucharse-list", tooltip: "Gestion  de Compras" },
     { id: 3, label: "Registrar Usuario", icon: "AddUser", path: "/asd", tooltip: "Registrar Usuario" },
     { id: 4, label: "Salir", icon: "Power", path: "/asd", tooltip: "Salir" },
 ]

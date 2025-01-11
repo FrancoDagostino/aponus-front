@@ -8,6 +8,8 @@ import { IUiHook } from "../../ui/hooks/useUi.hook";
 interface IProductAddStackProps {
     productAddStore: IProductAddStore;
     uiHook: IUiHook;
+    permissions: string[]
+    rol: string
 }
 
 export const ProductAddStack = (props: IProductAddStackProps) => [
@@ -16,7 +18,7 @@ export const ProductAddStack = (props: IProductAddStackProps) => [
         key="/product-add"
         path="/product-add"
         render={(route) => (
-            <ProductAddModule productId="0" onNavigate={route.history.push} uiHook={props.uiHook} productAddStore={props.productAddStore} />
+            <ProductAddModule permissions={props.permissions} rol={props.rol} productId="0" onNavigate={route.history.push} uiHook={props.uiHook} productAddStore={props.productAddStore} />
         )}
     />,
     <Route
@@ -24,7 +26,7 @@ export const ProductAddStack = (props: IProductAddStackProps) => [
         key="/product-add/:productId"
         path="/product-add/:productId"
         render={(route) => (
-            <ProductAddModule productId={route.match.params.productId} onNavigate={route.history.push} uiHook={props.uiHook} productAddStore={props.productAddStore} />
+            <ProductAddModule permissions={props.permissions} rol={props.rol} productId={route.match.params.productId} onNavigate={route.history.push} uiHook={props.uiHook} productAddStore={props.productAddStore} />
         )}
     />,
 ]

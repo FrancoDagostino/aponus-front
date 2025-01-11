@@ -4,15 +4,22 @@ import TabsCategoryComponentType from '../stockList/components/TabsCategoryType.
 import { IComponentListStore } from './store/useComponentList.store';
 import { IStockStore } from '../stockList/store/useStock.store';
 import { useComponentListHook } from './hooks/useModule.hook';
+import { UnAuthorizedModule } from '../unAuthorized/module';
 
 
 interface IComponentListModuleProps {
     componentListStore: IComponentListStore
     stockStore: IStockStore;
+    permissions: string[]
+    rol: string
     onNavigate: (url: string) => void;
 }
 
 export const ComponentListModule: FC<IComponentListModuleProps> = (props) => {
+
+    if (!props.permissions.includes(props.rol)) {
+        return <UnAuthorizedModule />
+    }
 
     const moduleHook = useComponentListHook(props)
 

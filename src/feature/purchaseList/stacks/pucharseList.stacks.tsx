@@ -9,6 +9,8 @@ import { PurchaseListModule } from "../module";
 interface IPucharseListStackProps {
     uiHook: IUiHook
     pucharseListStore: IPurchaseListStore
+    permissions: string[]
+    rol: string
 }
 
 export const PucharseListStack = (props: IPucharseListStackProps) => [
@@ -18,6 +20,8 @@ export const PucharseListStack = (props: IPucharseListStackProps) => [
         path="/pucharse-list"
         render={(route) => (
             <PurchaseListModule
+                permissions={props.permissions}
+                rol={props.rol}
                 purchaseListStore={props.pucharseListStore}
                 uiHook={props.uiHook}
                 onNavigate={route.history.push}

@@ -8,6 +8,8 @@ import { ICategoryStore } from "../../categoryList/store/useCategory.store";
 interface ICategoryListStackProps {
     stockStore: IStockStore;
     categoryStore: ICategoryStore;
+    permissions: string[]
+    rol: string
 }
 
 export const StockListStack = (props: ICategoryListStackProps) => [
@@ -16,7 +18,7 @@ export const StockListStack = (props: ICategoryListStackProps) => [
         key="/stock-list"
         path="/stock-list"
         render={(route) => (
-            <StockListModule categoryStore={props.categoryStore} stockStore={props.stockStore} onNavigate={route.history.push} />
+            <StockListModule permissions={props.permissions} rol={props.rol} categoryStore={props.categoryStore} stockStore={props.stockStore} onNavigate={route.history.push} />
         )}
     />,
 ]

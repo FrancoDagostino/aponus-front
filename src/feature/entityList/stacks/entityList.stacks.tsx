@@ -8,6 +8,8 @@ import { IUiHook } from "../../ui/hooks/useUi.hook";
 interface IEntityListStackProps {
     entityListStore: IEntityListStore
     uiHook: IUiHook
+    permissions: string[]
+    rol: string
 }
 
 export const EntityListStack = (props: IEntityListStackProps) => [
@@ -17,6 +19,8 @@ export const EntityListStack = (props: IEntityListStackProps) => [
         path="/entity-list"
         render={(route) => (
             <EntityListModule
+                permissions={props.permissions}
+                rol={props.rol}
                 entityListStore={props.entityListStore}
                 uiHook={props.uiHook}
                 onNavigate={route.history.push}

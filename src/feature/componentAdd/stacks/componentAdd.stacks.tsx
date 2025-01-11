@@ -11,6 +11,8 @@ import { ComponentAddModule } from "../module";
 interface IComponentListStackProps {
     componentAddStore: IComponentAddStore
     stockStore: IStockStore;
+    permissions: string[]
+    rol: string
 
 }
 
@@ -21,6 +23,8 @@ export const ComponentAddStack = (props: IComponentListStackProps) => [
         path="/component-add"
         render={(route) => (
             <ComponentAddModule
+                permissions={props.permissions}
+                rol={props.rol}
                 componentAddStore={props.componentAddStore}
                 stockStore={props.stockStore}
                 onNavigate={route.history.push}

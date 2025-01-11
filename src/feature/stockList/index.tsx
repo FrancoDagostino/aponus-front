@@ -7,18 +7,25 @@ import { useStockModuleHook } from "./hooks/useStockModule.hook";
 import { IStockStore } from "./store/useStock.store";
 import { ICategoryStore } from "../categoryList/store/useCategory.store";
 import ProductCategorySelectsComponent from "../productList/components/ProductCategorySelects.component";
+import { UnAuthorizedModule } from "../unAuthorized/module";
 
 
 interface IStockProps {
     stockStore: IStockStore;
-    // productListHook: IProductListHook;
+    permissions: string[]
+    rol: string
     categoryStore: ICategoryStore;
     onNavigate: (url: string) => void;
 }
 
 export const StockListModule: React.FC<IStockProps> = (props) => {
 
+    if (!props.permissions.includes(props.rol)) {
+        return <UnAuthorizedModule />
+    }
+
     const moduleStock = useStockModuleHook(props)
+
 
     return (
         <>

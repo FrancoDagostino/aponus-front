@@ -12,6 +12,8 @@ interface IPucharseAddStackProps {
     uiHook: IUiHook
     pucharseAddStore: IPurchaseAddStore
     movementAddStore: IMovementAddStore;
+    permissions: string[]
+    rol: string
 
 }
 
@@ -22,6 +24,8 @@ export const PucharseAddStack = (props: IPucharseAddStackProps) => [
         path="/pucharse-add"
         render={(route) => (
             <PurchaseAddModule
+                permissions={props.permissions}
+                rol={props.rol}
                 movementAddStore={props.movementAddStore}
                 purchaseAddStore={props.pucharseAddStore}
                 uiHook={props.uiHook}

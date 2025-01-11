@@ -8,6 +8,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AppsIcon from '@mui/icons-material/Apps';
 import WavesIcon from '@mui/icons-material/Waves';
 import GroupIcon from '@mui/icons-material/Group';
+import ShopIcon from '@mui/icons-material/Shop';
 
 interface IItemMenu {
     item: IMenuItem
@@ -34,6 +35,8 @@ export const ItemMenuComponent = (props: IItemMenu) => {
                 return <WavesIcon className="item-menu-icon" fontSize="large" />;
             case 'EntityList':
                 return <GroupIcon className="item-menu-icon" fontSize="large" />;
+            case 'PucharseList':
+                return <ShopIcon className="item-menu-icon" fontSize="large" />;
             default:
                 break;
         }
