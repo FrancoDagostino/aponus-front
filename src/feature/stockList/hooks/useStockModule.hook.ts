@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { IStockStore } from "../store/useStock.store";
 import { IPostUpdateStock } from "../model/stockList.model";
 import { ICategoryStore } from "../../categoryList/store/useCategory.store";
+import { IUiHook } from "../../ui/hooks/useUi.hook";
 
 interface IStockModuleProps {
   stockStore: IStockStore;
-  // productListHook: IProductListHook;
   categoryStore: ICategoryStore;
   onNavigate: (url: string) => void;
+  uiHook: IUiHook
 }
 
 interface IStockModule {
@@ -42,35 +43,44 @@ export const useStockModuleHook = (props: IStockModuleProps): IStockModule => {
   const [idTypeProductFounded, setIdTypeProductFounded] = useState<string>("");
   const [idDescriptionProductFounded, setIdDescriptionProductFounded] = useState<string>("");
 
-  const onInitHandler = () => {
-    props.stockStore.getStockTypeListAction();
-    props.categoryStore.getCategoryListAction();
-  };
   useEffect(() => {
     onInitHandler();
   }, []);
+
+  const onInitHandler = async () => {
+    props.uiHook.showLoading()
+    await props.stockStore.getStockTypeListAction();
+    await props.categoryStore.getCategoryListAction();
+    props.uiHook.hideLoading()
+  };
 
   const handleChangeTabs = (_: React.SyntheticEvent, newValue: number) => {
     setValueTabs(newValue);
   };
 
   const onChangeTabsHandler = async (idDescription: string) => {
+    props.uiHook.showLoading()
     setIdDescriptionFounded(idDescription);
     await props.stockStore.getDbStockListForDescriptionAction(idDescription);
+    props.uiHook.hideLoading()
   };
 
   const onSelectDescriptionTypeHandler = async (idTipo: string, idDescription: string) => {
+    props.uiHook.showLoading()
     await props.stockStore.getStockProductListForTypeAndDescriptionAction(
       idTipo,
       idDescription
     );
     setIdDescriptionProductFounded(idDescription);
+    props.uiHook.hideLoading()
   };
 
   const onSelectCategoryTypeHandler = async (idType: string) => {
+    props.uiHook.showLoading()
     await props.categoryStore.getDescriptionListAction(idType);
     await props.stockStore.getStockProductListAction(idType);
     setIdTypeProductFounded(idType);
+    props.uiHook.hideLoading()
   };
 
   const onCloseEditModalHandler = () => {
@@ -83,21 +93,24 @@ export const useStockModuleHook = (props: IStockModuleProps): IStockModule => {
   };
 
   const onEditStockHandler = async (valueNewStock: number) => {
-    console.log(newStock)
     const newStockUpdate: IPostUpdateStock = {
       ...newStock,
       valor: valueNewStock,
     };
+    props.uiHook.showLoading()
     if (newStock.destino !== "Cantidad") {
+
       await props.stockStore.postDbUpdateStockAction(newStockUpdate);
       await props.stockStore.getDbStockListForDescriptionAction(
         idDescriptionFounded
       );
+
     }
     else {
       await props.stockStore.getStockProductListForTypeAndDescriptionAction(idTypeProductFounded, idDescriptionFounded);
       await props.stockStore.updateStockProductAction(valueNewStock, newStock.id)
     }
+    props.uiHook.hideLoading()
 
     onCloseEditModalHandler();
     setOpenSnackBar(true);

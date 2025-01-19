@@ -6,7 +6,6 @@ import { useEntityListHook } from "./hooks/useModule.hook";
 import { EntityViewModalComponent } from "./components/EntityViewModal.component";
 import { Button, Grid, Typography } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import { UnAuthorizedModule } from "../unAuthorized/module";
 
 interface IEntityListProps {
     entityListStore: IEntityListStore
@@ -20,9 +19,7 @@ interface IEntityListProps {
 
 export const EntityListModule: FC<IEntityListProps> = (props) => {
 
-    if (!props.permissions.includes(props.rol)) {
-        return <UnAuthorizedModule />
-    }
+
 
     const useModule = useEntityListHook(props)
 

@@ -12,14 +12,13 @@ interface IEntityAddFormProps {
 
 export const EntityAddFormComponent: FC<IEntityAddFormProps> = (props) => {
 
-
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
     };
     return (
         <Grid xs={10} sx={{ marginLeft: 4, marginRight: 4, marginTop: 4 }}>
             <Typography variant="h5" gutterBottom align="center" mb={4}>
-                Personal Information Form
+                Formulario Nueva Entidad
             </Typography>
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
@@ -73,7 +72,7 @@ export const EntityAddFormComponent: FC<IEntityAddFormProps> = (props) => {
                     </Grid>
                     <Grid item xs={12}>
                         <Button type="submit" variant="contained" color="primary" fullWidth onClick={() => props.onSaveHandler()}>
-                            Submit
+                            Guardar
                         </Button>
                     </Grid>
                 </Grid>

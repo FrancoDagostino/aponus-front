@@ -29,6 +29,12 @@ const ExpandableTableRowComponent: FC<ExpanderComponentProps<Producto>> = (
       reorder: true,
     },
     {
+      name: "Requerido",
+      cell: (row) => <p>{row.requerido}</p>,
+      sortable: true,
+      reorder: true,
+    },
+    {
       name: "Granallado",
       cell: (row) => <p>{row.granallado}</p>,
       sortable: true,
@@ -59,8 +65,8 @@ const ExpandableTableRowComponent: FC<ExpanderComponentProps<Producto>> = (
       reorder: true,
     },
     {
-      name: "Requerido",
-      cell: (row) => <p>{row.requerido}</p>,
+      name: "Faltantes",
+      cell: (row) => <p style={{ color: "red" }}>{row.faltantes}</p>,
       sortable: true,
       reorder: true,
     },
@@ -81,11 +87,11 @@ const ExpandableTableRowComponent: FC<ExpanderComponentProps<Producto>> = (
       <DataTableComponent
         columns={columns}
         data={componentList}
-        entityName="prueba"
+        entityName="Listado de Componentes"
       />
       <Box justifyContent="flex-end" display="flex" marginTop={4}>
         <TextField
-          label="Editar Stock"
+          label="Calcular"
           variant="standard"
           value={quantity}
           onChange={(e) => setQuantity(e.target.value)}

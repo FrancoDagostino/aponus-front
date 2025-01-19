@@ -19,6 +19,7 @@ export interface IStockFormateado {
     granallado?: string;
     moldeado?: string;
     NombreInsumo: string
+    faltantes: string
 }
 
 

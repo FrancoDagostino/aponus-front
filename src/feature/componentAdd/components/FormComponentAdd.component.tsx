@@ -1,72 +1,42 @@
 import { Grid, TextField, Button, Select, MenuItem, InputLabel, FormControl } from "@mui/material";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { IListadoDescripciones } from "../../categoryList/model/category.model";
 import { IComponentAdd } from "../model/componentAdd.model";
 
 interface IFormComponentAddProps {
     componentTypes: IListadoDescripciones[]
-    onSave: (newComponent: IComponentAdd, description: string) => void;
+    componentForm: IComponentAdd
+    description: string
+    onAddOrUpdateComponentHandler: () => void
+    onChangeComponentFormHandler: (value: string, nameProperty: string) => void
+    isEdit: boolean
 }
 
 
-const regexSoloNumeros = /^[0-9]+$/;
-
 const FormComponentAdd: FC<IFormComponentAddProps> = (props) => {
 
-    const [componentForm, setComponentForm] = useState<IComponentAdd>({
-        Altura: '',
-        Diametro: '',
-        DiametroNominal: '',
-        Espesor: '',
-        Longitud: '',
-        Perfil: '',
-        Peso: '',
-        Tolerancia: '',
-        idAlmacenamiento: "Kg",
-        idFraccionamiento: "",
-        idDescripcion: 1,
-    })
-    const [description, setDescription] = useState<string>("BRIDA");
-    const onChangeComponentFormHandler = (value: string, nameProperty: string) => {
-
-        if (nameProperty === 'idDescripcion') {
-            const textDescription = props.componentTypes.find(type => type.idDescripcion === Number(value))!.NombreDescripcion
-            setDescription(textDescription);
-        }
-        const isNumber = regexSoloNumeros.test(value)
-        const stringProperties = ['idAlmacenamiento', 'idFraccionamiento', 'Tolerancia', 'componentTypeId'];
-
-        // Verifica si la propiedad actual es una de las que deben tratarse como string
-        const isStringProperty = stringProperties.includes(nameProperty);
-        if (!isNumber && !isStringProperty) return
-        setComponentForm({
-            ...componentForm,
-            [nameProperty]: isStringProperty ? value : Number(value)
-        })
-    }
     const handlerSave = () => {
-        console.log(description)
-        props.onSave(componentForm, description);
+        props.onAddOrUpdateComponentHandler()
     }
-
     return (
         <>
-            <Grid container>
+            <Grid container spacing={3} >
                 <Grid item xs={12} lg={8}>
                     <FormControl fullWidth>
                         <InputLabel sx={{ fontFamily: "Rubik-SemiBold" }}>
                             Tipos de Componente
                         </InputLabel>
                         <Select
-                            value={componentForm.idDescripcion}
+                            value={props.componentForm.idDescripcion}
                             label="Tipos de Componente"
-                            onChange={(e) => onChangeComponentFormHandler(e.target.value.toString(), "idDescripcion")}
+                            onChange={(e) => props.onChangeComponentFormHandler(e.target.value.toString(), "idDescripcion")}
                             sx={{ fontFamily: "Rubik-SemiBold" }}
+                            disabled={props.isEdit}
 
                         >
                             {props.componentTypes.map((type) => (
                                 <MenuItem value={type.idDescripcion} key={type.idDescripcion}>
-                                    {type.NombreDescripcion}
+                                    {type.nombreDescripcion}
                                 </MenuItem>
                             ))}
 
@@ -74,91 +44,98 @@ const FormComponentAdd: FC<IFormComponentAddProps> = (props) => {
                     </FormControl>
                 </Grid>
             </Grid>
-            <Grid container gap={1}>
+            <Grid container sx={{ mt: 1 }} spacing={2}>
 
-                <Grid item xs={12} lg={4}>
+                <Grid item xs={12} lg={4} >
                     <TextField
+                        sx={{ mb: 1 }}
                         label="Diametro"
                         variant="outlined"
                         fullWidth
                         margin="normal"
-                        value={componentForm.Diametro}
-                        onChange={(e) => onChangeComponentFormHandler(e.target.value, "Diametro")}
+                        value={props.componentForm.Diametro}
+                        onChange={(e) => props.onChangeComponentFormHandler(e.target.value, "Diametro")}
                     />
                     <TextField
+                        sx={{ mb: 1 }}
                         label="Espesor"
                         variant="outlined"
                         fullWidth
                         margin="normal"
-                        value={componentForm.Espesor}
-                        onChange={(e) => onChangeComponentFormHandler(e.target.value, "Espesor")}
+                        value={props.componentForm.Espesor}
+                        onChange={(e) => props.onChangeComponentFormHandler(e.target.value, "Espesor")}
                     />
                     <TextField
+                        sx={{ mb: 1 }}
                         label="Longitud"
                         variant="outlined"
                         fullWidth
                         margin="normal"
-                        value={componentForm.Longitud}
-                        onChange={(e) => onChangeComponentFormHandler(e.target.value, "Longitud")}
+                        value={props.componentForm.Longitud}
+                        onChange={(e) => props.onChangeComponentFormHandler(e.target.value, "Longitud")}
                     />
                 </Grid>
                 <Grid item xs={12} lg={4}>
                     <TextField
+                        sx={{ mb: 1 }}
                         label="Altura"
                         variant="outlined"
                         fullWidth
                         margin="normal"
-                        value={componentForm.Altura}
-                        onChange={(e) => onChangeComponentFormHandler(e.target.value, "Altura")}
+                        value={props.componentForm.Altura}
+                        onChange={(e) => props.onChangeComponentFormHandler(e.target.value, "Altura")}
                     />
                     <TextField
+                        sx={{ mb: 1 }}
                         label="Perfil"
                         variant="outlined"
                         fullWidth
                         margin="normal"
-                        value={componentForm.Perfil}
-                        onChange={(e) => onChangeComponentFormHandler(e.target.value, "Perfil")}
+                        value={props.componentForm.Perfil}
+                        onChange={(e) => props.onChangeComponentFormHandler(e.target.value, "Perfil")}
                     />
                     <TextField
+                        sx={{ mb: 1 }}
                         label="Tolerancía"
                         variant="outlined"
                         fullWidth
                         margin="normal"
-                        value={componentForm.Tolerancia}
-                        onChange={(e) => onChangeComponentFormHandler(e.target.value, "Tolerancia")}
+                        value={props.componentForm.Tolerancia}
+                        onChange={(e) => props.onChangeComponentFormHandler(e.target.value, "Tolerancia")}
                     />
                 </Grid>
                 <Grid item xs={12} lg={3}>
                     <TextField
+                        sx={{ mb: 1 }}
                         label="Diametro Nominal"
                         variant="outlined"
                         fullWidth
                         margin="normal"
-                        value={componentForm.DiametroNominal}
-                        onChange={(e) => onChangeComponentFormHandler(e.target.value, "DiametroNominal")}
+                        value={props.componentForm.DiametroNominal}
+                        onChange={(e) => props.onChangeComponentFormHandler(e.target.value, "DiametroNominal")}
                     />
                     <TextField
                         label="Peso"
                         variant="outlined"
                         fullWidth
                         margin="normal"
-                        value={componentForm?.Peso}
-                        onChange={(e) => onChangeComponentFormHandler(e.target.value, "Peso")}
+                        value={props.componentForm?.Peso}
+                        onChange={(e) => props.onChangeComponentFormHandler(e.target.value, "Peso")}
                     />
                     <FormControl fullWidth margin="normal">
                         <InputLabel sx={{ fontFamily: "Rubik-SemiBold" }}>
                             Fraccionamiento
                         </InputLabel>
                         <Select
-                            value={componentForm.idFraccionamiento}
+                            value={props.componentForm.idFraccionamiento}
                             label="Fraccionamiento"
-                            onChange={(e) => onChangeComponentFormHandler(e.target.value, "idFraccionamiento")}
+                            onChange={(e) => props.onChangeComponentFormHandler(e.target.value, "idFraccionamiento")}
                             sx={{ fontFamily: "Rubik-SemiBold" }}
                         >
-                            <MenuItem value={"Centimetro"}>Centimetro</MenuItem>
-                            <MenuItem value={"Kilogramo"}>Kilogramo</MenuItem>
-                            <MenuItem value={"Unidad"}>Unidad</MenuItem>
-                            <MenuItem value={""}>Ninguno</MenuItem>
+                            <MenuItem value={"CM"}>Centimetro</MenuItem>
+                            <MenuItem value={"KG"}>Kilogramo</MenuItem>
+                            <MenuItem value={"UD"}>Unidad</MenuItem>
+                            <MenuItem value={"Nin"}>Ninguno</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>
@@ -168,13 +145,13 @@ const FormComponentAdd: FC<IFormComponentAddProps> = (props) => {
                             Almacenamiento
                         </InputLabel>
                         <Select
-                            value={componentForm.idAlmacenamiento}
+                            value={props.componentForm.idAlmacenamiento}
                             label="Almacenamiento"
-                            onChange={(e) => onChangeComponentFormHandler(e.target.value, "idAlmacenamiento")}
+                            onChange={(e) => props.onChangeComponentFormHandler(e.target.value, "idAlmacenamiento")}
                             sx={{ fontFamily: "Rubik-SemiBold" }}
                         >
-                            <MenuItem value={"Kg"}>Kilogramo</MenuItem>
-                            <MenuItem value={"Ud"}>Unidad</MenuItem>
+                            <MenuItem value={"KG"}>Kilogramo</MenuItem>
+                            <MenuItem value={"UD"}>Unidad</MenuItem>
                         </Select>
                     </FormControl>
                 </Grid>

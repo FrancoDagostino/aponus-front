@@ -1,6 +1,6 @@
 import { IRestClient, urlBase } from "../../../utils/clients/useRest.client";
 import { createResponseUtil, TResponse } from "../../../utils/response.util";
-import { ICompras } from "../../entityList/model/EntityList.model";
+import { IPucharse } from "../model/pucharseList.model";
 
 
 export interface IPurchaseListServiceProps {
@@ -8,7 +8,7 @@ export interface IPurchaseListServiceProps {
 }
 
 export interface IPurchaseListService {
-    getPurchaseList: () => Promise<TResponse<ICompras[], null>>
+    getPurchaseList: () => Promise<TResponse<IPucharse[], null>>
 }
 
 export const usePurchaseListService = (props: IPurchaseListServiceProps): IPurchaseListService => {
@@ -16,7 +16,7 @@ export const usePurchaseListService = (props: IPurchaseListServiceProps): IPurch
 
     const getPurchaseList = async () => {
         const url = `${urlBase}/Purchase/List`;
-        const response = await props.restClient.get<ICompras[], null>(url, undefined)
+        const response = await props.restClient.get<IPucharse[], null>(url, undefined)
         if (response.isError) return createResponseUtil.error(response.data, response.status)
         return createResponseUtil.success(response.data, response.status)
     }

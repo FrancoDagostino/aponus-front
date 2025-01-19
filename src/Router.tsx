@@ -18,6 +18,7 @@ import { EntityAddStack } from "./feature/entityAdd/stack/EntityAdd.stacks";
 import { ProductAddStack } from "./feature/productadd/stacks/productAdd.stacks";
 import { PucharseListStack } from "./feature/purchaseList/stacks/pucharseList.stacks";
 import { PucharseAddStack } from "./feature/purchaseAdd/stacks/purchaseAdd.stacks";
+import { SalesAddStack } from "./feature/sales/stacks/salesAdd.stacks";
 
 interface IRouterProps {
     stores: IStores
@@ -38,6 +39,7 @@ export const Router: FC<IRouterProps> = ({
         productAddStore,
         pucharseListStore,
         pucharseAddStore,
+        salesAddStore,
         uiHook
 
     },
@@ -75,11 +77,11 @@ export const Router: FC<IRouterProps> = ({
                                     <Switch>
                                         {
                                             [
-                                                StockListStack({ permissions: permissions.stockList, rol: authStore.rol, stockStore, categoryStore }),
+                                                StockListStack({ uiHook, permissions: permissions.stockList, rol: authStore.rol, stockStore, categoryStore }),
                                                 CategoryListStack({ permissions: permissions.categoryList, rol: authStore.rol, categoryStore, uiHook }),
-                                                ProductListStack({ permissions: permissions.productList, rol: authStore.rol, categoryStore, productListStore }),
-                                                ComponentListStack({ permissions: permissions.componentList, rol: authStore.rol, componentListStore, stockStore }),
-                                                ComponentAddStack({ permissions: permissions.componentAdd, rol: authStore.rol, componentAddStore, stockStore }),
+                                                ProductListStack({ uiHook, permissions: permissions.productList, rol: authStore.rol, categoryStore, productListStore }),
+                                                ComponentListStack({ permissions: permissions.componentList, rol: authStore.rol, componentListStore, stockStore, uiHook }),
+                                                ComponentAddStack({ uiHook, permissions: permissions.componentAdd, rol: authStore.rol, componentAddStore, stockStore }),
                                                 MovementListStack({ permissions: permissions.movementList, rol: authStore.rol, movementListStore }),
                                                 MovementAddtStack({ permissions: permissions.movementAdd, rol: authStore.rol, movementAddStore, uiHook }),
                                                 EntityListStack({ permissions: permissions.entityList, rol: authStore.rol, entityListStore, uiHook }),
@@ -87,6 +89,7 @@ export const Router: FC<IRouterProps> = ({
                                                 ProductAddStack({ permissions: permissions.productAdd, rol: authStore.rol, productAddStore, uiHook }),
                                                 PucharseListStack({ permissions: permissions.purchaseList, rol: authStore.rol, pucharseListStore, uiHook }),
                                                 PucharseAddStack({ permissions: permissions.purchaseAdd, rol: authStore.rol, pucharseAddStore, uiHook, movementAddStore }),
+                                                SalesAddStack({ permissions: permissions.productAdd, movementAddStore, rol: authStore.rol, salesAddStore, uiHook })
                                             ]
                                         }
                                     </Switch>

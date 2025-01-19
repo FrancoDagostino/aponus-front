@@ -8,6 +8,7 @@ import { IListadoComponentes } from "../model/component.model";
 
 interface IComponentListProps {
     data: IListadoComponentes[]
+    componentEdit: (idDescription: number, idInsumo: string) => void
 }
 
 const ComponentList: FC<IComponentListProps> = (props) => {
@@ -42,10 +43,6 @@ const ComponentList: FC<IComponentListProps> = (props) => {
         "diametro",
         "diametroNominal",
         "espesor",
-        "idAlmacenamiento",
-        "idDescripcion",
-        "idFraccionamiento",
-        "idInsumo",
         "longitud",
         "longitud",
         "perfil",
@@ -65,7 +62,7 @@ const ComponentList: FC<IComponentListProps> = (props) => {
     });
     columns.push({
         name: "Acciones",
-        cell: () => <EditRoundedIcon />
+        cell: (row) => <EditRoundedIcon onClick={() => props.componentEdit(row.idDescripcion, row.idInsumo)} />
     })
 
     return (

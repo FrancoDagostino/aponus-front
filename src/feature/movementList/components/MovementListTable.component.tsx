@@ -19,7 +19,6 @@ export const MovementListableComponent: FC<IActivityDataGridComponentProps> = (p
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const totalPages = props.movementList.length
     const minScreen = useMediaQuery('(min-width: 1300px)');
-    console.log(props.movementList.length)
     useEffect(() => {
         setPage(0)
     }, [props.searchValue])
@@ -28,7 +27,6 @@ export const MovementListableComponent: FC<IActivityDataGridComponentProps> = (p
     const startIndex = (page + 1) * rowsPerPage
     const endIndex = startIndex + rowsPerPage
     const currentData = props.movementList.slice(startIndex, endIndex)
-    console.log(currentData)
     const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => {
         event?.preventDefault()
         setPage(newPage);

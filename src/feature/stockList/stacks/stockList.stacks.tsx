@@ -2,6 +2,7 @@ import { Route } from "react-router-dom"
 import { StockListModule } from '../index';
 import { IStockStore } from "../store/useStock.store";
 import { ICategoryStore } from "../../categoryList/store/useCategory.store";
+import { IUiHook } from "../../ui/hooks/useUi.hook";
 
 
 
@@ -10,6 +11,7 @@ interface ICategoryListStackProps {
     categoryStore: ICategoryStore;
     permissions: string[]
     rol: string
+    uiHook: IUiHook
 }
 
 export const StockListStack = (props: ICategoryListStackProps) => [
@@ -18,7 +20,9 @@ export const StockListStack = (props: ICategoryListStackProps) => [
         key="/stock-list"
         path="/stock-list"
         render={(route) => (
-            <StockListModule permissions={props.permissions} rol={props.rol} categoryStore={props.categoryStore} stockStore={props.stockStore} onNavigate={route.history.push} />
+            <StockListModule
+                uiHook={props.uiHook}
+                permissions={props.permissions} rol={props.rol} categoryStore={props.categoryStore} stockStore={props.stockStore} onNavigate={route.history.push} />
         )}
     />,
 ]

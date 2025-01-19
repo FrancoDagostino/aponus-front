@@ -23,7 +23,6 @@ export const useDbStockListService = (props: IAuthenticationServiceProps): IDbSt
 
     const url = `${urlBase}/Categories/Supplies/Descriptions/List`
     const result = await props.restClient.get<IStockTypes[], null>(url, undefined)
-    console.log('me llame')
     if (result.isSuccess) return createResponseUtil.success(result.data, result.status)
     return createResponseUtil.error(result.data, result.status)
 
@@ -62,7 +61,7 @@ export const useDbStockListService = (props: IAuthenticationServiceProps): IDbSt
   };
 
   const postDbUpdateStockProduct: IDbStockListService["postDbUpdateStockProduct"] = async (quantity: number, idProduct: string) => {
-    const url = `${urlBase}/Stocks/Products/Update`
+    const url = `${urlBase}/Stocks/Supplies/Update`
     const body = {
       cantidad: quantity,
       idProducto: idProduct

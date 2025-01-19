@@ -48,6 +48,7 @@ const CategoryListComponent: FC<ICategoryListComponentProps> = (props) => {
         entityName="Listado Categoría"
         expandableRows
         expandableRowsComponent={ExpandableDescriptionListComponentProps}
+        pagination
       />
     </>
   );

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { IUiHook } from "../../ui/hooks/useUi.hook"
 import { IPurchaseListStore as IPurchaseListStore } from "../store/usePurcharseList.store"
-import { ICompras } from "../../entityList/model/EntityList.model"
+import { IPucharse } from "../model/pucharseList.model"
 
 
 interface IPurchaseListHookProps {
@@ -11,22 +11,35 @@ interface IPurchaseListHookProps {
 
 
 interface IPurchaseListHook {
-    onViewPurchase: (row: ICompras) => void
+    onViewPurchase: (row: IPucharse) => void
     onRemovePurchase: (id: string) => void
-    purchaseState: ICompras
+    onCloseViewPucharse: () => void
+    purchaseState: IPucharse
+    isOpenViewPucharse: boolean
 }
 
 
 export const usePurchaseListHook = (props: IPurchaseListHookProps): IPurchaseListHook => {
-
-    const [purchaseState, setPurchaseState] = useState<ICompras>({
+    const [isOpenViewPucharse, setIsOpenViewPucharse] = useState<boolean>(false)
+    const [purchaseState, setPurchaseState] = useState<IPucharse>({
         fechaHora: "",
-        idCompra: "0",
-        insumo: [],
+        idCompra: 0,
+        cuotas: [],
+        detallesCompra: [],
+        estado: { descripcion: '', idEstadoCompra: 0 },
+        idProveedor: 0,
+        idUsuario: "0",
+        saldoCancelado: 0,
+        usuario: "",
         pagos: [],
         proveedor: {
             apellido: "",
-            idProveedor: "0",
+            categoria: "",
+            idCategoria: 0,
+            idEntidad: 0,
+            idFiscal: "0",
+            idTipo: 0,
+            tipo: '',
             nombre: "",
             nombreClave: ""
         },
@@ -45,8 +58,14 @@ export const usePurchaseListHook = (props: IPurchaseListHookProps): IPurchaseLis
         props.uiHook.hideLoading()
     }
 
-    const onViewPurchase = (row: ICompras) => {
+    const onViewPurchase = (row: IPucharse) => {
+        console.log(row)
         setPurchaseState(row)
+        setIsOpenViewPucharse(true)
+    }
+
+    const onCloseViewPucharse = () => {
+        setIsOpenViewPucharse(false)
     }
 
     const onRemovePurchase = (id: string) => {
@@ -55,7 +74,9 @@ export const usePurchaseListHook = (props: IPurchaseListHookProps): IPurchaseLis
 
     return {
         purchaseState,
+        isOpenViewPucharse,
         onViewPurchase,
-        onRemovePurchase
+        onRemovePurchase,
+        onCloseViewPucharse
     }
 }   

@@ -4,8 +4,6 @@ import { IPurchaseAddStore } from "./store/usePurchaseAdd.store";
 import { usePurchaseAddHook } from "./hooks/usePurchaseAdd.hook";
 import { FormDataPurchaseComponent } from "./components/FormDataPurchase.component";
 import { IMovementAddStore } from "../movementAdd/store/useMovementAdd.store";
-import { UnAuthorizedModule } from "../unAuthorized/module";
-
 
 interface IPurchaseAddModule {
     uiHook: IUiHook
@@ -19,9 +17,7 @@ interface IPurchaseAddModule {
 
 export const PurchaseAddModule: FC<IPurchaseAddModule> = (props) => {
 
-    if (!props.permissions.includes(props.rol)) {
-        return <UnAuthorizedModule />
-    }
+
 
     const useModule = usePurchaseAddHook(props)
 

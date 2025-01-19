@@ -1,11 +1,13 @@
 import { FC } from 'react';
 import { Accordion, AccordionDetails, AccordionSummary, Button, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
-import { ICompras } from '../../entityList/model/EntityList.model';
 import { ExpandMoreOutlined } from '@mui/icons-material';
+import { IPucharse } from '../model/pucharseList.model';
+import { PucharseDetailComponent } from './PucharseDetail.component';
+import { PucharseDetailSupplyComponent } from './PucharseDetailSupply.component';
 
 
 interface IPurchaseViewModalComponentProps {
-    purchase: ICompras
+    purchase: IPucharse
     isOpen: boolean
     handleClose: () => void
 }
@@ -25,7 +27,7 @@ export const PurchaseViewModalComponent: FC<IPurchaseViewModalComponentProps> = 
                 }}
             >
                 <DialogTitle>
-                    <Typography variant="h4" component="h2" gutterBottom align="center" color="primary">
+                    <Typography fontSize={50} gutterBottom align="center" color="primary">
                         Información Detallada
                     </Typography>
                 </DialogTitle>
@@ -35,7 +37,7 @@ export const PurchaseViewModalComponent: FC<IPurchaseViewModalComponentProps> = 
                             <Typography>Listado de Insumos</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            Detalle
+                            <PucharseDetailSupplyComponent details={props.purchase.detallesCompra} />
                         </AccordionDetails>
                     </Accordion>
                     <Accordion>
@@ -43,7 +45,7 @@ export const PurchaseViewModalComponent: FC<IPurchaseViewModalComponentProps> = 
                             <Typography>Listado de Pagos</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            Detalle
+                            <PucharseDetailComponent pucharse={props.purchase.pagos} />
                         </AccordionDetails>
                     </Accordion>
                 </DialogContent>

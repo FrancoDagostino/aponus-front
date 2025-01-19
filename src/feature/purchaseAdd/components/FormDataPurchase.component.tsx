@@ -12,6 +12,7 @@ interface SupplyItem {
     id: string;
     name: string;
     quantity: string;
+    mont: number
 }
 interface IFormDataPurchaseComponentProps {
     providerList: IProviderList[],
@@ -44,7 +45,8 @@ export const FormDataPurchaseComponent: FC<IFormDataPurchaseComponentProps> = (p
         const newSupply: SupplyItem = {
             id: availableSupplyFound.idInsumo,
             name: availableSupplyFound.nombre,
-            quantity: supplyQuantity
+            quantity: supplyQuantity,
+            mont: 0
         }
 
         const supplyFound = supplyList.find(supply => supply.id === newSupply.id)

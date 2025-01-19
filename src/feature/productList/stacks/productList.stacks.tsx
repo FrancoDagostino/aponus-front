@@ -2,6 +2,7 @@ import { Route } from "react-router-dom"
 import { ICategoryStore } from "../../categoryList/store/useCategory.store";
 import { IProductListStore } from "../store/useProductList.store";
 import { ProductListModule } from "../module";
+import { IUiHook } from "../../ui/hooks/useUi.hook";
 
 
 
@@ -10,6 +11,7 @@ interface IProductListStackProps {
     categoryStore: ICategoryStore;
     permissions: string[]
     rol: string
+    uiHook: IUiHook
 }
 
 export const ProductListStack = (props: IProductListStackProps) => [
@@ -19,6 +21,7 @@ export const ProductListStack = (props: IProductListStackProps) => [
         path="/product-list"
         render={(route) => (
             <ProductListModule
+                uiHook={props.uiHook}
                 permissions={props.permissions}
                 rol={props.rol}
                 productListStore={props.productListStore}

@@ -19,18 +19,9 @@ export const useMovementListService = (props: IMovementListServiceProps): IMovem
         const response = await props.restClient.get<IMovimientoStock[], null>(url, undefined)
         if (response.isSuccess) return createResponseUtil.success(response.data, response.status)
         return createResponseUtil.error(response.data, response.status)
-        // props
-        // urlBase
-        // const objtResponse = {
-        //     status: 200,
-        //     isError: false,
-        //     isSuccess: true,
-        //     data: [mockMovimientoStock]
-        // }
-
-        // if (objtResponse.isSuccess) return createResponseUtil.success(objtResponse.data, objtResponse.status)
-        // return createResponseUtil.error(null, objtResponse.status)
     }
+
+    //Eliminar Movimiento: /Movments/IdMovimiento/Delete
 
     return {
         getMovementList

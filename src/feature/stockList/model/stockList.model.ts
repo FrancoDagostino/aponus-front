@@ -1,6 +1,6 @@
 export interface IStockTypes {
   idDescripcion: number;
-  NombreDescripcion: string;
+  nombreDescripcion: string;
 }
 
 export interface IListadoComponentes {

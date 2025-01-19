@@ -1,13 +1,14 @@
-import { FC, useEffect, useState } from 'react'
+import { FC } from 'react'
 import FormComponentAdd from './components/FormComponentAdd.component';
 import { IComponentAddStore } from './store/useComponentAdd.store';
 import { IStockStore } from '../stockList/store/useStock.store';
 import { useComponentAddHook } from './hooks/useModule.hook';
-import LoaderComponent from '../../components/Loader/Loader.component';
-import { UnAuthorizedModule } from '../unAuthorized/module';
+import { IUiHook } from '../ui/hooks/useUi.hook';
 
 interface IComponentAddModuleProps {
     componentAddStore: IComponentAddStore
+    uiHook: IUiHook
+    idInsumo: string
     stockStore: IStockStore
     permissions: string[]
     rol: string
@@ -16,26 +17,17 @@ interface IComponentAddModuleProps {
 
 export const ComponentAddModule: FC<IComponentAddModuleProps> = (props) => {
 
-    if (!props.permissions.includes(props.rol)) {
-        return <UnAuthorizedModule />
-    }
+
 
     const useModule = useComponentAddHook(props)
 
-    const [isLoading, setIsLoading] = useState(true)
-
-    useEffect(() => {
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 1000);
-    }, [])
-
-
     return (
         <>
-            <LoaderComponent isOpen={isLoading} />
             <h1>Nuevo Componente</h1>
-            <FormComponentAdd componentTypes={props.stockStore.categoryTypeList} onSave={useModule.onAddOrUpdateComponentHandler} />
+            <FormComponentAdd isEdit={useModule.isEdit} componentTypes={props.stockStore.categoryTypeList}
+                onAddOrUpdateComponentHandler={useModule.onAddOrUpdateComponentHandler}
+                componentForm={useModule.componentForm} description={useModule.description} onChangeComponentFormHandler={useModule.onChangeComponentFormHandler}
+            />
         </>
     )
 }

@@ -36,7 +36,6 @@ export const ExpandableTableProvider: FC<ExpandableTableProviderProps> = (
   const handleSelectProductId = async (idProduct: string, quantity: number) => {
     const response = await props.productListStore.postProductComponentAction(idProduct, quantity);
     if (response.isError) return null
-    console.log(response.data)
     setComponentList(response.data);
   };
 

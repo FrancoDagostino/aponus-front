@@ -35,7 +35,6 @@ export const useMovementListHook = (props: IMovementListProps): IMovementListHoo
     const onInit = async () => {
         const result = await props.movementListStore.getMovementListAction()
         if (result.isError) return;
-        console.log(result.data)
         const newObj: IMovementListView[] = result.data.map(movement => {
             return {
                 idMovement: movement.idMovimiento,
@@ -53,7 +52,7 @@ export const useMovementListHook = (props: IMovementListProps): IMovementListHoo
 
 
     const onEditMovementHandler = (id: number) => {
-        console.log(id)
+        id
     }
     return {
         movementListState,

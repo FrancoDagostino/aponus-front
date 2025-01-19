@@ -1,15 +1,14 @@
 import { FC, useEffect, useState } from "react";
-import DeleteIcon from '@mui/icons-material/Delete'
 import './dataGrid.css'
 import { Tooltip, IconButton, TablePagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Grid, useMediaQuery } from "@mui/material";
 import Search from "@mui/icons-material/Search";
-import { ICompras } from "../../entityList/model/EntityList.model";
+import { IPucharse } from "../model/pucharseList.model";
 
 
 interface IPurchaseDataGridComponentProps {
-    purchaseList: ICompras[]
+    purchaseList: IPucharse[]
     searchValue: string
-    onViewPucharse: (row: ICompras) => void
+    onViewPucharse: (row: IPucharse) => void
     onRemovePucharse: (id: string) => void
 }
 
@@ -68,23 +67,13 @@ export const PurchaseDataGridComponent: FC<IPurchaseDataGridComponentProps> = (p
                                                     <Search />
                                                 </IconButton>
                                             </Tooltip>
-                                            {/* <Tooltip title="Editar">
-                                                <IconButton color="primary" onClick={() => props.onViewPucharse(row, false)}>
-                                                    <EditIcon />
-                                                </IconButton>
-                                            </Tooltip> */}
-                                            <Tooltip title="Eliminar">
-                                                <IconButton color="error" onClick={() => props.onRemovePucharse(row.idCompra)}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </Tooltip>
                                         </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sx={{ mb: 5 }}>
                         <TablePagination
                             component="div"
                             labelRowsPerPage={"Cantidad de filas por página"}

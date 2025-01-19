@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createResultUtil, TResult } from "../../../utils/result.util";
 import { IPurchaseListService } from "../services/usePurcharseList.service";
-import { ICompras } from "../../entityList/model/EntityList.model";
+import { IPucharse } from "../model/pucharseList.model";
 
 export interface IPurchaseListStoreProps {
     usePurchaseListService: IPurchaseListService
@@ -9,14 +9,14 @@ export interface IPurchaseListStoreProps {
 
 
 export interface IPurchaseListStore {
-    purchaseListState: ICompras[]
+    purchaseListState: IPucharse[]
     getPurchaseListAction: () => Promise<TResult<null, null>>
 }
 
 
 export const usePurchaseListStore = (props: IPurchaseListStoreProps): IPurchaseListStore => {
 
-    const [purchaseListState, setPurchaseListState] = useState<ICompras[]>([])
+    const [purchaseListState, setPurchaseListState] = useState<IPucharse[]>([])
 
     const getPurchaseListAction = async () => {
         const result = await props.usePurchaseListService.getPurchaseList()

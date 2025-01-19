@@ -7,22 +7,19 @@ import { useStockModuleHook } from "./hooks/useStockModule.hook";
 import { IStockStore } from "./store/useStock.store";
 import { ICategoryStore } from "../categoryList/store/useCategory.store";
 import ProductCategorySelectsComponent from "../productList/components/ProductCategorySelects.component";
-import { UnAuthorizedModule } from "../unAuthorized/module";
+import { IUiHook } from "../ui/hooks/useUi.hook";
 
 
 interface IStockProps {
     stockStore: IStockStore;
     permissions: string[]
+    uiHook: IUiHook
     rol: string
     categoryStore: ICategoryStore;
     onNavigate: (url: string) => void;
 }
 
 export const StockListModule: React.FC<IStockProps> = (props) => {
-
-    if (!props.permissions.includes(props.rol)) {
-        return <UnAuthorizedModule />
-    }
 
     const moduleStock = useStockModuleHook(props)
 
@@ -41,11 +38,11 @@ export const StockListModule: React.FC<IStockProps> = (props) => {
                     >
                         <Tab
                             label="Stock Productos"
-                            sx={{ fontFamily: "Rubik-Bold" }}
+                            sx={{ fontFamily: "Rubik-Bold", color: "white", fontWeight: 800 }}
                         ></Tab>
                         <Tab
                             label="Stock Insumos"
-                            sx={{ fontFamily: "Rubik-Bold" }}
+                            sx={{ fontFamily: "Rubik-Bold", color: "black", fontWeight: 800 }}
                         ></Tab>
                     </Tabs>
                 </AppBar>
@@ -55,6 +52,7 @@ export const StockListModule: React.FC<IStockProps> = (props) => {
                     width: "100%",
                     marginTop: "30px",
                     display: `${moduleStock.valueTabs === 0 ? "none" : "block"}`,
+                    marginBottom: "55px"
                 }}
             >
                 <TabsCategoryComponentType
@@ -65,7 +63,6 @@ export const StockListModule: React.FC<IStockProps> = (props) => {
                     data={props.stockStore.stockListForDescription}
                     onOpenEditModalHandler={moduleStock.onOpenEditModalHandler}
                 />
-                <h1>listado de insumos</h1>
             </Box>
             <Box
                 sx={{
@@ -80,19 +77,6 @@ export const StockListModule: React.FC<IStockProps> = (props) => {
                     descriptionList={props.categoryStore.descriptionList}
                     onSelectDescriptionTypeHandler={moduleStock.onSelectDescriptionTypeHandler}
                 />
-                {/* {props.stockStore.productList.map((product, index) => (
-                    <div style={{ width: "100%", marginTop: "50px" }} key={index}>
-                        <h3 style={{}}>{product.descripcionTipo}</h3>
-                        {
-                            product.descripcionProductos.map(p => (
-                                <StockProductListTableComponent
-                                    data={p.productos}
-                                    onOpenEditModalHandler={moduleStock.onOpenEditModalHandler}
-                                />
-                            ))
-                        }
-                    </div>
-                ))} */}
 
                 {
                     props.stockStore.productList.map((product, index) => (
@@ -105,10 +89,6 @@ export const StockListModule: React.FC<IStockProps> = (props) => {
                         </div>
                     ))
                 }            </Box>
-            {/* <SnackBarConfirmed
-            openSnackBar={openSnackBar}
-            onCloseSnackBar={onCloseSnackBarHandler}
-          /> */}
             <ModalNewStockComponent
                 isOpen={moduleStock.isOpen}
                 onCloseEditModalHandler={moduleStock.onCloseEditModalHandler}

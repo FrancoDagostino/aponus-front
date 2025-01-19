@@ -49,10 +49,6 @@ const ProductCategorySelectsComponent: React.FC<
     );
   };
 
-  console.log(props.descriptionList)
-  if (props.categoryList.length <= 0) {
-    return <h1>Cargando...</h1>;
-  }
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={12} lg={6}>
@@ -96,7 +92,7 @@ const ProductCategorySelectsComponent: React.FC<
                     value={description.idDescripcion}
                     key={description.idDescripcion}
                   >
-                    {description.NombreDescripcion}
+                    {description.nombreDescripcion}
                   </MenuItem>
                 ))}
             </Select>

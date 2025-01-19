@@ -3,7 +3,6 @@ import { MovementListableComponent } from "./components/MovementListTable.compon
 import { useMovementListHook } from "./hooks/useModule.hook";
 import { IMovementListStore } from "./store/useMovementList.store";
 import AddIcon from '@mui/icons-material/Add';
-import { UnAuthorizedModule } from "../unAuthorized/module";
 
 interface IMovementListProps {
     movementListStore: IMovementListStore;
@@ -14,9 +13,7 @@ interface IMovementListProps {
 
 export const MovementListModule = (props: IMovementListProps) => {
 
-    if (!props.permissions.includes(props.rol)) {
-        return <UnAuthorizedModule />
-    }
+
 
     const useModule = useMovementListHook(props)
 

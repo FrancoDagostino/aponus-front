@@ -20,6 +20,7 @@ export interface IFormData {
     telefono3: string;
     email: string;
     idFiscal: string;
+    idEntidad: null | number
 }
 
 interface IEntityAddHookProps {
@@ -37,24 +38,8 @@ interface IEntityAddHook {
 
 export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => {
 
-
-
-
-    useEffect(() => {
-        if (props.entityId !== "0") {
-            onPreload()
-        }
-    }, [])
-
-
-    const onPreload = async () => {
-        props.uiHook.showLoading()
-        props.entityAddStore.getNewEntityAction(props.entityId)
-        props.uiHook.hideLoading()
-    }
-
-
     const [formData, setFormData] = useState<IFormData>({
+        idEntidad: null,
         altura: "",
         apellido: "",
         barrio: "",
@@ -73,6 +58,47 @@ export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => 
         telefono3: ""
     })
 
+
+    useEffect(() => {
+        if (props.entityId !== "0") {
+            onPreload()
+        }
+    }, [])
+
+
+    const onPreload = async () => {
+        props.uiHook.showLoading()
+        const result = await props.entityAddStore.getNewEntityAction(props.entityId)
+        props.uiHook.hideLoading()
+        if (result.isError) return
+
+        const foundEntity = result.data.find(entity => entity.idEntidad === Number(props.entityId))
+        if (foundEntity === undefined) return
+
+        setFormData({
+            idEntidad: Number(props.entityId),
+            altura: foundEntity.altura,
+            apellido: foundEntity.apellido,
+            barrio: foundEntity.barrio,
+            calle: foundEntity.calle,
+            ciudad: foundEntity.ciudad,
+            codigoPostal: foundEntity.codigoPostal,
+            email: foundEntity.email,
+            idFiscal: foundEntity.idFiscal,
+            localidad: foundEntity.localidad,
+            nombre: foundEntity.nombre,
+            nombreClave: foundEntity.nombreClave,
+            pais: foundEntity.pais,
+            provincia: foundEntity.provincia,
+            telefono1: foundEntity.telefono1,
+            telefono2: foundEntity.telefono2,
+            telefono3: foundEntity.telefono3
+        })
+    }
+
+
+
+
     const onChangeFormDataHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 
         setFormData({
@@ -81,10 +107,24 @@ export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => 
         })
     }
 
-    const onSaveHandler = () => {
+    const onSaveHandler = async () => {
         props.uiHook.showLoading()
-        props.entityAddStore.addNewEntityAction(formData)
-        props.uiHook.hideLoading()
+        if (props.entityId !== "0") {
+            const result = await props.entityAddStore.editEntityAction(formData, Number(props.entityId))
+            props.uiHook.hideLoading()
+            if (result.isError)
+                props.uiHook.onSetSnackbar("Entidad creada correctamente", true)
+            props.onNavigate('/entity-list')
+
+
+        } else {
+            props.uiHook.showLoading()
+            const result = await props.entityAddStore.addNewEntityAction(formData)
+            props.uiHook.hideLoading()
+            result
+        }
+
+
     }
 
     return {

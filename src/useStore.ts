@@ -27,6 +27,8 @@ import { IPurchaseListStore, usePurchaseListStore } from "./feature/purchaseList
 import { usePurchaseListService } from "./feature/purchaseList/services/usePurcharseList.service";
 import { IPurchaseAddStore, usePurchaseAddStore } from "./feature/purchaseAdd/store/usePurchaseAdd.store";
 import { usePurchaseAddService } from "./feature/purchaseAdd/service/usePurchaseAdd.service";
+import { ISalesAddStore, useSalesAddStore } from "./feature/sales/store/useSalesAdd.store";
+import { useSalesAddService } from "./feature/sales/service/useSalesAdd.service";
 
 
 export interface IStores {
@@ -44,6 +46,7 @@ export interface IStores {
     productAddStore: IProductAddStore
     pucharseListStore: IPurchaseListStore
     pucharseAddStore: IPurchaseAddStore
+    salesAddStore: ISalesAddStore
     uiHook: IUiHook
 
 }
@@ -129,6 +132,12 @@ export const useStore = (): IStores => {
             restClient: useRestClient()
         })
     })
+
+    const salesAddStore = useSalesAddStore({
+        useSalesAddService: useSalesAddService({
+            restClient: useRestClient()
+        })
+    })
     const uiHook = useUiHook()
     const navigationStore = useNavigationStore()
 
@@ -147,6 +156,7 @@ export const useStore = (): IStores => {
         productAddStore,
         pucharseListStore,
         pucharseAddStore,
+        salesAddStore,
         uiHook
     }
 }

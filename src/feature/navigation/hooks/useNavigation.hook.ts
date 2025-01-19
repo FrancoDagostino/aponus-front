@@ -10,8 +10,11 @@ export const useModuleHook = (): IModuleHook => {
     const history = useHistory()
 
     const onClickMenuItemHandler: IModuleHook["onClickMenuItemHandler"] = (path: string) => {
-        history.push(path)
-    }
+        if (!path.startsWith("/")) {
+            path = `/${path}`;
+        }
+        history.push(path);
+    };
 
     return {
         onClickMenuItemHandler

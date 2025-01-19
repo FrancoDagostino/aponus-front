@@ -1,6 +1,6 @@
 export interface IStorageSupplie {
     idDescripcion: number,
-    descripcion: string,
+    nombreDescripcion: string,
     idAlmacenamiento: string
     idFraccionamiento: string
 }

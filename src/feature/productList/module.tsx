@@ -5,21 +5,19 @@ import { ICategoryStore } from "../categoryList/store/useCategory.store";
 import { useModuleProductListHook } from './hooks/useModule.hook';
 import { Box, Button } from '@mui/material';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
-import { UnAuthorizedModule } from "../unAuthorized/module";
+import { IUiHook } from "../ui/hooks/useUi.hook";
 
 interface IProductListProps {
     productListStore: IProductListStore;
     categoryStore: ICategoryStore;
     permissions: string[]
     rol: string
+    uiHook: IUiHook
     onNavigate: (url: string) => void;
 }
 
 export const ProductListModule: React.FC<IProductListProps> = (props) => {
 
-    if (!props.permissions.includes(props.rol)) {
-        return <UnAuthorizedModule />
-    }
 
     const moduleHook = useModuleProductListHook(props)
 
@@ -46,7 +44,7 @@ export const ProductListModule: React.FC<IProductListProps> = (props) => {
                 props.productListStore.productList.map((product, index) => (
                     <div style={{ width: "100%", marginTop: "50px" }} key={index}>
                         <h3>{product.descripcionProducto}</h3>
-                        <ProductListTableComponent data={product.productos} />
+                        <ProductListTableComponent onEditProductHandler={moduleHook.onEditProductHandler} data={product.productos} />
                     </div>
                 ))
             }

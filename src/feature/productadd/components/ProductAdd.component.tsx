@@ -45,6 +45,7 @@ interface IProductAddForm {
     components: Component[]
     componentQuantity: string,
     componentId: string
+    isEdit: boolean
     onChangeTypeProduct: (idType: string) => void
     onChangeComponentCategory: (productCategory: string) => void
     handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void
@@ -58,20 +59,9 @@ interface IProductAddForm {
 
 export const ProductAddForm: FC<IProductAddForm> = (props) => {
 
-
-
-
-
-
-
-
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
     };
-
-
-
-
 
     return (
         <>
@@ -89,6 +79,7 @@ export const ProductAddForm: FC<IProductAddForm> = (props) => {
                                 defaultValue=""
                                 onChange={(e) => props.onChangeTypeProduct(e.target.value)}
                                 value={props.formData.idTipo}
+                                disabled={props.isEdit}
 
                             >
                                 {
@@ -106,6 +97,7 @@ export const ProductAddForm: FC<IProductAddForm> = (props) => {
                             margin="normal"
                             value={props.formData.diametroNominal}
                             onChange={props.handleInputChange}
+                            disabled={props.isEdit}
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -117,6 +109,7 @@ export const ProductAddForm: FC<IProductAddForm> = (props) => {
                                 defaultValue=""
                                 onChange={(e) => props.onChangeProductDescription(e.target.value)}
                                 value={props.formData.idDescripcion}
+                                disabled={props.isEdit}
                             >
                                 {
                                     props.productDescription.map(productDesc => (
@@ -133,6 +126,7 @@ export const ProductAddForm: FC<IProductAddForm> = (props) => {
                             margin="normal"
                             value={props.formData.tolerancia}
                             onChange={props.handleInputChange}
+                            disabled={props.isEdit}
                         />
                     </Grid>
                 </Grid>
@@ -144,10 +138,10 @@ export const ProductAddForm: FC<IProductAddForm> = (props) => {
                 <Grid container spacing={2} alignItems="center">
                     <Grid item xs={12} sm={5}>
                         <FormControl fullWidth margin="normal">
-                            <InputLabel id="test-select-label">Prueba</InputLabel>
+                            <InputLabel id="test-select-label">Tipo Componente</InputLabel>
                             <Select
                                 labelId="test-select-label"
-                                label="Prueba"
+                                label="Tipo Componente"
                                 defaultValue=""
                                 onChange={(e) => props.onChangeComponentCategory(e.target.value)}
 
@@ -155,7 +149,7 @@ export const ProductAddForm: FC<IProductAddForm> = (props) => {
                                 {
                                     props.supplieStorageList.map(supplie => (
                                         <MenuItem key={supplie.idDescripcion} value={`${supplie.idDescripcion}, 
-                                        ${supplie.descripcion} , ${supplie.idFraccionamiento === undefined ? supplie.idAlmacenamiento : supplie.idFraccionamiento}`}>{supplie.descripcion}</MenuItem>
+                                        ${supplie.nombreDescripcion} , ${supplie.idFraccionamiento === undefined ? supplie.idAlmacenamiento : supplie.idFraccionamiento}`}>{supplie.nombreDescripcion}</MenuItem>
                                     ))
                                 }
                             </Select>

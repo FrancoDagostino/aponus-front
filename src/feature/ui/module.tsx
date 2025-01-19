@@ -1,6 +1,7 @@
 import { FC } from "react";
 import LoaderComponent from "../../components/Loader/Loader.component";
 import { IUiHook } from "./hooks/useUi.hook";
+import { SnackBarComponent } from "../../components/Snackbar/Snackbar.component";
 
 
 interface UiModuleProps {
@@ -9,8 +10,10 @@ interface UiModuleProps {
 
 
 export const UiModule: FC<UiModuleProps> = (props) => {
-
     return (
-        <LoaderComponent isOpen={props.uiStore.isLoading} />
+        <>
+            <LoaderComponent isOpen={props.uiStore.isLoading} />
+            <SnackBarComponent message={props.uiStore.snackbar.message} isOpen={props.uiStore.snackbar.isOpen} />
+        </>
     )
 }

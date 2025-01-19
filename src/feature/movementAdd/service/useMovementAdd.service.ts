@@ -36,8 +36,6 @@ export const useMovementAddService = (props: IMovementAddServiceProps): IMovemen
             formData.append("archivos[]", file);
         });
 
-        console.log(formData.get("archivos[]"))
-
         const response = await props.restClient.post<null, null>(url, formData, undefined);
         if (response.isSuccess) return createResponseUtil.success(response.data, response.status);
         return createResponseUtil.error(response.data, response.status);

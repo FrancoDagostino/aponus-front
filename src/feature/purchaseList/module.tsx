@@ -4,7 +4,8 @@ import { IPurchaseListStore } from "./store/usePurcharseList.store";
 import { usePurchaseListHook } from "./hooks/usePucharseList.hook";
 import { PurchaseDataGridComponent } from "./components/PucharseDataGrid.component";
 import { PurchaseViewModalComponent } from "./components/PurchaseView.component";
-import { UnAuthorizedModule } from "../unAuthorized/module";
+import { Box, Button } from '@mui/material';
+import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
 
 
 interface IPucharseListModule {
@@ -18,15 +19,23 @@ interface IPucharseListModule {
 
 export const PurchaseListModule: FC<IPucharseListModule> = (props) => {
 
-    if (!props.permissions.includes(props.rol)) {
-        return <UnAuthorizedModule />
-    }
+
     const useModule = usePurchaseListHook(props)
     return (
         <>
-            <h2>Listado de Compras</h2>
+            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
+                <h1>Listado de Compras</h1>
+                <Button
+                    sx={{ height: 50, width: 300, marginLeft: "20px", marginTop: "15px", gap: 1 }}
+                    variant="contained"
+                    onClick={() => props.onNavigate('/pucharse-add')}
+                    startIcon={<AddCircleOutlinedIcon />}
+                >
+                    Nueva Compra
+                </Button>
+            </Box>
             <PurchaseDataGridComponent onRemovePucharse={useModule.onRemovePurchase} onViewPucharse={useModule.onViewPurchase} purchaseList={props.purchaseListStore.purchaseListState} searchValue="" />
-            <PurchaseViewModalComponent isOpen={false} handleClose={() => { }} purchase={useModule.purchaseState} />
+            <PurchaseViewModalComponent isOpen={useModule.isOpenViewPucharse} handleClose={useModule.onCloseViewPucharse} purchase={useModule.purchaseState} />
         </>
 
     )

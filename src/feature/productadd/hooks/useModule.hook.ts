@@ -51,6 +51,7 @@ export const useProductAddModule = (props: IProductAddHookProps) => {
     const [idComponent, setIdComponent] = useState('');
 
     const [componentQuantity, setComponentQuantity] = useState<string>('');
+    const [isEdit, setIsEdit] = useState<boolean>(false)
 
 
     useEffect(() => {
@@ -65,8 +66,6 @@ export const useProductAddModule = (props: IProductAddHookProps) => {
         props.uiHook.hideLoading()
 
         if (props.productId !== "0") {
-            // TODO LLAMAR ENDPOINT PARA PRECARGAR PRODUCTO
-
             onPreload()
         }
 
@@ -99,6 +98,7 @@ export const useProductAddModule = (props: IProductAddHookProps) => {
         ))
 
         setComponents(components)
+        setIsEdit(true)
         props.uiHook.hideLoading()
     }
 
@@ -114,7 +114,6 @@ export const useProductAddModule = (props: IProductAddHookProps) => {
 
     const onChangeComponentCategory = (productCategory: string) => {
         const arrayProduct = productCategory.split(',')
-        console.log(arrayProduct)
         setComponentCategory({
             description: arrayProduct[1],
             idComponent: arrayProduct[0],
@@ -140,7 +139,6 @@ export const useProductAddModule = (props: IProductAddHookProps) => {
     const suppliesListComputed = props.productAddStore.supplieList.filter(p => p.nombre.toLowerCase().trim().includes(componentCategory.description.toLowerCase().trim()))
 
     const onSaveHandler = async () => {
-        console.log(components)
 
         const product: IProductPost = {
             diametroNominal: formData.diametroNominal,
@@ -196,6 +194,7 @@ export const useProductAddModule = (props: IProductAddHookProps) => {
         idComponent,
         componentQuantity,
         components,
+        isEdit,
         onChangeTypeProduct,
         onChangeComponentCategory,
         handleInputChange,
