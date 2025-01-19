@@ -16,7 +16,8 @@ export const componentProductMapper = (
           total: componente.total,
           granallado: componente.granallado,
           moldeado: componente.moldeado,
-          NombreInsumo: componente.NombreInsumo
+          NombreInsumo: componente.NombreInsumo,
+          faltantes: componente.faltantes
         };
       })
     );

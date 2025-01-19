@@ -20,7 +20,7 @@ export const useEntityAddService = (props: IEntityAddServiceProps): IEntityAddSe
         const url = `${urlBase}/Entities/Save`
         const body = {
             ...dataInput,
-            idUsuarioRegistro: "Prueba",
+            idUsuarioRegistro: "administrador",
             idTipo: 1,
             idCategoria: 1
         }
@@ -40,7 +40,7 @@ export const useEntityAddService = (props: IEntityAddServiceProps): IEntityAddSe
         const url = `${urlBase}/Entities/Save`
         const body = {
             ...dataInput,
-            idUsuarioRegistro: "Prueba",
+            idUsuarioRegistro: "administrador",
             idTipo: 1,
             idCategoria: 1
         }
