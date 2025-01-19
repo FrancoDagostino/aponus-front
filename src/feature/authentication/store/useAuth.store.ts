@@ -2,7 +2,6 @@ import { useEffect, useState } from "react"
 import { createResultUtil, TResult } from "../../../utils/result.util"
 import { IAuthenticationService, ILoginUserPost } from "../services/useAuthentication.service";
 import tokenUtil from "../../../utils/token.util";
-import { jwtDecode } from "jwt-decode";
 
 export interface IUserParams {
 
@@ -32,7 +31,7 @@ export const useAuthStore = (props: IUseAuthStoreProps): IAuthStore => {
         const token: any = tokenUtil.get()
         if (!token) return setStatus('is not authenticated')
         setStatus('is authenticated')
-        const decode = jwtDecode(token) as { Rol: string }
+        const decode = { Rol: "" }
         setRol(decode.Rol)
     }
 
@@ -44,8 +43,8 @@ export const useAuthStore = (props: IUseAuthStoreProps): IAuthStore => {
             return createResultUtil.error(null)
         }
         tokenUtil.set(response.data);
-        const token: any = tokenUtil.get()
-        const decode = jwtDecode(token) as { Rol: string }
+        // const token: any = tokenUtil.get()
+        const decode = { Rol: "" }
         setRol(decode.Rol)
         setStatus('is authenticated');
         return createResultUtil.success(null)
