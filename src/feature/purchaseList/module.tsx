@@ -21,8 +21,11 @@ export const PurchaseListModule: FC<IPucharseListModule> = (props) => {
 
 
     const useModule = usePurchaseListHook(props)
+
     return (
         <>
+            <pre>
+            </pre>
             <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
                 <h1>Listado de Compras</h1>
                 <Button

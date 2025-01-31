@@ -24,6 +24,7 @@ export const CategoryListModule: FC<ICategoryModuleProps> = (props) => {
 
     return (
         <>
+
             <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
                 <h1>Listado de Stock</h1>
                 <Button

@@ -37,7 +37,7 @@ export const PucharseDetailComponent: FC<IPucharseDetailComponentProps> = (props
                                 {payment.medioPago.descripcion}
                             </TableCell>
                             <TableCell sx={{ textAlign: "center" }}>${payment.monto.toFixed(2)}</TableCell>
-                            <TableCell>{payment.entidadesPago.descripcion}</TableCell>
+                            <TableCell sx={{ textAlign: "center" }}>{payment.entidadesPago.descripcion}</TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
