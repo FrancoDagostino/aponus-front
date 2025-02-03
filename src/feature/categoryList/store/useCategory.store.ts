@@ -12,6 +12,7 @@ export interface ICategoryStore {
     addDescriptionAction: (description: string, idType: string) => Promise<TResult<null, null>>;
     addCategoryAction: (category: string, idType: string) => Promise<TResult<null, null>>;
     updateDescriptionAction: (idDescription: number, description: string) => Promise<TResult<null, null>>;
+    deleteCategoryTypeAction: (idType: string) => Promise<TResult<null, null>>
 }
 
 
@@ -42,6 +43,13 @@ export const useCategoryStore = (props: ICategoryStoreProps): ICategoryStore => 
 
     const addDescriptionAction: ICategoryStore["addDescriptionAction"] = async (description: string, idType: string) => {
         const result = await props.categoryService.addDescription(description, idType)
+        setCategoryList(categoryList.map(category => {
+            return {
+                descripcionTipo: category.descripcionTipo,
+                idTipo: category.idTipo,
+                productos: [Math.random()]
+            }
+        }))
         if (result.isError) return createResultUtil.error(result.data)
         return createResultUtil.success(null)
     }
@@ -60,6 +68,13 @@ export const useCategoryStore = (props: ICategoryStoreProps): ICategoryStore => 
         return createResultUtil.success(null)
     }
 
+    const deleteCategoryTypeAction: ICategoryStore["deleteCategoryTypeAction"] = async (idType: string) => {
+        const result = await props.categoryService.deleteCategoryType(idType);
+        if (result.isError) return createResultUtil.error(null);
+        setCategoryList(categoryList.filter(category => category.idTipo !== idType))
+        return createResultUtil.success(null)
+    }
+
     return {
         categoryList,
         descriptionList,
@@ -68,5 +83,6 @@ export const useCategoryStore = (props: ICategoryStoreProps): ICategoryStore => 
         getCategoryListAction,
         getDescriptionListAction,
         updateDescriptionAction,
+        deleteCategoryTypeAction
     }
 }

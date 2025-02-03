@@ -29,7 +29,7 @@ const ExpandableDescriptionListComponentProps: FC<
 
   useEffect(() => {
     handleCallDescritionList(props.data.idTipo);
-  }, [props.data.idTipo]);
+  }, [props.data.productos]);
 
   const handleCallDescritionList = async (idType: string) => {
     const list = await handleSelectListDescription(idType);
@@ -45,12 +45,15 @@ const ExpandableDescriptionListComponentProps: FC<
 
   const onAddOrUpdateDescriptionHandler = async () => {
 
-
     if (!isEdit) {
 
-      await handlAddOrUpdateDescription(inputValue, "AB_PVC");
+      await handlAddOrUpdateDescription(inputValue, props.data.idTipo);
+      setInputValue('')
+      setIsEnabledInput(false)
     } else {
       await handleUpdateDescription(idDescription, inputValue)
+      setInputValue('')
+      setIsEnabledInput(false)
     }
   };
   const columnDescriptionComputed: Array<TableColumn<IListadoDescripciones>> = [

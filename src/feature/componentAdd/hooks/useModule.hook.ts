@@ -9,6 +9,8 @@ interface IComponentAddModuleProps {
     stockStore: IStockStore;
     uiHook: IUiHook
     idInsumo: string
+    onNavigate: (url: string) => void
+
 }
 
 interface IComponentAddHook {
@@ -60,8 +62,6 @@ export const useComponentAddHook = (props: IComponentAddModuleProps): IComponent
 
         if (result.isError) return
 
-        console.log(result.data)
-
         setComponentForm({
             Altura: result.data.altura === null ? '' : result.data.altura,
             Diametro: result.data.diametro === null ? '' : result.data.diametro,
@@ -84,6 +84,7 @@ export const useComponentAddHook = (props: IComponentAddModuleProps): IComponent
 
     }
     const onChangeComponentFormHandler = (value: string, nameProperty: string) => {
+
         if (nameProperty === 'idDescripcion') {
             const textDescription = props.stockStore.categoryTypeList.find(type => type.idDescripcion === Number(value))!.nombreDescripcion
             setDescription(textDescription);
@@ -94,10 +95,15 @@ export const useComponentAddHook = (props: IComponentAddModuleProps): IComponent
         })
     }
 
-    const onAddOrUpdateComponentHandler = () => {
-        const textDescription = props.stockStore.categoryTypeList.find(type => type.idDescripcion === componentForm.idDescripcion)!.nombreDescripcion
-        props.componentAddStore.postCreateComponentAction(componentForm, textDescription);
+    const onAddOrUpdateComponentHandler = async () => {
+        const textDescription = props.stockStore.categoryTypeList.find(type => type.idDescripcion === Number(componentForm.idDescripcion))!.nombreDescripcion
+        const result = await props.componentAddStore.postCreateComponentAction(componentForm, textDescription);
+        if (result.isSuccess) {
+            props.uiHook.onSetSnackbar("Componente agregado o modificado correctamente", true)
+            props.onNavigate('/component-list')
+        }
     }
+
 
 
 

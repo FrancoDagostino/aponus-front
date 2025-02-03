@@ -30,6 +30,7 @@ const FormComponentAdd: FC<IFormComponentAddProps> = (props) => {
                             value={props.componentForm.idDescripcion}
                             label="Tipos de Componente"
                             onChange={(e) => props.onChangeComponentFormHandler(e.target.value.toString(), "idDescripcion")}
+                            name="idDescripcion"
                             sx={{ fontFamily: "Rubik-SemiBold" }}
                             disabled={props.isEdit}
 

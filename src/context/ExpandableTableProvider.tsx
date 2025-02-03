@@ -63,7 +63,7 @@ export const ExpandableTableProvider: FC<ExpandableTableProviderProps> = (
         handleSelectProductId,
         handleSelectListDescription,
         handlAddOrUpdateDescription,
-        handleUpdateDescription
+        handleUpdateDescription,
       }}
     >
       {props.children}

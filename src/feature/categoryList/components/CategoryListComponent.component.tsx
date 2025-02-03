@@ -11,11 +11,12 @@ import { IconButton } from "@mui/material";
 interface ICategoryListComponentProps {
   data: IListadoCategorias[];
   onOpenModal: (labelModal: string, idCategory: string) => void;
+  onDelete: (idType: string) => void;
 }
 
 const CategoryListComponent: FC<ICategoryListComponentProps> = (props) => {
 
-
+  console.log(props.data)
   const onEditCategoryHandler = (row: IListadoCategorias) => {
     props.onOpenModal(`Edición de la categoría ${row.descripcionTipo}`, row.idTipo);
   }
@@ -32,7 +33,7 @@ const CategoryListComponent: FC<ICategoryListComponentProps> = (props) => {
           <IconButton aria-label="edit" onClick={() => onEditCategoryHandler(row)}>
             <EditIcon />
           </IconButton>
-          <IconButton aria-label="delete">
+          <IconButton aria-label="delete" onClick={() => props.onDelete(row.idTipo)}>
             <DeleteIcon />
           </IconButton>
         </>

@@ -36,7 +36,7 @@ export const CategoryListModule: FC<ICategoryModuleProps> = (props) => {
                     Nueva Categoria
                 </Button>
             </Box>
-            <CategoryListComponent data={props.categoryStore.categoryList} onOpenModal={moduleHook.onOpenModalHandler} />
+            <CategoryListComponent onDelete={moduleHook.onRemoveIdTypeCategoryHandler} data={props.categoryStore.categoryList} onOpenModal={moduleHook.onOpenModalHandler} />
 
             <ModalCategoryOrDescriptionComponent isOpen={moduleHook.isOpen} modalLabel={moduleHook.addOrUpdateCategory.labelModal} onClose={moduleHook.onCloseModalHandler} onAddOrUpdateCategory={moduleHook.onAddOrUpdateHandler} />
         </>

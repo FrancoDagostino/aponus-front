@@ -35,10 +35,18 @@ export interface ICategoryService {
     addCategory: (category: string, idType: string) => Promise<TResponse<void, null>>;
     addDescription: (description: string, idType: string) => Promise<TResponse<void, null>>;
     updateDescription: (idDescription: number, description: string) => Promise<TResponse<void, null>>;
+    deleteCategoryType: (idType: string) => Promise<TResponse<null, null>>
 
 }
 
 export const useCategoryService = (props: IStockListServiceProps): ICategoryService => {
+
+    const deleteCategoryType: ICategoryService["deleteCategoryType"] = async (idType: string) => {
+        const url = `${urlBase}/Categories/Products/Types/${idType}/Delete`
+        const result = await props.restClient.get<null, null>(url, undefined)
+        if (result.isSuccess) return createResponseUtil.success(result.data, result.status)
+        return createResponseUtil.error(result.data, result.status)
+    }
 
     const getCategoryList: ICategoryService["getCategoryList"] = async () => {
 
@@ -102,5 +110,6 @@ export const useCategoryService = (props: IStockListServiceProps): ICategoryServ
         getCategoryList,
         getDescriptionList,
         updateDescription,
+        deleteCategoryType
     }
 } 

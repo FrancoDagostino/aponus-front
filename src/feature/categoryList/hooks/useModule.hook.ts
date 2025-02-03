@@ -22,6 +22,7 @@ interface ICategoryModule {
     onCloseModalHandler: () => void
     onAddOrUpdateHandler: (category: string) => Promise<void>
     onSetIsModal: (isOpen: boolean) => void
+    onRemoveIdTypeCategoryHandler: (idType: string) => Promise<void>
 }
 export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule => {
 
@@ -65,10 +66,17 @@ export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule 
     };
 
     const onAddOrUpdateHandler = async (category: string) => {
+        console.log('se llamo')
         setIsOpen(false)
         props.uiHook.showLoading()
         await props.categoryStore.addCategoryAction(category, addOrUpdateCategory.idCategory);
         await props.categoryStore.getCategoryListAction()
+        props.uiHook.hideLoading()
+    }
+
+    const onRemoveIdTypeCategoryHandler = async (idType: string) => {
+        props.uiHook.showLoading()
+        await props.categoryStore.deleteCategoryTypeAction(idType)
         props.uiHook.hideLoading()
     }
 
@@ -79,6 +87,7 @@ export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule 
         onAddOrUpdateHandler,
         onCloseModalHandler,
         onOpenModalHandler,
-        onSetIsModal
+        onSetIsModal,
+        onRemoveIdTypeCategoryHandler
     }
 }
