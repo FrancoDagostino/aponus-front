@@ -21,6 +21,6 @@ export const EntityAddModule: FC<IEntityAddModuleProps> = (props) => {
 
     return (
 
-        <EntityAddFormComponent onSaveHandler={useModule.onSaveHandler} formData={useModule.formData} onChangeFormData={useModule.onChangeFormDataHandler} />
+        <EntityAddFormComponent cityListState={props.entityAddStore.cityListState} onChangeCity={useModule.onChangeCity} onChangeProvince={useModule.onChangeProvince} provinceListState={props.entityAddStore.provinceListState} geoIds={useModule.geoIds} onChangeCountrie={useModule.onChangeCountrie} countryListState={props.entityAddStore.countryListState} onSaveHandler={useModule.onSaveHandler} formData={useModule.formData} onChangeFormData={useModule.onChangeFormDataHandler} />
     )
 }

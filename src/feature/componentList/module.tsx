@@ -1,5 +1,4 @@
 import { FC } from 'react'
-import ComponentList from './components/ComponentList.component';
 import TabsCategoryComponentType from '../stockList/components/TabsCategoryType.component';
 import { IComponentListStore } from './store/useComponentList.store';
 import { IStockStore } from '../stockList/store/useStock.store';
@@ -7,6 +6,7 @@ import { useComponentListHook } from './hooks/useModule.hook';
 import { IUiHook } from '../ui/hooks/useUi.hook';
 import { Box, Button } from '@mui/material';
 import AddCircleOutlinedIcon from '@mui/icons-material/AddCircleOutlined';
+import { ComponentListTable } from './components/ComponentListTable.component';
 
 
 interface IComponentListModuleProps {
@@ -41,7 +41,8 @@ export const ComponentListModule: FC<IComponentListModuleProps> = (props) => {
                 onChangeTabsHandler={moduleHook.onChangeTabsHandler}
             />
 
-            <ComponentList data={props.componentListStore.componentList} componentEdit={moduleHook.onEditComponentHandler} />
+            {/* <ComponentList data={props.componentListStore.componentList} componentEdit={moduleHook.onEditComponentHandler} /> */}
+            <ComponentListTable data={props.componentListStore.reportComponentScheme} />
         </>
     )
 }

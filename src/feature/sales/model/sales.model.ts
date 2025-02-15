@@ -22,3 +22,13 @@ export interface IProduct {
     idEstadoNavigation: number;
     ventas: null;
 }
+
+
+
+export interface IQuatationList {
+    numeroCuota: number;
+    monto: number;
+    fechaVencimiento: string;
+    idEstadoCuota: number;
+    pagos: any[];
+}

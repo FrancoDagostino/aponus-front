@@ -7,7 +7,7 @@ export interface IMovementAddStore {
     supplyList: ISuppliesList[]
     createNewMovementAction: (dataInput: any) => Promise<TResult<null, null>>
     getSupplyListAction: () => Promise<TResult<null, null>>
-    getEntityListAction: () => Promise<TResult<IEntity[], null>>
+    getEntityListAction: (id: string) => Promise<TResult<IEntity[], null>>
 }
 
 interface IMovementAddStoreProps {
@@ -30,8 +30,8 @@ export const useMovementAddStore = (props: IMovementAddStoreProps): IMovementAdd
         return createResultUtil.success(null)
     }
 
-    const getEntityListAction: IMovementAddStore["getEntityListAction"] = async () => {
-        const result = await props.movementAddService.getProviderList()
+    const getEntityListAction: IMovementAddStore["getEntityListAction"] = async (id: string) => {
+        const result = await props.movementAddService.getProviderList(id)
         if (result.isError) return createResultUtil.error(result.data)
         return createResultUtil.success(result.data)
     }

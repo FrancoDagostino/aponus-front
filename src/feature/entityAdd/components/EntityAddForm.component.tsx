@@ -1,13 +1,21 @@
 import React, { FC } from 'react';
-import { TextField, Button, Grid, Typography } from '@mui/material';
-import { IFormData } from '../hook/useModule.hook';
+import { TextField, Button, Grid, Typography, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { IFormData, IGeoNames } from '../hook/useModule.hook';
+import { ICountries, IGeoCity, IGeoProvice } from '../../entityList/model/EntityList.model';
 
 
 
 interface IEntityAddFormProps {
     formData: IFormData
+    countryListState: ICountries
+    geoIds: IGeoNames
+    provinceListState: IGeoProvice[]
+    cityListState: IGeoCity
     onChangeFormData: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
     onSaveHandler: () => void
+    onChangeCountrie: (idGeoname: number, geoName: string) => void
+    onChangeProvince: (idGeoname: number, geoName: string, countryCode: string, adminCode: string) => void
+    onChangeCity: (idGeoname: number, geoName: string) => void
 }
 
 export const EntityAddFormComponent: FC<IEntityAddFormProps> = (props) => {
@@ -31,14 +39,92 @@ export const EntityAddFormComponent: FC<IEntityAddFormProps> = (props) => {
                     <Grid item xs={12} sm={6} md={4} lg={3}>
                         <TextField fullWidth onChange={props.onChangeFormData} value={props.formData.apellido} label="Apellido" name="apellido" variant="outlined" required />
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4} lg={3}>
-                        <TextField fullWidth onChange={props.onChangeFormData} value={props.formData.pais} label="País" name="pais" variant="outlined" required />
+                    <Grid item xs={12} md={6}>
+                        <FormControl fullWidth sx={{ mb: 2 }}>
+                            <InputLabel id="destination-provider-label">Seleccionar Pais</InputLabel>
+                            <Select
+                                labelId="destination-provider-label"
+                                id="geoIdCountry"
+                                name="geoIdCountry"
+                                value={props.geoIds.geoIdCountry}
+                                label="Seleccionar Pais"
+                                onChange={(event) => {
+                                    const selectedId = event.target.value as number;
+                                    const selectedCountry = props.countryListState.geonames.find(
+                                        (c) => c.geonameId === selectedId
+                                    );
+
+                                    if (selectedCountry) {
+                                        props.onChangeCountrie(selectedId, selectedCountry.countryName);
+                                    }
+                                }}
+                            >
+                                <MenuItem value="0">Seleccionar País</MenuItem>
+                                {
+                                    props.countryListState.geonames.map(countrie => (
+                                        <MenuItem key={countrie.geonameId} value={countrie.geonameId}>{countrie.countryName}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+                        </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4} lg={3}>
-                        <TextField fullWidth onChange={props.onChangeFormData} value={props.formData.ciudad} label="Ciudad" name="ciudad" variant="outlined" required />
+                    <Grid item xs={12} md={6}>
+                        <FormControl fullWidth sx={{ mb: 2 }}>
+                            <InputLabel id="destination-provider-label">Seleccionar Provincía</InputLabel>
+                            <Select
+                                labelId="destination-provider-label"
+                                id="geoIdProvince"
+                                name="geoIdProvince"
+                                value={props.geoIds.geoIdProvince}
+                                label="Seleccionar Provincía"
+                                onChange={(event) => {
+                                    const selectedId = event.target.value as number;
+                                    const selectedProvince = props.provinceListState.find(
+                                        (c) => c.geonameId === selectedId.toString()
+                                    );
+
+                                    if (selectedProvince) {
+                                        props.onChangeProvince(selectedId, selectedProvince.toponymName, selectedProvince.countryCode, selectedProvince.adminCode1);
+                                    }
+                                }}
+                            >
+                                <MenuItem value="0">Seleccionar Provincía</MenuItem>
+                                {
+                                    props.provinceListState.map(province => (
+                                        <MenuItem key={province.geonameId} value={province.geonameId}>{province.toponymName}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+                        </FormControl>
                     </Grid>
-                    <Grid item xs={12} sm={6} md={4} lg={3}>
-                        <TextField fullWidth onChange={props.onChangeFormData} value={props.formData.provincia} label="Provincia" name="provincia" variant="outlined" required />
+                    <Grid item xs={12} md={6}>
+                        <FormControl fullWidth sx={{ mb: 2 }}>
+                            <InputLabel id="destination-provider-label">Seleccionar Ciudad</InputLabel>
+                            <Select
+                                labelId="destination-provider-label"
+                                id="geoIdCity"
+                                name="geoIdCity"
+                                value={props.geoIds.geoIdCity}
+                                label="Seleccionar Ciudad"
+                                onChange={(event) => {
+                                    const selectedId = event.target.value as number;
+                                    const selectedCity = props.cityListState.geonames.find(
+                                        (c) => c.geonameId === selectedId.toString()
+                                    );
+
+                                    if (selectedCity) {
+                                        props.onChangeCity(selectedId, selectedCity.toponymName);
+                                    }
+                                }}
+                            >
+                                <MenuItem value="0">Seleccionar Ciudad</MenuItem>
+                                {
+                                    props.cityListState.geonames.map(city => (
+                                        <MenuItem key={city.toponymName} value={city.geonameId}>{city.toponymName}</MenuItem>
+                                    ))
+                                }
+                            </Select>
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={3}>
                         <TextField fullWidth onChange={props.onChangeFormData} value={props.formData.localidad} label="Localidad" name="localidad" variant="outlined" required />

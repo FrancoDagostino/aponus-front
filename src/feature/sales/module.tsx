@@ -24,6 +24,7 @@ export const SalesAddModule: FC<ISalesAddModule> = (props) => {
         <FormDataSalesComponent billingList={props.salesAddStore.billingList} formData={useModule.purchaseDataState} availableSupplies={props.salesAddStore.productList} handleDeleteSupply={useModule.handleDeleteSupply}
             onChangePurchaseDateHandler={useModule.onChangePurchaseDateHandler} onAddSupplyItemHandler={useModule.onAddSupplyItemHandler}
             providerList={useModule.providerList} onSaveHandler={useModule.onSaveHandler} onChangeCheckboxHandler={useModule.onChangeCheckboxHandler} onAddInputFilesHanlder={useModule.onAddInputFilesHanlder} onRemoveFileHandler={useModule.onRemoveFileHandler}
+            onClickQuotationHandler={useModule.onClickQuotationHandler} quatationList={props.salesAddStore.quatationList}
         />
     )
 }

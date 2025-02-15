@@ -1,32 +1,43 @@
 import { IRestClient, urlBase } from "../../../utils/clients/useRest.client";
 import { createResponseUtil, TResponse } from "../../../utils/response.util";
-import { IBilling, IProduct } from "../model/sales.model";
+import { IBilling, IProduct, IQuatationList } from "../model/sales.model";
 
-export interface ICompraPost {
-    idProveedor: string,
-
-    idUsuario: string,
+export interface IVentaPost {
+    idCliente: string,
     montoTotal: number,// caja de texto con el monto total
     saldoPendiente: number
-    detallesCompra: Array<{
-        idInsumo: string,
-        cantidad: number
+    idEstadoVenta: number
+    detallesVenta: Array<{
+        idProducto: string,
+        cantidad: number,
+        entregados: number,
+        precio: number
     }>,// fijarse en pantalla dodne agregar insumos
     pagos: Array<{
         idMedioPago: number,
         idEntidadPago: number,
         monto: number,
-    }>
+    } | null>
+    cuotas: IQuatationList[],
+    archivos: File[]
 }
 
 export interface ISalesAddServiceProps {
     restClient: IRestClient
 }
 
+export interface IQuotation {
+    cantidadCuotas: number,
+    montoVenta: number,
+    interes: number,
+}
+
+
 export interface ISalesAddService {
-    createPurchase: (inputData: ICompraPost, receivedMerchandise: boolean, files: File[]) => Promise<TResponse<null, null>>
+    createPurchase: (inputData: IVentaPost, files: File[]) => Promise<TResponse<null, null>>
     billingList: () => Promise<TResponse<IBilling[], null>>;
     productList: () => Promise<TResponse<IProduct[], null>>
+    getQuotation: (inputData: IQuotation) => Promise<TResponse<IQuatationList[], null>>
 }
 
 export const useSalesAddService = (props: ISalesAddServiceProps): ISalesAddService => {
@@ -47,19 +58,17 @@ export const useSalesAddService = (props: ISalesAddServiceProps): ISalesAddServi
         return createResponseUtil.success(response.data, response.status)
     }
 
-    const createPurchase = async (inputData: ICompraPost, receivedMerchandise: boolean, files: File[]) => {
-        const url = `${urlBase}/Purchase/Save`;
+    const createPurchase = async (inputData: IVentaPost, files: File[]) => {
+        const url = `${urlBase}/Sales/Save`;
         const response = await props.restClient.post<null, null>(url, inputData, undefined)
         if (response.isError) return createResponseUtil.error(response.data, response.status)
         const urlMovments = `${urlBase}/Movments/new`;
 
         const formData = new FormData();
-        formData.append("usuarioCreacion", inputData.idUsuario);
-        formData.append("destino", `${receivedMerchandise ? "recibido" : "pendiente"}`);
-        formData.append("idProveedorDestino", inputData.idProveedor);
-        inputData.detallesCompra.forEach(item => {
+        formData.append("idCliente", inputData.idCliente);
+        inputData.detallesVenta.forEach(item => {
             formData.append("suministros[]", JSON.stringify({
-                idSuministro: item.idInsumo,
+                idSuministro: item.idProducto,
                 cantidad: item.cantidad
             }));
         });
@@ -72,9 +81,17 @@ export const useSalesAddService = (props: ISalesAddServiceProps): ISalesAddServi
         return createResponseUtil.error(responseMovments.data, responseMovments.status);
     }
 
+    const getQuotation = async (inputData: IQuotation) => {
+        const url = `${urlBase}/Sales/Quotation`;
+        const response = await props.restClient.post<IQuatationList[], null>(url, inputData, undefined)
+        if (response.isError) return createResponseUtil.error(response.data, response.status)
+        return createResponseUtil.success(response.data, response.status)
+    }
+
     return {
         createPurchase,
         productList,
-        billingList
+        billingList,
+        getQuotation
     }
 }

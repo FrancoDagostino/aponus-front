@@ -10,10 +10,10 @@ export interface IEntityListStoreProps {
 
 export interface IEntityListStore {
     entityListState: IEntity[]
+
     getEntityListAction: () => Promise<TResult<null, null>>
     getEntityListByIdAction: (id: number) => Promise<TResult<null, null>>
     deleteEntityByIdAction: (id: number) => Promise<TResult<null, null>>
-
 }
 
 export const useEntityListStore = (props: IEntityListStoreProps): IEntityListStore => {
@@ -44,6 +44,6 @@ export const useEntityListStore = (props: IEntityListStoreProps): IEntityListSto
         entityListState,
         getEntityListAction,
         getEntityListByIdAction,
-        deleteEntityByIdAction
+        deleteEntityByIdAction,
     }
 }

@@ -19,6 +19,36 @@ export interface IEntity {
     idEntidad: number;
 }
 
+export interface ICountries {
+    geonames: IGeoname[];
+}
+
+export interface IGeoname {
+    countryName: string;
+    countryCode: string;
+    geonameId: number;
+}
+
+export interface IGeoProvice {
+    toponymName: string;
+    geonameId: string;
+    countryCode: string;
+    adminCode1: string;
+}
+
+
+export interface IGeoCity {
+    geonames: IGeonameCity[];
+}
+
+export interface IGeonameCity {
+    toponymName: string;
+    countryCode: string;
+    adminCode1: string;
+    geonameId: string;
+}
+
+
 
 // fechaHora, usuario, Proveedor, saldoPediente, saldoTotal,  acciones : ver
 

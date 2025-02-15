@@ -4,6 +4,7 @@ import { IProviderList } from "../../movementAdd/hooks/useModule.hook"
 import { SelectChangeEvent } from "@mui/material"
 import { IMovementAddStore } from "../../movementAdd/store/useMovementAdd.store"
 import { ISalesAddStore } from "../store/useSalesAdd.store"
+import { IQuotation, IVentaPost } from "../service/useSalesAdd.service"
 
 export interface ISupplyItem {
     id: string;
@@ -41,13 +42,14 @@ interface ISalesAddHook {
     onRemoveFileHandler: (fileToDelete: File) => void
     onSaveHandler: () => void
     handleDeleteSupply: (id: string) => void
+    onClickQuotationHandler: () => void
 }
 
 
 export const useSalesAddHook = (props: IPurchaseAddHookProps): ISalesAddHook => {
     const [providerList, setProviderList] = useState<IProviderList[]>([])
 
-    const [purchaseDataState, setPurchaseDataState] = useState<IFormData>({
+    const [salesDataState, setSalesDataState] = useState<IFormData>({
         idProvider: 0,
         idStateSales: 1,
         interest: 0,
@@ -71,7 +73,7 @@ export const useSalesAddHook = (props: IPurchaseAddHookProps): ISalesAddHook => 
         await props.salesAddStore.productListAction()
         props.uiHook.hideLoading()
 
-        const result = await props.movementAddStore.getEntityListAction()
+        const result = await props.movementAddStore.getEntityListAction("2")
 
         if (result.isError) return
 
@@ -86,8 +88,8 @@ export const useSalesAddHook = (props: IPurchaseAddHookProps): ISalesAddHook => 
             }
         }))
 
-        setPurchaseDataState({
-            ...purchaseDataState,
+        setSalesDataState({
+            ...salesDataState,
             idProvider: result.data[0].idEntidad
         })
     }
@@ -95,45 +97,43 @@ export const useSalesAddHook = (props: IPurchaseAddHookProps): ISalesAddHook => 
 
     const onChangePurchaseDateHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
         const { value, name } = event.target
-        setPurchaseDataState({
-            ...purchaseDataState,
+        setSalesDataState({
+            ...salesDataState,
             [name]: value,
         })
     }
 
     const onChangeCheckboxHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { checked, name } = event.target;
-        setPurchaseDataState({
-            ...purchaseDataState,
+        setSalesDataState({
+            ...salesDataState,
             [name]: checked,
         });
     };
 
     const onAddSupplyItemHandler = (supplyItem: ISupplyItem[]) => {
-        setPurchaseDataState({
-            ...purchaseDataState,
-            supplyItem
-        })
+        console.log(supplyItem)
+
 
         const total = supplyItem.reduce((sum, item) => {
             return sum + item.mont * parseInt(item.quantity, 10);
         }, 0);
-
-        setPurchaseDataState({
-            ...purchaseDataState,
+        setSalesDataState({
+            ...salesDataState,
+            supplyItem,
             totalMont: total
         })
     }
 
     const onAddInputFilesHanlder = (files: File[]) => {
-        setPurchaseDataState(prevData => ({
+        setSalesDataState(prevData => ({
             ...prevData,
             files: [...prevData.files, ...files]
         }))
     }
 
     const onRemoveFileHandler = (fileToDelete: File) => {
-        setPurchaseDataState(prevData => ({
+        setSalesDataState(prevData => ({
             ...prevData,
             files: prevData.files.filter(file => file !== fileToDelete)
         }))
@@ -142,42 +142,57 @@ export const useSalesAddHook = (props: IPurchaseAddHookProps): ISalesAddHook => 
     }
 
     const handleDeleteSupply = (id: string) => {
-        const supplyItemsFound = purchaseDataState.supplyItem.filter(supply => supply.id !== id)
+        const supplyItemsFound = salesDataState.supplyItem.filter(supply => supply.id !== id)
         const total = supplyItemsFound.reduce((sum, item) => {
             return sum + item.mont * parseInt(item.quantity, 10);
         }, 0);
 
-        setPurchaseDataState({
-            ...purchaseDataState,
+        setSalesDataState({
+            ...salesDataState,
             totalMont: total
         })
     }
 
     const onSaveHandler = async () => {
-        const objPurchase: any = {
-            idProveedor: purchaseDataState.idProvider.toString(),
-            detallesCompra: purchaseDataState.supplyItem.map(item => (
+        const objPurchase: IVentaPost = {
+            idCliente: "2",
+            idEstadoVenta: salesDataState.idStateSales,
+            detallesVenta: salesDataState.supplyItem.map(item => (
                 {
                     cantidad: Number(item.quantity),
-                    idInsumo: item.id,
+                    idProducto: item.id,
+                    entregados: 0,
+                    precio: item.mont
                 }
             )),
             pagos: [{
-                idMedioPago: purchaseDataState.idPaymentMethod,
-                monto: purchaseDataState.mont,
+                idMedioPago: salesDataState.idPaymentMethod,
+                monto: salesDataState.mont,
                 idEntidadPago: 1
             }],
-            montoTotal: purchaseDataState.totalMont,
-            idUsuario: "administrador",
-            saldoPendiente: purchaseDataState.totalMont - purchaseDataState.mont
+            montoTotal: salesDataState.totalMont,
+            saldoPendiente: salesDataState.totalMont - salesDataState.mont,
+            cuotas: props.salesAddStore.quatationList,
+            archivos: salesDataState.files
         }
-        objPurchase
         props.uiHook.showLoading()
-        // await props.purchaseAddStore.createPurchaseAction(objPurchase, purchaseDataState.ready, purchaseDataState.files)
+        await props.salesAddStore.createSalesAction(objPurchase, salesDataState.files)
         props.uiHook.hideLoading()
     }
+
+    const onClickQuotationHandler = () => {
+        const objQuotation: IQuotation = {
+            cantidadCuotas: salesDataState.quantityCuote,
+            montoVenta: salesDataState.totalMont,
+            interes: salesDataState.interest
+        }
+        props.uiHook.showLoading()
+        props.salesAddStore.getQuotationAction(objQuotation)
+        props.uiHook.hideLoading()
+    }
+
     return {
-        purchaseDataState,
+        purchaseDataState: salesDataState,
         providerList,
         onAddSupplyItemHandler,
         onChangePurchaseDateHandler,
@@ -185,6 +200,7 @@ export const useSalesAddHook = (props: IPurchaseAddHookProps): ISalesAddHook => 
         onAddInputFilesHanlder,
         onRemoveFileHandler,
         onSaveHandler,
-        handleDeleteSupply
+        handleDeleteSupply,
+        onClickQuotationHandler
     }
 }

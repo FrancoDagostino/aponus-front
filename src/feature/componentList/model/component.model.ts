@@ -12,3 +12,19 @@ export interface IListadoComponentes {
     idFraccionamiento: string;
     idAlmacenamiento: string;
 }
+
+
+interface ICell {
+    header: string;
+    value: string | number;
+    type: "string" | "number";
+}
+
+export interface IRow {
+    idInsumo: string;
+    cellList: ICell[];
+}
+
+export interface IRowContainer {
+    rowList: IRow[];
+}

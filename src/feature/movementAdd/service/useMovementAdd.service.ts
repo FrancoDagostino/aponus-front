@@ -11,7 +11,7 @@ export interface IMovementAddServiceProps {
 export interface IMovementAddService {
     postCreateNewMovement: (dataInput: IFormData) => Promise<TResponse<null, null>>
     getSupplyList: () => Promise<TResponse<ISuppliesList[], null>>
-    getProviderList: () => Promise<TResponse<IEntity[], null>>
+    getProviderList: (id: string) => Promise<TResponse<IEntity[], null>>
 }
 
 export const useMovementAddService = (props: IMovementAddServiceProps): IMovementAddService => {
@@ -49,8 +49,8 @@ export const useMovementAddService = (props: IMovementAddServiceProps): IMovemen
         return createResponseUtil.error(response.data, response.status)
     }
 
-    const getProviderList: IMovementAddService["getProviderList"] = async () => {
-        const url = `${urlBase}/Entities/List/2`
+    const getProviderList: IMovementAddService["getProviderList"] = async (id: string) => {
+        const url = `${urlBase}/Entities/List/${id}/0/0`
         const response = await props.restClient.get<IEntity[], null>(url, undefined)
         if (response.isSuccess) return createResponseUtil.success(response.data, response.status)
 

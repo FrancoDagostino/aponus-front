@@ -11,10 +11,12 @@ export interface IEntityListService {
     getEntityList: () => Promise<TResponse<IEntity[], null>>
     getEntityListById: (id: number) => Promise<TResponse<IEntity, null>>
     deleteEntity: (idEntity: number) => Promise<TResponse<null, null>>
+
 }
 
 
 export const useEntityListService = (props: IEntityListServiceProps): IEntityListService => {
+
 
     const getEntityList: IEntityListService["getEntityList"] = async () => {
 
@@ -43,6 +45,6 @@ export const useEntityListService = (props: IEntityListServiceProps): IEntityLis
     return {
         getEntityList,
         getEntityListById,
-        deleteEntity
+        deleteEntity,
     }
 }

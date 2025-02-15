@@ -19,6 +19,7 @@ import { ProductAddStack } from "./feature/productadd/stacks/productAdd.stacks";
 import { PucharseListStack } from "./feature/purchaseList/stacks/pucharseList.stacks";
 import { PucharseAddStack } from "./feature/purchaseAdd/stacks/purchaseAdd.stacks";
 import { SalesAddStack } from "./feature/sales/stacks/salesAdd.stacks";
+import { SaleListStack } from "./feature/salesList/stacks/salesList.stacks";
 
 interface IRouterProps {
     stores: IStores
@@ -40,6 +41,7 @@ export const Router: FC<IRouterProps> = ({
         pucharseListStore,
         pucharseAddStore,
         salesAddStore,
+        salesListStore,
         uiHook
 
     },
@@ -89,7 +91,8 @@ export const Router: FC<IRouterProps> = ({
                                                 ProductAddStack({ permissions: permissions.productAdd, rol: authStore.rol, productAddStore, uiHook }),
                                                 PucharseListStack({ permissions: permissions.purchaseList, rol: authStore.rol, pucharseListStore, uiHook }),
                                                 PucharseAddStack({ permissions: permissions.purchaseAdd, rol: authStore.rol, pucharseAddStore, uiHook, movementAddStore }),
-                                                SalesAddStack({ permissions: permissions.productAdd, movementAddStore, rol: authStore.rol, salesAddStore, uiHook })
+                                                SalesAddStack({ permissions: permissions.productAdd, movementAddStore, rol: authStore.rol, salesAddStore, uiHook }),
+                                                SaleListStack({ salesListStore, uiHook })
                                             ]
                                         }
                                     </Switch>

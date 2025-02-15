@@ -23,3 +23,28 @@ export interface IEntity {
     categoria: { idCategoria: number, nombreCategoria: string };
     idEntidad: number;
 }
+
+
+
+
+
+
+
+
+
+
+export interface IReportResult {
+    rowList: IRow[]
+}
+
+export interface IRow {
+    idInsumo: string
+    cellList: ICell[]
+}
+
+export interface ICell {
+    header: string
+    value: string | number
+    type: 'string' | 'number'
+}
+

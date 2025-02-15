@@ -1,5 +1,6 @@
 import { IRestClient, urlBase } from "../../../utils/clients/useRest.client";
 import { createResponseUtil, TResponse } from "../../../utils/response.util";
+import { ICountries, IGeoCity, IGeoProvice } from "../../entityList/model/EntityList.model";
 import { IFormData } from "../hook/useModule.hook";
 import { IEntity } from "../model/entityAdd.model";
 
@@ -11,11 +12,33 @@ export interface IEntityAddService {
     newEntity: (dataInput: IFormData) => Promise<TResponse<null, null>>;
     editEntity: (dataInput: IFormData, idEntity: number) => Promise<TResponse<null, null>>
     getEntity: (entityId: string) => Promise<TResponse<IEntity[], null>>
+    getPaisList: () => Promise<TResponse<ICountries, null>>
+    getProvinceList: (geonameId: string) => Promise<TResponse<IGeoProvice[], null>>
+    getCityList: (countryCode: string, adminCode: string) => Promise<TResponse<IGeoCity, null>>
 }
 
 export const useEntityAddService = (props: IEntityAddServiceProps): IEntityAddService => {
 
 
+    const getCityList = async (countryCode: string, adminCode: string) => {
+        const url = `${urlBase}/GeoNames/Cities/${countryCode}/${adminCode}`
+        const response = await props.restClient.get<IGeoCity, null>(url, undefined)
+        if (response.isSuccess) return createResponseUtil.success(response.data, response.status)
+        return createResponseUtil.error(response.data, response.status)
+    }
+    const getProvinceList = async (geonameId: string) => {
+        const url = `${urlBase}/GeoNames/Provinces_States/${geonameId}`
+        const response = await props.restClient.get<IGeoProvice[], null>(url, undefined)
+        if (response.isSuccess) return createResponseUtil.success(response.data, response.status)
+        return createResponseUtil.error(response.data, response.status)
+    }
+
+    const getPaisList = async () => {
+        const url = `${urlBase}/GeoNames/Countries`
+        const response = await props.restClient.get<ICountries, null>(url, undefined)
+        if (response.isSuccess) return createResponseUtil.success(response.data, response.status)
+        return createResponseUtil.error(response.data, response.status)
+    }
     const newEntity = async (dataInput: IFormData) => {
         const url = `${urlBase}/Entities/Save`
         const body = {
@@ -49,6 +72,8 @@ export const useEntityAddService = (props: IEntityAddServiceProps): IEntityAddSe
         return createResponseUtil.success(response.data, response.status)
     }
 
+
+
     // /Types/List
     // /Categories/List/idTipo
 
@@ -56,7 +81,10 @@ export const useEntityAddService = (props: IEntityAddServiceProps): IEntityAddSe
     return {
         newEntity,
         getEntity,
-        editEntity
+        editEntity,
+        getPaisList,
+        getProvinceList,
+        getCityList
     }
 
 }

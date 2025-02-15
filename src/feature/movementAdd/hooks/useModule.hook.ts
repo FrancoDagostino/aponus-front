@@ -61,7 +61,7 @@ export const useMovementAddHook = (props: IMovementAddHookProps): IMovementAddHo
         await props.movementAddStore.getSupplyListAction()
         props.uiHook.hideLoading()
 
-        const result = await props.movementAddStore.getEntityListAction()
+        const result = await props.movementAddStore.getEntityListAction("1")
 
         if (result.isError) return
 

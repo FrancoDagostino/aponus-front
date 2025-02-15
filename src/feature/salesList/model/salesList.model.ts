@@ -1,4 +1,4 @@
-export interface IExpedientJudicial {
+export interface ISale {
     idVenta: number;
     idCliente: number;
     fechaHora: string;

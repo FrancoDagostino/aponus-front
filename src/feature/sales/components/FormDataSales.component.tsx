@@ -6,7 +6,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 import { IFormData } from "../hooks/useSalesAdd.hook";
-import { IBilling, IProduct } from "../model/sales.model";
+import { IBilling, IProduct, IQuatationList } from "../model/sales.model";
+import { QuatationListComponent } from "./QuatationList.component";
 
 interface ISupplyItem {
     id: string;
@@ -19,6 +20,7 @@ interface IFormDataPurchaseComponentProps {
     providerList: IProviderList[],
     availableSupplies: IProduct[],
     formData: IFormData
+    quatationList: IQuatationList[]
     onChangePurchaseDateHandler: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => void
     onAddSupplyItemHandler: (supplyItem: ISupplyItem[]) => void
     onChangeCheckboxHandler: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -26,6 +28,7 @@ interface IFormDataPurchaseComponentProps {
     onAddInputFilesHanlder: (files: File[]) => void
     onSaveHandler: () => void
     handleDeleteSupply: (id: string) => void
+    onClickQuotationHandler: () => void
 }
 
 const paymentMethods = [
@@ -91,7 +94,7 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
             <Grid container spacing={3} sx={{ mt: 2 }}>
                 <Grid item xs={12} md={6}>
                     <FormControl fullWidth sx={{ mb: 2 }}>
-                        <InputLabel id="destination-provider-label">Proveedor</InputLabel>
+                        <InputLabel id="destination-provider-label">Cliente</InputLabel>
                         <Select
                             labelId="destination-provider-label"
                             id="idProvider"
@@ -100,7 +103,7 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
                             label="Destination Provider"
                             onChange={props.onChangePurchaseDateHandler}
                         >
-                            <MenuItem value="0">Seleccionar Proveedor</MenuItem>
+                            <MenuItem value="0">Seleccionar Cliente</MenuItem>
                             {
                                 props.providerList.map(provider => (
                                     <MenuItem key={provider.id} value={provider.id}>{provider.name}</MenuItem>
@@ -174,6 +177,7 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
                         onChange={props.onChangePurchaseDateHandler}
                     />
                 </Grid>
+
                 <Grid item xs={12} md={6}>
                     <FormControl fullWidth sx={{ mb: 2 }}>
                         <InputLabel>Estado Venta</InputLabel>
@@ -209,7 +213,19 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
                         onChange={props.onChangePurchaseDateHandler}
                     />
                 </Grid>
-
+                <Grid item xs={12} md={6}>
+                    <Button
+                        variant="contained"
+                        onClick={props.onClickQuotationHandler}
+                    >
+                        Cotizar
+                    </Button>
+                </Grid>
+                <Grid item xs={12} md={12}>
+                    {props.quatationList.length > 0 && (
+                        <QuatationListComponent quatationList={props.quatationList} />
+                    )}
+                </Grid>
                 <Box
                     sx={{
                         border: '1px dashed rgba(255, 255, 255, 0.23)',
@@ -300,7 +316,7 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
                         ))}
                     </List>
                 </Grid>
-                <Grid item justifyContent={"flex-end"} xs={12}>
+                <Grid item justifyContent={"flex-end"} xs={12} marginBottom={5}>
                     <Button
                         variant="contained"
                         fullWidth

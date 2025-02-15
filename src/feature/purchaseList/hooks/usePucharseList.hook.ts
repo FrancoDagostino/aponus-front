@@ -59,7 +59,6 @@ export const usePurchaseListHook = (props: IPurchaseListHookProps): IPurchaseLis
     }
 
     const onViewPurchase = (row: IPucharse) => {
-        console.log(row)
         setPurchaseState(row)
         setIsOpenViewPucharse(true)
     }

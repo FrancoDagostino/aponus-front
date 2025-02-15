@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { IEntityAddStore } from "../store/useEntityAdd.store";
 import { IUiHook } from "../../ui/hooks/useUi.hook";
+import { ICountries } from "../../entityList/model/EntityList.model";
 
 
 export interface IFormData {
@@ -32,12 +33,26 @@ interface IEntityAddHookProps {
 
 interface IEntityAddHook {
     formData: IFormData
+    geoIds: IGeoNames
     onChangeFormDataHandler: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
     onSaveHandler: () => void
+    onChangeCountrie: (idGeoname: number, geoName: string) => void
+    onChangeProvince: (idGeoname: number, geoName: string, countryCode: string, adminCode: string) => void
+    onChangeCity: (idGeoname: number, geoName: string) => void
+}
+
+export interface IGeoNames {
+    geoIdCountry: number,
+    geoIdProvince: number,
+    geoIdCity: number
 }
 
 export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => {
-
+    const [geoIds, setGeoIds] = useState<IGeoNames>({
+        geoIdCountry: 0,
+        geoIdProvince: 0,
+        geoIdCity: 0,
+    })
     const [formData, setFormData] = useState<IFormData>({
         idEntidad: null,
         altura: "",
@@ -58,15 +73,25 @@ export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => 
         telefono3: ""
     })
 
-
     useEffect(() => {
-        if (props.entityId !== "0") {
-            onPreload()
-        }
+        onInit()
+
     }, [])
 
 
-    const onPreload = async () => {
+    const onInit = async () => {
+        props.uiHook.showLoading()
+        const resultCountry = await props.entityAddStore.getPaisList()
+        props.uiHook.hideLoading()
+
+        if (resultCountry.isError) return
+        if (props.entityId !== "0") {
+            props.uiHook.showLoading()
+            onPreload(resultCountry.data)
+            props.uiHook.hideLoading()
+        }
+    }
+    const onPreload = async (countrys: ICountries) => {
         props.uiHook.showLoading()
         const result = await props.entityAddStore.getNewEntityAction(props.entityId)
         props.uiHook.hideLoading()
@@ -75,6 +100,28 @@ export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => 
         const foundEntity = result.data.find(entity => entity.idEntidad === Number(props.entityId))
         if (foundEntity === undefined) return
 
+        const selectedCountry = countrys.geonames.find(
+            (c) => c.countryName.toUpperCase() === foundEntity.pais
+        )!;
+        props.uiHook.showLoading()
+        const resultProvince = await props.entityAddStore.getProvinceListAction(selectedCountry.geonameId.toString())
+        props.uiHook.hideLoading()
+        if (resultProvince.isError) return
+
+        const selectedProvince = resultProvince.data.find(province => province.toponymName.toUpperCase() === foundEntity.provincia)!
+
+        props.uiHook.showLoading()
+        const resultCity = await props.entityAddStore.getCityListAction(selectedProvince.countryCode, selectedProvince.adminCode1)
+        props.uiHook.hideLoading()
+        if (resultCity.isError) return
+
+        const selectedCity = resultCity.data.geonames.find(city => city.toponymName.toUpperCase() === foundEntity.ciudad)!
+
+        setGeoIds({
+            geoIdCountry: selectedCountry.geonameId,
+            geoIdCity: Number(selectedCity.geonameId),
+            geoIdProvince: Number(selectedProvince.geonameId)
+        })
         setFormData({
             idEntidad: Number(props.entityId),
             altura: foundEntity.altura,
@@ -94,7 +141,10 @@ export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => 
             telefono2: foundEntity.telefono2,
             telefono3: foundEntity.telefono3
         })
+
+
     }
+
 
 
 
@@ -107,6 +157,44 @@ export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => 
         })
     }
 
+    const onChangeCountrie = async (idGeoname: number, geoName: string) => {
+        setFormData({
+            ...formData,
+            pais: geoName
+        })
+        setGeoIds({
+            ...geoIds,
+            geoIdCountry: idGeoname
+        })
+        props.uiHook.showLoading()
+        await props.entityAddStore.getProvinceListAction(idGeoname.toString())
+        props.uiHook.hideLoading()
+    }
+
+    const onChangeProvince = async (idGeoname: number, geoName: string, countryCode: string, adminCode: string) => {
+        setFormData({
+            ...formData,
+            provincia: geoName
+        })
+        setGeoIds({
+            ...geoIds,
+            geoIdProvince: idGeoname
+        })
+        props.uiHook.showLoading()
+        await props.entityAddStore.getCityListAction(countryCode, adminCode)
+        props.uiHook.hideLoading()
+    }
+
+    const onChangeCity = async (idGeoname: number, geoName: string) => {
+        setFormData({
+            ...formData,
+            ciudad: geoName
+        })
+        setGeoIds({
+            ...geoIds,
+            geoIdCity: idGeoname
+        })
+    }
     const onSaveHandler = async () => {
         props.uiHook.showLoading()
         if (props.entityId !== "0") {
@@ -129,7 +217,11 @@ export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => 
 
     return {
         formData,
+        geoIds,
         onChangeFormDataHandler,
-        onSaveHandler
+        onSaveHandler,
+        onChangeCountrie,
+        onChangeProvince,
+        onChangeCity
     }
 }

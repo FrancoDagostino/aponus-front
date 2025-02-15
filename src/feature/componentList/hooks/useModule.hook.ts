@@ -36,7 +36,7 @@ export const useComponentListHook = (props: IComponentListModuleProps): ICompone
     const onChangeTabsHandler = async (idDescription: string) => {
         props.uiHook.showLoading()
         setIdDescriptionFounded(idDescription);
-        await props.componentListStore.getComponentListAction(Number(idDescription));
+        await props.componentListStore.getMockComponentListAction(Number(idDescription));
         props.uiHook.hideLoading()
     };
 
