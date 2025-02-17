@@ -31,7 +31,7 @@ export const SalesDetailSupplyComponent: FC<ISaleDetailSupplyComponentProps> = (
                     {props.details.map((detail) => (
                         <TableRow key={detail.idVenta}>
                             <TableCell sx={{ textAlign: "center" }}>
-                                {detail.idProducto}
+                                {detail.nombreProducto}
                             </TableCell>
                             <TableCell sx={{ textAlign: "center" }}>{detail.cantidad}</TableCell>
                             <TableCell sx={{ textAlign: "center" }}>{detail.precio}</TableCell>

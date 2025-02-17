@@ -43,6 +43,7 @@ export interface IEstadoCuota {
 export interface IDetallesVenta {
     idVenta: number;
     idProducto: string;
+    nombreProducto: string;
     cantidad: number;
     precio: number;
     subTotal: number;

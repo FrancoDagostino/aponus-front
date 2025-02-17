@@ -1,4 +1,4 @@
-import { IListadoCategorias, IListadoDescripciones } from "../model/category.model";
+import { IComponentDescription, IListadoCategorias, IListadoDescripciones } from "../model/category.model";
 import { ICategoryService } from "../services/useCategory.service"
 import { useState } from "react";
 import { createResultUtil, TResult } from "../../../utils/result.util";
@@ -7,12 +7,16 @@ import { createResultUtil, TResult } from "../../../utils/result.util";
 export interface ICategoryStore {
     categoryList: IListadoCategorias[];
     descriptionList: IListadoDescripciones[];
+    componentList: IComponentDescription[]
     getCategoryListAction: () => Promise<TResult<null, null>>;
     getDescriptionListAction: (idType: string) => Promise<TResult<IListadoDescripciones[], null>>;
     addDescriptionAction: (description: string, idType: string) => Promise<TResult<null, null>>;
     addCategoryAction: (category: string, idType: string) => Promise<TResult<null, null>>;
     updateDescriptionAction: (idDescription: number, description: string) => Promise<TResult<null, null>>;
     deleteCategoryTypeAction: (idType: string) => Promise<TResult<null, null>>
+    deleteComponentAction: (idAlmacenamiento: string) => Promise<TResult<null, null>>;
+    getComponentListAction: () => Promise<TResult<null, null>>;
+    addComponentAction: (description: string, idType: string) => Promise<TResult<null, null>>;
 }
 
 
@@ -24,6 +28,30 @@ export const useCategoryStore = (props: ICategoryStoreProps): ICategoryStore => 
     const [categoryList, setCategoryList] = useState<IListadoCategorias[]>([]);
 
     const [descriptionList, setDescriptionList] = useState<IListadoDescripciones[]>([]);
+
+    const [componentList, setComponentList] = useState<IComponentDescription[]>([]);
+
+
+
+    const addComponentAction: ICategoryStore["addComponentAction"] = async (description: string, idType: string) => {
+        const result = await props.categoryService.addComponent(description, idType)
+        if (result.isError) return createResultUtil.error(result.data)
+        return createResultUtil.success(null)
+    }
+
+    const getComponentListAction: ICategoryStore["getComponentListAction"] = async () => {
+        const result = await props.categoryService.getComponentList()
+        if (result.isError) return createResultUtil.error(result.data)
+        setComponentList(result.data)
+        return createResultUtil.success(null)
+    }
+
+    const deleteComponentAction: ICategoryStore["deleteComponentAction"] = async (idAlmacenamiento: string) => {
+        const result = await props.categoryService.deleteComponent(idAlmacenamiento)
+        if (result.isError) return createResultUtil.error(result.data)
+        setComponentList(componentList.filter(component => component.idAlmacenamiento !== idAlmacenamiento))
+        return createResultUtil.success(null)
+    }
 
 
     const getCategoryListAction: ICategoryStore["getCategoryListAction"] = async () => {
@@ -78,11 +106,15 @@ export const useCategoryStore = (props: ICategoryStoreProps): ICategoryStore => 
     return {
         categoryList,
         descriptionList,
+        componentList,
         addCategoryAction,
         addDescriptionAction,
         getCategoryListAction,
         getDescriptionListAction,
         updateDescriptionAction,
-        deleteCategoryTypeAction
+        deleteCategoryTypeAction,
+        getComponentListAction,
+        deleteComponentAction,
+        addComponentAction
     }
 }

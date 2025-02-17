@@ -1,4 +1,4 @@
-import { IListadoCategorias, IListadoDescripciones } from "../model/category.model";
+import { IComponentDescription, IListadoCategorias, IListadoDescripciones } from "../model/category.model";
 import { createResponseUtil, TResponse } from '../../../utils/response.util';
 import { IRestClient, urlBase } from "../../../utils/clients/useRest.client";
 
@@ -36,10 +36,35 @@ export interface ICategoryService {
     addDescription: (description: string, idType: string) => Promise<TResponse<void, null>>;
     updateDescription: (idDescription: number, description: string) => Promise<TResponse<void, null>>;
     deleteCategoryType: (idType: string) => Promise<TResponse<null, null>>
-
+    getComponentList: () => Promise<TResponse<IComponentDescription[], null>>;
+    deleteComponent: (idAlmacenamiento: string) => Promise<TResponse<null, null>>;
+    addComponent: (description: string, idType: string) => Promise<TResponse<void, null>>;
 }
 
 export const useCategoryService = (props: IStockListServiceProps): ICategoryService => {
+
+
+    const addComponent: ICategoryService["addComponent"] = async (description: string, idDescription: string) => {
+        console.log("llego")
+        const url = `${urlBase}/Categories/Supplies/Descriptions/Save`
+        const result = await props.restClient.post<void, null>(url, { nombreDescripcion: description, IdDescripcion: idDescription }, undefined)
+        if (result.isSuccess) return createResponseUtil.success(result.data, result.status)
+        return createResponseUtil.error(result.data, result.status)
+    }
+
+    const deleteComponent: ICategoryService["deleteComponent"] = async (idAlmacenamiento: string) => {
+        const url = `${urlBase}/Categories/Supplies/Descriptions/${idAlmacenamiento}/Delete`
+        const result = await props.restClient.get<null, null>(url, undefined)
+        if (result.isSuccess) return createResponseUtil.success(result.data, result.status)
+        return createResponseUtil.error(result.data, result.status)
+    }
+
+    const getComponentList: ICategoryService["getComponentList"] = async () => {
+        const url = `${urlBase}/Categories/Supplies/Descriptions/List`
+        const result = await props.restClient.get<IComponentDescription[], null>(url, undefined)
+        if (result.isSuccess) return createResponseUtil.success(result.data, result.status)
+        return createResponseUtil.error(result.data, result.status)
+    }
 
     const deleteCategoryType: ICategoryService["deleteCategoryType"] = async (idType: string) => {
         const url = `${urlBase}/Categories/Products/Types/${idType}/Delete`
@@ -110,6 +135,9 @@ export const useCategoryService = (props: IStockListServiceProps): ICategoryServ
         getCategoryList,
         getDescriptionList,
         updateDescription,
-        deleteCategoryType
+        deleteCategoryType,
+        getComponentList,
+        deleteComponent,
+        addComponent
     }
 } 

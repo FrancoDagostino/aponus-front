@@ -23,17 +23,13 @@ export const useMovementAddService = (props: IMovementAddServiceProps): IMovemen
         formData.append("usuarioCreacion", "Prueba");
         formData.append("destino", dataInput.destinationProcess);
         formData.append("origen", dataInput.sourceProcess);
-        formData.append("idProveedorOrigen", "-1");
         formData.append("idProveedorDestino", "1");
-        dataInput.supplyItem.forEach(item => {
-            formData.append("suministros[]", JSON.stringify({
-                idSuministro: item.id,
-                cantidad: item.quantity
-            }));
+        dataInput.supplyItem.forEach((item, index) => {
+            formData.append(`Suministros[${index}].idSuministro`, item.id);
+            formData.append(`Suministros[${index}].cantidad`, item.quantity);
         });
-
         dataInput.files.forEach(file => {
-            formData.append("archivos[]", file);
+            formData.append("archivos", file);
         });
 
         const response = await props.restClient.post<null, null>(url, formData, undefined);

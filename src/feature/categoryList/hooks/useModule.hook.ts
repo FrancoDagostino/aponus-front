@@ -15,6 +15,12 @@ interface IAddOrUpdateCategory {
     category: string
 }
 
+interface IAddOrUpdateComponent {
+    labelModal: string;
+    idDescription: string;
+    component: string
+}
+
 interface ICategoryModule {
     isOpen: boolean
     addOrUpdateCategory: IAddOrUpdateCategory
@@ -23,10 +29,22 @@ interface ICategoryModule {
     onAddOrUpdateHandler: (category: string) => Promise<void>
     onSetIsModal: (isOpen: boolean) => void
     onRemoveIdTypeCategoryHandler: (idType: string) => Promise<void>
+    onRemoveComponentHandler: (idAlmacenamiento: string) => Promise<void>
+    isOpenComponent: boolean
+    addOrUpdateComponent: IAddOrUpdateComponent
+    onOpenModalComponentHandler: (labelModal: string, idComponent: string) => void
+    onAddOrUpdateComponentHandler: (component: string) => Promise<void>
+    onCloseModalComponentHandler: () => void
 }
 export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule => {
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isOpenComponent, setIsOpenComponent] = useState<boolean>(false);
+    const [addOrUpdateComponent, setAddOrUpdateComponent] = useState<IAddOrUpdateComponent>({
+        idDescription: '0',
+        labelModal: 'Nueva Componente',
+        component: ''
+    })
     const [addOrUpdateCategory, setAddOrUpdateCategory] = useState<IAddOrUpdateCategory>({
         idCategory: '',
         labelModal: 'Nueva Categoría',
@@ -40,6 +58,7 @@ export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule 
     const onInitHandler = () => {
         props.uiHook.showLoading()
         props.categoryStore.getCategoryListAction();
+        props.categoryStore.getComponentListAction();
         props.uiHook.hideLoading()
 
     };
@@ -56,6 +75,16 @@ export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule 
         })
         setIsOpen(true)
     }
+
+    const onOpenModalComponentHandler = (labelModal: string, idComponent: string) => {
+        setAddOrUpdateComponent({
+            ...addOrUpdateComponent,
+            labelModal,
+            idDescription: idComponent === "" ? "0" : idComponent
+        })
+        setIsOpenComponent(true)
+    }
+
     const onCloseModalHandler = () => {
         setIsOpen(false);
         setAddOrUpdateCategory({
@@ -65,8 +94,16 @@ export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule 
         })
     };
 
+    const onCloseModalComponentHandler = () => {
+        setIsOpenComponent(false)
+        setAddOrUpdateComponent({
+            component: '',
+            labelModal: 'Nueva Componente',
+            idDescription: ''
+        })
+    }
+
     const onAddOrUpdateHandler = async (category: string) => {
-        console.log('se llamo')
         setIsOpen(false)
         props.uiHook.showLoading()
         await props.categoryStore.addCategoryAction(category, addOrUpdateCategory.idCategory);
@@ -80,6 +117,20 @@ export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule 
         props.uiHook.hideLoading()
     }
 
+    const onRemoveComponentHandler = async (idAlmacenamiento: string) => {
+        props.uiHook.showLoading()
+        await props.categoryStore.deleteComponentAction(idAlmacenamiento)
+        props.uiHook.hideLoading()
+    }
+
+    const onAddOrUpdateComponentHandler = async (component: string) => {
+        setIsOpenComponent(false)
+        props.uiHook.showLoading()
+        await props.categoryStore.addComponentAction(component, addOrUpdateComponent.idDescription)
+        await props.categoryStore.getComponentListAction()
+        props.uiHook.hideLoading()
+    }
+
 
     return {
         addOrUpdateCategory,
@@ -88,6 +139,12 @@ export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule 
         onCloseModalHandler,
         onOpenModalHandler,
         onSetIsModal,
-        onRemoveIdTypeCategoryHandler
+        onRemoveIdTypeCategoryHandler,
+        onRemoveComponentHandler,
+        isOpenComponent,
+        addOrUpdateComponent,
+        onOpenModalComponentHandler,
+        onAddOrUpdateComponentHandler,
+        onCloseModalComponentHandler
     }
 }
