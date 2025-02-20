@@ -40,7 +40,15 @@ export const useEntityListHook = (props: IEntityListHookProps): IEntityListHook 
         pais: "",
         provincia: "",
         telefono1: "",
-        telefono3: ""
+        telefono3: "",
+        tipo: {
+            idTipo: 0,
+            nombre: ""
+        },
+        categoria: {
+            idCategoria: 0,
+            nombreCategoria: ""
+        }
     })
 
     useEffect(() => {
