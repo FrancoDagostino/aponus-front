@@ -29,11 +29,11 @@ export const EntityTableListComponent: FC<IEntityListComponentProps> = (props) =
         },
         {
             name: "Tipo",
-            cell: (row) => <p>{row.idTipo}</p>,
+            cell: (row) => <p>{row.tipo.nombre}</p>,
         },
         {
             name: "Categoría",
-            cell: (row) => <p>{row.idCategoria}</p>,
+            cell: (row) => <p>{row.categoria.nombreCategoria}</p>,
         },
         {
             name: "Contacto",

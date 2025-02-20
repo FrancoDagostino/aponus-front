@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { IEntityAddStore } from "../store/useEntityAdd.store";
 import { IUiHook } from "../../ui/hooks/useUi.hook";
 import { ICountries } from "../../entityList/model/EntityList.model";
+import { SelectChangeEvent } from "@mui/material";
 
 
 export interface IFormData {
@@ -22,6 +23,8 @@ export interface IFormData {
     email: string;
     idFiscal: string;
     idEntidad: null | number
+    idTipo: number
+    idCategoria: number
 }
 
 interface IEntityAddHookProps {
@@ -34,11 +37,12 @@ interface IEntityAddHookProps {
 interface IEntityAddHook {
     formData: IFormData
     geoIds: IGeoNames
-    onChangeFormDataHandler: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+    onChangeFormDataHandler: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => void
     onSaveHandler: () => void
     onChangeCountrie: (idGeoname: number, geoName: string) => void
     onChangeProvince: (idGeoname: number, geoName: string, countryCode: string, adminCode: string) => void
     onChangeCity: (idGeoname: number, geoName: string) => void
+    onChangeIdTipo: (idTipo: number) => void
 }
 
 export interface IGeoNames {
@@ -70,7 +74,9 @@ export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => 
         provincia: "",
         telefono1: "",
         telefono2: "",
-        telefono3: ""
+        telefono3: "",
+        idTipo: 1,
+        idCategoria: 0
     })
 
     useEffect(() => {
@@ -139,7 +145,9 @@ export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => 
             provincia: foundEntity.provincia,
             telefono1: foundEntity.telefono1,
             telefono2: foundEntity.telefono2,
-            telefono3: foundEntity.telefono3
+            telefono3: foundEntity.telefono3,
+            idTipo: foundEntity.idTipo,
+            idCategoria: foundEntity.idCategoria
         })
 
 
@@ -148,14 +156,26 @@ export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => 
 
 
 
-
-    const onChangeFormDataHandler = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const onChangeFormDataHandler = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => {
 
         setFormData({
             ...formData,
-            [e.target.name]: e.target.value
+            [event.target.name]: event.target.value
         })
     }
+
+
+    const onChangeIdTipo = async (idTipo: number) => {
+        props.uiHook.showLoading()
+        const result = await props.entityAddStore.getCategoriaListAction(idTipo)
+        props.uiHook.hideLoading()
+        if (result.isError) return
+        setFormData({
+            ...formData,
+            idTipo: idTipo,
+        })
+    }
+
 
     const onChangeCountrie = async (idGeoname: number, geoName: string) => {
         setFormData({
@@ -222,6 +242,7 @@ export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => 
         onSaveHandler,
         onChangeCountrie,
         onChangeProvince,
-        onChangeCity
+        onChangeCity,
+        onChangeIdTipo
     }
 }

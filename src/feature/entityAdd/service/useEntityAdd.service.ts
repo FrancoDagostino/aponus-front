@@ -2,7 +2,7 @@ import { IRestClient, urlBase } from "../../../utils/clients/useRest.client";
 import { createResponseUtil, TResponse } from "../../../utils/response.util";
 import { ICountries, IGeoCity, IGeoProvice } from "../../entityList/model/EntityList.model";
 import { IFormData } from "../hook/useModule.hook";
-import { IEntity } from "../model/entityAdd.model";
+import { ICategoria, IEntity } from "../model/entityAdd.model";
 
 interface IEntityAddServiceProps {
     restClient: IRestClient
@@ -15,9 +15,18 @@ export interface IEntityAddService {
     getPaisList: () => Promise<TResponse<ICountries, null>>
     getProvinceList: (geonameId: string) => Promise<TResponse<IGeoProvice[], null>>
     getCityList: (countryCode: string, adminCode: string) => Promise<TResponse<IGeoCity, null>>
+    getCategoriaList: (idTipo: number) => Promise<TResponse<ICategoria[], null>>
 }
 
 export const useEntityAddService = (props: IEntityAddServiceProps): IEntityAddService => {
+
+
+    const getCategoriaList = async (idTipo: number) => {
+        const url = `${urlBase}/Entities/Categories/List/${idTipo}`
+        const response = await props.restClient.get<ICategoria[], null>(url, undefined)
+        if (response.isSuccess) return createResponseUtil.success(response.data, response.status)
+        return createResponseUtil.error(response.data, response.status)
+    }
 
 
     const getCityList = async (countryCode: string, adminCode: string) => {
@@ -84,7 +93,8 @@ export const useEntityAddService = (props: IEntityAddServiceProps): IEntityAddSe
         editEntity,
         getPaisList,
         getProvinceList,
-        getCityList
+        getCityList,
+        getCategoriaList
     }
 
 }

@@ -1,7 +1,7 @@
 import { createResultUtil, TResult } from '../../../utils/result.util';
 import { IEntityAddService } from "../service/useEntityAdd.service";
 import { IFormData } from "../hook/useModule.hook";
-import { IEntity } from '../model/entityAdd.model';
+import { IEntity, ICategoria } from '../model/entityAdd.model';
 import { useState } from 'react';
 import { ICountries, IGeoCity, IGeoProvice } from '../../entityList/model/EntityList.model';
 
@@ -9,12 +9,14 @@ export interface IEntityAddStore {
     countryListState: ICountries
     provinceListState: IGeoProvice[]
     cityListState: IGeoCity
+    categoriaListState: ICategoria[]
     addNewEntityAction: (dataInput: IFormData) => Promise<TResult<null, null>>
     getNewEntityAction: (entityId: string) => Promise<TResult<IEntity[], null>>
     editEntityAction: (dataInput: IFormData, idEntity: number) => Promise<TResult<null, null>>
     getPaisList: () => Promise<TResult<ICountries, null>>
     getProvinceListAction: (geonameId: string) => Promise<TResult<IGeoProvice[], null>>
     getCityListAction: (countryCode: string, adminCode: string) => Promise<TResult<IGeoCity, null>>
+    getCategoriaListAction: (idTipo: number) => Promise<TResult<ICategoria[], null>>
 }
 
 interface IEntityAddStoreProps {
@@ -32,6 +34,8 @@ export const useEntityAddStore = (props: IEntityAddStoreProps): IEntityAddStore 
     const [cityListState, setCityListState] = useState<IGeoCity>({
         geonames: []
     })
+
+    const [categoriaListState, setCategoriaListState] = useState<ICategoria[]>([])
 
     const getCityListAction: IEntityAddStore["getCityListAction"] = async (countryCode: string, adminCode: string) => {
         const result = await props.entityAddService.getCityList(countryCode, adminCode)
@@ -70,16 +74,26 @@ export const useEntityAddStore = (props: IEntityAddStoreProps): IEntityAddStore 
         return createResultUtil.success(null)
     }
 
+    const getCategoriaListAction = async (idTipo: number) => {
+        const result = await props.entityAddService.getCategoriaList(idTipo)
+        if (result.isError) return createResultUtil.error(null)
+        setCategoriaListState(result.data)
+        return createResultUtil.success(result.data)
+    }
+
+
 
     return {
         countryListState,
         provinceListState,
         cityListState,
+        categoriaListState,
         getCityListAction,
         getProvinceListAction,
         getPaisList,
         addNewEntityAction,
         getNewEntityAction,
-        editEntityAction
+        editEntityAction,
+        getCategoriaListAction
     }
 }

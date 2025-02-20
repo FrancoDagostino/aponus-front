@@ -25,6 +25,12 @@ export interface IEntity {
 }
 
 
+export interface ICategoria {
+    idCategoria: number;
+    nombreCategoria: string;
+}
+
+
 
 
 

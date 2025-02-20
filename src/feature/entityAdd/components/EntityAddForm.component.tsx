@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { TextField, Button, Grid, Typography, FormControl, InputLabel, MenuItem, Select } from '@mui/material';
+import { TextField, Button, Grid, Typography, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent } from '@mui/material';
 import { IFormData, IGeoNames } from '../hook/useModule.hook';
 import { ICountries, IGeoCity, IGeoProvice } from '../../entityList/model/EntityList.model';
-
+import { ICategoria } from '../model/entityAdd.model';
 
 
 interface IEntityAddFormProps {
@@ -11,11 +11,13 @@ interface IEntityAddFormProps {
     geoIds: IGeoNames
     provinceListState: IGeoProvice[]
     cityListState: IGeoCity
-    onChangeFormData: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+    categoriaListState: ICategoria[]
+    onChangeFormData: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | SelectChangeEvent<string>) => void
     onSaveHandler: () => void
     onChangeCountrie: (idGeoname: number, geoName: string) => void
     onChangeProvince: (idGeoname: number, geoName: string, countryCode: string, adminCode: string) => void
     onChangeCity: (idGeoname: number, geoName: string) => void
+    onChangeIdTipo: (idTipo: number) => void
 }
 
 export const EntityAddFormComponent: FC<IEntityAddFormProps> = (props) => {
@@ -149,6 +151,46 @@ export const EntityAddFormComponent: FC<IEntityAddFormProps> = (props) => {
                     </Grid>
                     <Grid item xs={12} sm={6} md={4} lg={3}>
                         <TextField fullWidth onChange={props.onChangeFormData} value={props.formData.telefono3} label="Teléfono 3" name="telefono3" variant="outlined" />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <FormControl fullWidth sx={{ mb: 2 }}>
+                            <InputLabel id="destination-provider-label">Seleccionar Tipo</InputLabel>
+                            <Select
+                                labelId="destination-provider-label"
+                                id="idTipo"
+                                name="idTipo"
+                                value={props.formData.idTipo.toString()}
+                                label="Seleccionar Tipo"
+                                onChange={(e) => props.onChangeIdTipo(Number(e.target.value))}
+                            >
+
+                                <MenuItem key={1} value={1}>{"Clientes"}</MenuItem>
+                                <MenuItem key={2} value={2}>{"Proveedores"}</MenuItem>
+
+                            </Select>
+                        </FormControl>
+                    </Grid>
+
+                    <Grid item xs={12} md={6}>
+                        <FormControl fullWidth sx={{ mb: 2 }}>
+                            <InputLabel id="destination-provider-label">Seleccionar Tipo</InputLabel>
+                            <Select
+                                labelId="destination-provider-label"
+                                id="idTipo"
+                                name="idCategoria"
+                                value={props.formData.idCategoria.toString()}
+                                label="Seleccionar Categoria"
+                                onChange={props.onChangeFormData}
+                            >
+
+                                {
+                                    props.categoriaListState.map(categoria => (
+                                        <MenuItem key={categoria.idCategoria} value={categoria.idCategoria}>{categoria.nombreCategoria}</MenuItem>
+                                    ))
+                                }
+
+                            </Select>
+                        </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={6} md={6} lg={6}>
                         <TextField fullWidth onChange={props.onChangeFormData} value={props.formData.email} label="Email" name="email" type="email" variant="outlined" required />

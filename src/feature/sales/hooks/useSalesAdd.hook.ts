@@ -73,13 +73,17 @@ export const useSalesAddHook = (props: IPurchaseAddHookProps): ISalesAddHook => 
         await props.salesAddStore.productListAction()
         props.uiHook.hideLoading()
 
-        const result = await props.movementAddStore.getEntityListAction("2")
+        const result = await props.movementAddStore.getEntityListAction("1")
 
         if (result.isError) return
 
         props.uiHook.showLoading()
         await props.salesAddStore.billingListAction()
         props.uiHook.hideLoading()
+
+
+        console.log(result.data)
+
 
         setProviderList(result.data.map(provider => {
             return {

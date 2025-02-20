@@ -9,15 +9,31 @@ export interface IEntity {
     calle: string;
     altura: string;
     codigoPostal: string;
+    barrio?: string;
     telefono1: string;
-    telefono3: string;
+    telefono2?: string;
+    telefono3?: string;
+    email?: string;
     idFiscal: string;
     fechaRegistro: string;
     idUsuarioRegistro: string;
     idTipo: number;
     idCategoria: number;
+    tipo: Tipo;
+    categoria: Categoria;
     idEntidad: number;
 }
+
+export interface Categoria {
+    idCategoria: number;
+    nombreCategoria: string;
+}
+
+export interface Tipo {
+    idTipo: number;
+    nombre: string;
+}
+
 
 export interface ICountries {
     geonames: IGeoname[];
