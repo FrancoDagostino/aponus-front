@@ -108,8 +108,13 @@ export const useMovementAddHook = (props: IMovementAddHookProps): IMovementAddHo
             supplyItem
         })
     }
-    const onSaveHandler = () => {
-        props.movementAddStore.createNewMovementAction(formData)
+    const onSaveHandler = async () => {
+        props.uiHook.showLoading()
+        const result = await props.movementAddStore.createNewMovementAction(formData)
+        props.uiHook.hideLoading()
+        if (result.isError) return
+        props.uiHook.onSetSnackbar("Movimiento creado correctamente", true)
+        props.onNavigate('/movementList')
     }
 
     return {

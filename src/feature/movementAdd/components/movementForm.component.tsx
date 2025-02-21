@@ -142,6 +142,8 @@ export const MovementFormComponent: FC<IMovementFormProps> = (props) => {
                             <MenuItem value="recibido">Recibido</MenuItem>
                             <MenuItem value="pintura">Pintura</MenuItem>
                             <MenuItem value="granallado">Granallado</MenuItem>
+                            <MenuItem value="proceso">Proceso</MenuItem>
+                            <MenuItem value="moldeado">Moldeado</MenuItem>
                         </Select>
                     </FormControl>
 
@@ -243,7 +245,7 @@ export const MovementFormComponent: FC<IMovementFormProps> = (props) => {
                         variant="contained"
                         fullWidth
                         onClick={() => onSaveHandler()}
-                        disabled={supplyList.length === 0 || props.formData.files.length === 0}
+                        disabled={supplyList.length === 0}
                     >
                         Guardar
                     </Button>
