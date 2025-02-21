@@ -114,7 +114,7 @@ export const useMovementAddHook = (props: IMovementAddHookProps): IMovementAddHo
         props.uiHook.hideLoading()
         if (result.isError) return
         props.uiHook.onSetSnackbar("Movimiento creado correctamente", true)
-        props.onNavigate('/movementList')
+        props.onNavigate('/movements-list')
     }
 
     return {
