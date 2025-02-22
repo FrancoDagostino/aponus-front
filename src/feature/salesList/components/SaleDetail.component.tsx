@@ -7,12 +7,16 @@ import {
     TableHead,
     TableRow,
     Paper,
+    Tooltip,
+    IconButton,
 } from '@mui/material';
 import { ISale } from '../model/salesList.model';
+import { CheckOutlined } from '@mui/icons-material';
 
 
 interface ISaleDetailComponentProps {
     paymentList: ISale["cuotas"]
+    onPayHandler: (idVenta: string, numeroCuota: number) => void
 }
 
 export const SaleDetailComponent: FC<ISaleDetailComponentProps> = (props) => {
@@ -25,6 +29,7 @@ export const SaleDetailComponent: FC<ISaleDetailComponentProps> = (props) => {
                         <TableCell>Fecha de Pago</TableCell>
                         <TableCell>Monto</TableCell>
                         <TableCell>Estado</TableCell>
+                        <TableCell>Acciones</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -38,6 +43,13 @@ export const SaleDetailComponent: FC<ISaleDetailComponentProps> = (props) => {
                             </TableCell>
                             <TableCell sx={{ textAlign: "center" }}>${payment.monto.toFixed(2)}</TableCell>
                             <TableCell sx={{ textAlign: "center" }}>{payment.estadoCuota.descripcion}</TableCell>
+                            <TableCell sx={{ textAlign: "center" }}>
+                                <Tooltip title="Pagada">
+                                    <IconButton color="primary" onClick={() => props.onPayHandler(payment.idEstadoCuota.toString(), payment.numeroCuota)}>
+                                        <CheckOutlined />
+                                    </IconButton>
+                                </Tooltip>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

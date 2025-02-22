@@ -2,15 +2,15 @@ export interface IMovimientoStock {
     idMovimiento: number;
     usuarioCreacion: string;
     usuarioModificacion: string;
-    fechaHoraCreado: Date;
-    fechaHoraUltimaModificacion?: Date;
+    fechaHoraCreado: string;
+    fechaHoraUltimaModificacion?: string;
     idProveedorOrigen: number;
     idProveedorDestino: number;
     origen: string;
     destino: string;
     tipo: string;
     proveedorDestino: IProveedorDestino;
-    suministros: ISuministrosMovimientosStock[];
+    Suministros: ISuministrosMovimientosStock[];
     infoArchivos: IDatosArchivosMovimientosStock[];
     archivos: File[];
     idEstado: number;

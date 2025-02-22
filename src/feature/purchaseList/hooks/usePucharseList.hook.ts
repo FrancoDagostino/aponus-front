@@ -16,6 +16,8 @@ interface IPurchaseListHook {
     onCloseViewPucharse: () => void
     purchaseState: IPucharse
     isOpenViewPucharse: boolean
+    onSaveFile: (idCompra: string, file: File) => Promise<void>
+    onRemoveFile: (idCompra: string, hashArchivo: string) => Promise<void>
 }
 
 
@@ -71,11 +73,40 @@ export const usePurchaseListHook = (props: IPurchaseListHookProps): IPurchaseLis
         id
     }
 
+
+    const onSaveFile = async (idCompra: string, file: File) => {
+        props.uiHook.showLoading()
+        const result = await props.purchaseListStore.saveFileAction(idCompra, file)
+        props.uiHook.hideLoading()
+        if (result.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al guardar el archivo",
+                type: "alert",
+            })
+        }
+    }
+
+    const onRemoveFile = async (idCompra: string, hashArchivo: string) => {
+        props.uiHook.showLoading()
+        const result = await props.purchaseListStore.removeFileAction(idCompra, hashArchivo)
+        props.uiHook.hideLoading()
+        if (result.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al eliminar el archivo",
+                type: "alert",
+            })
+        }
+    }
+
     return {
         purchaseState,
         isOpenViewPucharse,
         onViewPurchase,
         onRemovePurchase,
-        onCloseViewPucharse
+        onCloseViewPucharse,
+        onSaveFile,
+        onRemoveFile
     }
 }   

@@ -7,6 +7,9 @@ import { createResultUtil, TResult } from "../../../utils/result.util"
 export interface ISalesListStore {
     salesList: ISale[]
     getSalesListAction: () => Promise<TResult<null, null>>
+    removeFileAction: (idVenta: string, hashArchivo: string) => Promise<TResult<null, null>>
+    saveFileAction: (idVenta: string, file: File) => Promise<TResult<null, null>>
+    payCuotaAction: (idVenta: string, numeroCuota: number) => Promise<TResult<null, null>>
 }
 
 export interface ISalesListStoreProps {
@@ -23,8 +26,29 @@ export const useSalesListStore = (props: ISalesListStoreProps): ISalesListStore 
         return createResultUtil.success(null)
     }
 
+    const removeFileAction = async (idVenta: string, hashArchivo: string) => {
+        const result = await props.salesListService.removeFile(idVenta, hashArchivo)
+        if (result.isError) return createResultUtil.error(result.data)
+        return createResultUtil.success(null)
+    }
+
+    const saveFileAction = async (idVenta: string, file: File) => {
+        const result = await props.salesListService.saveFile(idVenta, file)
+        if (result.isError) return createResultUtil.error(result.data)
+        return createResultUtil.success(null)
+    }
+
+    const payCuotaAction = async (idVenta: string, numeroCuota: number) => {
+        const result = await props.salesListService.payCuota(idVenta, numeroCuota)
+        if (result.isError) return createResultUtil.error(result.data)
+        return createResultUtil.success(null)
+    }
+
     return {
         salesList,
-        getSalesListAction
+        getSalesListAction,
+        removeFileAction,
+        saveFileAction,
+        payCuotaAction
     }
 }

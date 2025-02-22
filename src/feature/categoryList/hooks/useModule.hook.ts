@@ -106,29 +106,74 @@ export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule 
     const onAddOrUpdateHandler = async (category: string) => {
         setIsOpen(false)
         props.uiHook.showLoading()
-        await props.categoryStore.addCategoryAction(category, addOrUpdateCategory.idCategory);
-        await props.categoryStore.getCategoryListAction()
+        const result = await props.categoryStore.addCategoryAction(category, addOrUpdateCategory.idCategory);
         props.uiHook.hideLoading()
+        if (result.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al agregar la categoría",
+                type: "alert",
+            })
+            return
+        }
+        props.uiHook.showLoading()
+        const resultCategory = await props.categoryStore.getCategoryListAction()
+        props.uiHook.hideLoading()
+        if (resultCategory.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al obtener la lista de categorías",
+                type: "alert",
+            })
+            return
+        }
+        props.uiHook.onSetSnackbar("Categoría agregada correctamente", true)
     }
 
     const onRemoveIdTypeCategoryHandler = async (idType: string) => {
         props.uiHook.showLoading()
-        await props.categoryStore.deleteCategoryTypeAction(idType)
+        const result = await props.categoryStore.deleteCategoryTypeAction(idType)
         props.uiHook.hideLoading()
+        if (result.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al eliminar la categoría",
+                type: "alert",
+            })
+            return
+        }
+        props.uiHook.onSetSnackbar("Categoría eliminada correctamente", true)
     }
 
     const onRemoveComponentHandler = async (idAlmacenamiento: string) => {
         props.uiHook.showLoading()
-        await props.categoryStore.deleteComponentAction(idAlmacenamiento)
+        const result = await props.categoryStore.deleteComponentAction(idAlmacenamiento)
         props.uiHook.hideLoading()
+        if (result.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al eliminar la componente",
+                type: "alert",
+            })
+            return
+        }
+        props.uiHook.onSetSnackbar("Componente eliminado correctamente", true)
     }
 
     const onAddOrUpdateComponentHandler = async (component: string) => {
         setIsOpenComponent(false)
         props.uiHook.showLoading()
-        await props.categoryStore.addComponentAction(component, addOrUpdateComponent.idDescription)
-        await props.categoryStore.getComponentListAction()
+        const result = await props.categoryStore.addComponentAction(component, addOrUpdateComponent.idDescription)
         props.uiHook.hideLoading()
+        if (result.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al agregar la componente",
+                type: "alert",
+            })
+            return
+        }
+        props.uiHook.onSetSnackbar("Componente agregado correctamente", true)
     }
 
 

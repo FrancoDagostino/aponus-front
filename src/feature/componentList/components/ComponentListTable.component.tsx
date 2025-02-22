@@ -3,14 +3,15 @@ import { IRow, IRowContainer } from "../model/component.model"
 import { ICell } from "../../entityAdd/model/entityAdd.model"
 import { PaginationOptions, TableColumn, TableStyles } from "react-data-table-component"
 import ReactDataTableComponent from 'react-data-table-component';
-
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 
 
 interface IComponentListTableProps {
     data: IRowContainer
+    onEdit: (idInsumo: string) => void
 }
 
-const getColumns = (rows: IRow[]) => {
+const getColumns = (rows: IRow[], callback: (idInsumo: string) => void) => {
 
     const resultRows = rows.map((data) => [...data.cellList])
 
@@ -23,7 +24,11 @@ const getColumns = (rows: IRow[]) => {
                 const currentRow = rows[rowIndex]
                 if (cells.length === 0) return []
                 if (currentRow === undefined) return []
-                return cells[index]?.value ?? "0"
+                if (cells[index]?.type === undefined) return []
+                if (cells[index].type === "button") {
+                    return (<EditRoundedIcon onClick={() => callback(currentRow.idInsumo)} />)
+                }
+                return cells[index].value
             },
             sortable: true
         }))
@@ -37,7 +42,7 @@ export const ComponentListTable: FC<IComponentListTableProps> = (props) => {
     const getRows = (dataList: IRowContainer): ICell[][] => dataList.rowList.map((data) => [...data.cellList])
     const rows = getRows(props.data)
 
-    const columns: TableColumn<ICell[]>[] = getColumns(props.data.rowList)
+    const columns: TableColumn<ICell[]>[] = getColumns(props.data.rowList, props.onEdit)
 
     const customStyles: TableStyles = {
 

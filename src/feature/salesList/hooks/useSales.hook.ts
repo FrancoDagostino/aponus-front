@@ -15,6 +15,9 @@ interface ISalesListHook {
     onViewSale: (row: ISale) => void
     onCloseViewSales: () => void
     isOpenViewSales: boolean
+    onDeleteFileHandler: (idVenta: string, hashArchivo: string) => void
+    onSaveFileHandler: (idVenta: string, file: File) => void
+    onPayHandler: (idVenta: string, numeroCuota: number) => void
 }
 
 export const useSalesLIstHook = (props: ISalesListHookProps): ISalesListHook => {
@@ -65,6 +68,45 @@ export const useSalesLIstHook = (props: ISalesListHookProps): ISalesListHook => 
         setIsOpenViewSales(false)
     }
 
+    const onDeleteFileHandler = async (idVenta: string, hashArchivo: string) => {
+        props.uiHook.showLoading()
+        const result = await props.salesListStore.removeFileAction(idVenta, hashArchivo)
+        props.uiHook.hideLoading()
+        if (result.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al eliminar el archivo",
+                type: "alert",
+            })
+        }
+    }
+
+    const onSaveFileHandler = async (idVenta: string, file: File) => {
+        props.uiHook.showLoading()
+        const result = await props.salesListStore.saveFileAction(idVenta, file)
+        props.uiHook.hideLoading()
+        if (result.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al guardar el archivo",
+                type: "alert",
+            })
+        }
+    }
+
+    const onPayHandler = async (idVenta: string, numeroCuota: number) => {
+        props.uiHook.showLoading()
+        const result = await props.salesListStore.payCuotaAction(idVenta, numeroCuota)
+        props.uiHook.hideLoading()
+        if (result.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al pagar la cuota",
+                type: "alert",
+            })
+        }
+    }
+
 
 
 
@@ -73,6 +115,9 @@ export const useSalesLIstHook = (props: ISalesListHookProps): ISalesListHook => 
         salesList,
         onViewSale,
         onCloseViewSales,
-        isOpenViewSales
+        isOpenViewSales,
+        onDeleteFileHandler,
+        onSaveFileHandler,
+        onPayHandler
     }
 }

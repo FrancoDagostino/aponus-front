@@ -1,12 +1,19 @@
 import { FC, useState } from 'react';
-import { Accordion, AccordionDetails, AccordionSummary, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Tooltip, TableCell, TableRow, TableBody, Table, TableContainer, Typography, Stack, TableHead, Paper, styled } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Button, Dialog, DialogActions, DialogContent, DialogTitle, Paper, TableHead, TableCell, TableRow, TableBody, Table, TableContainer, Typography, IconButton, Tooltip, Stack, styled } from '@mui/material';
 import { CloudUpload, Download, ExpandMoreOutlined } from '@mui/icons-material';
-import { IPucharse } from '../model/pucharseList.model';
-import { PucharseDetailComponent } from './PucharseDetail.component';
-import { PucharseDetailSupplyComponent } from './PucharseDetailSupply.component';
+import { IMovimientoStock } from '../model/movementList.model';
+import { MovementDetailSupplyComponent } from './MovementDetailSupply.component';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
+
+interface IMovementViewModalComponentProps {
+    movement: IMovimientoStock
+    isOpen: boolean
+    handleClose: () => void
+    onNewFileMovementHandler: (file: File, idMovimiento: number) => void
+    onDeleteFileHandler: (idMovimiento: string, nombreArchivo: string) => void
+}
 const VisuallyHiddenInput = styled("input")`
   clip: rect(0 0 0 0);
   clip-path: inset(50%);
@@ -25,16 +32,8 @@ const FileNameText = styled(Typography)`
   margin-left: ${({ theme }) => theme.spacing(2)};
 `
 
+export const MovementViewModalComponent: FC<IMovementViewModalComponentProps> = (props) => {
 
-interface IPurchaseViewModalComponentProps {
-    purchase: IPucharse
-    isOpen: boolean
-    handleClose: () => void
-    onSaveFileHandler: (idCompra: string, file: File) => void
-    onDeleteFileHandler: (idCompra: string, hashArchivo: string) => void
-}
-
-export const PurchaseViewModalComponent: FC<IPurchaseViewModalComponentProps> = (props) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null)
 
     const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +43,7 @@ export const PurchaseViewModalComponent: FC<IPurchaseViewModalComponentProps> = 
     }
 
     const handleSave = () => {
-        props.onSaveFileHandler(props.purchase.idCompra.toString(), selectedFile!)
+        props.onNewFileMovementHandler(selectedFile!, props.movement.idMovimiento)
     }
 
 
@@ -64,8 +63,6 @@ export const PurchaseViewModalComponent: FC<IPurchaseViewModalComponentProps> = 
             console.error('Error al descargar el archivo:', error);
         }
     };
-
-
     return (
         <>
             <Dialog
@@ -88,20 +85,12 @@ export const PurchaseViewModalComponent: FC<IPurchaseViewModalComponentProps> = 
                             <Typography>Listado de Insumos</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <PucharseDetailSupplyComponent details={props.purchase.detallesCompra} />
+                            <MovementDetailSupplyComponent suministros={props.movement.Suministros} />
                         </AccordionDetails>
                     </Accordion>
                     <Accordion>
                         <AccordionSummary expandIcon={<ExpandMoreOutlined />} aria-controls='panel2a-content' id='panel2a-header'>
-                            <Typography>Listado de Pagos</Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                            <PucharseDetailComponent pucharse={props.purchase.pagos} />
-                        </AccordionDetails>
-                    </Accordion>
-                    <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreOutlined />} aria-controls='panel3a-content' id='panel3a-header'>
-                            <Typography>Listado de archivos</Typography>
+                            <Typography>Listado de Archivos</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
                             <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 4 }}>
@@ -144,7 +133,25 @@ export const PurchaseViewModalComponent: FC<IPurchaseViewModalComponentProps> = 
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-
+                                        {props.movement.infoArchivos.map((detail) => (
+                                            <TableRow key={detail.idMovimiento}>
+                                                <TableCell sx={{ textAlign: "center" }}>
+                                                    {detail.nombreArchivo}
+                                                </TableCell>
+                                                <TableCell sx={{ textAlign: "center" }}>
+                                                    <Tooltip title="Descargar">
+                                                        <IconButton color="primary" onClick={() => handleDownload(detail.path, detail.nombreArchivo)}>
+                                                            <Download />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                    <Tooltip title="Eliminar">
+                                                        <IconButton color="error" onClick={() => props.onDeleteFileHandler(props.movement.idMovimiento.toString(), detail.nombreArchivo)}>
+                                                            <DeleteIcon />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
                                     </TableBody>
                                 </Table>
                             </TableContainer>
@@ -165,31 +172,3 @@ export const PurchaseViewModalComponent: FC<IPurchaseViewModalComponentProps> = 
         </>
     );
 }
-
-
-
-
-
-
-
-
-
-{/* {props.purchase.archivos.map((archivo) => (
-    <TableRow key={archivo.idArchivo}>
-        <TableCell sx={{ textAlign: "center" }}>
-            {archivo.hashArchivo}
-        </TableCell>
-        <TableCell sx={{ textAlign: "center" }}>
-            <Tooltip title="Descargar">
-                <IconButton color="primary" onClick={() => handleDownload(archivo.pathArchivo, archivo.hashArchivo)}>
-                    <Download />
-                </IconButton>
-            </Tooltip>
-            <Tooltip title="Eliminar">
-                <IconButton color="error" onClick={() => props.onDeleteFileHandler(props.sales.idVenta.toString(), archivo.hashArchivo)}>
-                    <DeleteIcon />
-                </IconButton>
-            </Tooltip>
-        </TableCell>
-    </TableRow>
-))} */}

@@ -2,12 +2,14 @@ import { useState } from "react";
 import { createResultUtil, TResult } from "../../../utils/result.util";
 import { IMovementAddService } from "../service/useMovementAdd.service";
 import { IEntity, ISuppliesList } from "../model/movement.model";
+import { IMovimientoStock } from "../../movementList/model/movementList.model";
 
 export interface IMovementAddStore {
     supplyList: ISuppliesList[]
     createNewMovementAction: (dataInput: any) => Promise<TResult<null, null>>
     getSupplyListAction: () => Promise<TResult<null, null>>
     getEntityListAction: (id: string) => Promise<TResult<IEntity[], null>>
+    getMovementListAction: () => Promise<TResult<IMovimientoStock, null>>
 }
 
 interface IMovementAddStoreProps {
@@ -17,6 +19,16 @@ interface IMovementAddStoreProps {
 export const useMovementAddStore = (props: IMovementAddStoreProps): IMovementAddStore => {
 
     const [supplyList, setSupplyList] = useState<ISuppliesList[]>([])
+
+
+
+    const getMovementListAction: IMovementAddStore["getMovementListAction"] = async () => {
+
+        const result = await props.movementAddService.getMovementList()
+        if (result.isError) return createResultUtil.error(null)
+        return createResultUtil.success(result.data.find(movement => movement.idMovimiento === 0)!)
+    }
+
     const createNewMovementAction: IMovementAddStore["createNewMovementAction"] = async (dataInput: any) => {
         const result = await props.movementAddService.postCreateNewMovement(dataInput)
         if (result.isError) return createResultUtil.error(null)
@@ -40,6 +52,7 @@ export const useMovementAddStore = (props: IMovementAddStoreProps): IMovementAdd
         supplyList,
         createNewMovementAction,
         getSupplyListAction,
-        getEntityListAction
+        getEntityListAction,
+        getMovementListAction
     }
 }

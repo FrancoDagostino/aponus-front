@@ -3,14 +3,14 @@ import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import './dataGrid.css'
 import { Tooltip, IconButton, TablePagination, TableContainer, Table, TableHead, Grid, Paper, TableBody, TableCell, TableRow, useMediaQuery } from "@mui/material";
-import { IMovementListView } from "../hooks/useModule.hook";
 import { Search } from "@mui/icons-material";
+import { IMovimientoStock } from "../model/movementList.model";
 
 interface IActivityDataGridComponentProps {
-    movementList: IMovementListView[]
+    movementList: IMovimientoStock[]
     searchValue: string
     onEditMovementHandler: (id: number) => void
-
+    onViewMovementHandler: (row: IMovimientoStock) => void
     // handleOpen: (row: any, isDisabled: boolean) => void
 }
 
@@ -50,31 +50,26 @@ export const MovementListableComponent: FC<IActivityDataGridComponentProps> = (p
                                 <TableRow>
                                     <TableCell>Fecha</TableCell>
                                     <TableCell>Proveedor</TableCell>
+                                    <TableCell>Origen</TableCell>
+                                    <TableCell>Destino</TableCell>
                                     <TableCell>Estado</TableCell>
-                                    <TableCell>Tipo Expediente</TableCell>
-                                    <TableCell>Usuario Creacion</TableCell>
-                                    <TableCell>Usuario Modificacion</TableCell>
+                                    <TableCell>Usuario</TableCell>
                                     <TableCell>Acciones</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {currentData.map((row) => (
-                                    <TableRow key={row.idMovement}>
-                                        <TableCell sx={{ textAlign: "center" }}>{row.date}</TableCell>
-                                        <TableCell sx={{ textAlign: "center" }}>{row.provider}</TableCell>
-                                        <TableCell sx={{ textAlign: "center" }}>{row.status}</TableCell>
-                                        <TableCell sx={{ textAlign: "center" }}>{row.type}</TableCell>
-                                        <TableCell sx={{ textAlign: "center" }}>{row.userCreation}</TableCell>
-                                        <TableCell sx={{ textAlign: "center" }}>{row.userMod}</TableCell>
+                                    <TableRow key={row.idMovimiento}>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.fechaHoraCreado}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.proveedorDestino?.nombre}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.origen}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.destino}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.estado}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.usuarioCreacion}</TableCell>
                                         <TableCell sx={{ textAlign: "center" }}>
                                             <Tooltip title="Ver">
-                                                <IconButton color="primary" onClick={() => { }}>
+                                                <IconButton color="primary" onClick={() => props.onViewMovementHandler(row)}>
                                                     <Search />
-                                                </IconButton>
-                                            </Tooltip>
-                                            <Tooltip title="Editar">
-                                                <IconButton color="primary" onClick={() => props.onEditMovementHandler(row.idMovement)}>
-                                                    <EditIcon />
                                                 </IconButton>
                                             </Tooltip>
                                             <Tooltip title="Eliminar">

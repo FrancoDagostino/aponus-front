@@ -1,5 +1,6 @@
 import { IRestClient, urlBase } from "../../../utils/clients/useRest.client";
 import { createResponseUtil, TResponse } from "../../../utils/response.util";
+import { IMovimientoStock } from "../../movementList/model/movementList.model";
 import { IFormData } from "../hooks/useModule.hook";
 import { IEntity, ISuppliesList } from "../model/movement.model";
 
@@ -12,9 +13,18 @@ export interface IMovementAddService {
     postCreateNewMovement: (dataInput: IFormData) => Promise<TResponse<null, null>>
     getSupplyList: () => Promise<TResponse<ISuppliesList[], null>>
     getProviderList: (id: string) => Promise<TResponse<IEntity[], null>>
+    getMovementList: () => Promise<TResponse<IMovimientoStock[], null>>
+
 }
 
 export const useMovementAddService = (props: IMovementAddServiceProps): IMovementAddService => {
+
+    const getMovementList: IMovementAddService["getMovementList"] = async () => {
+        const url = `${urlBase}/Movments/List`
+        const response = await props.restClient.get<IMovimientoStock[], null>(url, undefined)
+        if (response.isSuccess) return createResponseUtil.success(response.data, response.status)
+        return createResponseUtil.error(response.data, response.status)
+    }
 
     const postCreateNewMovement: IMovementAddService["postCreateNewMovement"] = async (dataInput: IFormData) => {
         const url = `${urlBase}/Movments/new`;
@@ -56,6 +66,7 @@ export const useMovementAddService = (props: IMovementAddServiceProps): IMovemen
     return {
         postCreateNewMovement,
         getSupplyList,
-        getProviderList
+        getProviderList,
+        getMovementList
     }
 }

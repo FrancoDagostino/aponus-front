@@ -51,6 +51,6 @@ export interface IRow {
 export interface ICell {
     header: string
     value: string | number
-    type: 'string' | 'number'
+    type: 'string' | 'number' | 'button'
 }
 

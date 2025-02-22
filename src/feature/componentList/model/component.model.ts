@@ -17,7 +17,7 @@ export interface IListadoComponentes {
 interface ICell {
     header: string;
     value: string | number;
-    type: "string" | "number";
+    type: "string" | "number" | "button";
 }
 
 export interface IRow {

@@ -42,9 +42,9 @@ export const ItemMenuComponent = (props: IItemMenu) => {
         }
     }
     return (
-        <div className="item-menu-card">
+        <div className="item-menu-card" onClick={() => props.item.label === "Salir" ? props.onLogoutHandler() : props.onNavigate(props.item.path)} >
             {renderIcon()}
-            <label onClick={() => props.item.label === "Salir" ? props.onLogoutHandler() : props.onNavigate(props.item.path)} className="item-menu-label">{props.item.label}</label>
+            <label className="item-menu-label">{props.item.label}</label>
         </div>
     )
 }

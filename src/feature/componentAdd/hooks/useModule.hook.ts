@@ -98,10 +98,16 @@ export const useComponentAddHook = (props: IComponentAddModuleProps): IComponent
     const onAddOrUpdateComponentHandler = async () => {
         const textDescription = props.stockStore.categoryTypeList.find(type => type.idDescripcion === Number(componentForm.idDescripcion))!.nombreDescripcion
         const result = await props.componentAddStore.postCreateComponentAction(componentForm, textDescription);
-        if (result.isSuccess) {
-            props.uiHook.onSetSnackbar("Componente agregado o modificado correctamente", true)
-            props.onNavigate('/component-list')
+        if (result.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al agregar o modificar el componente",
+                type: "alert",
+            })
+            return
         }
+        props.uiHook.onSetSnackbar("Componente agregado o modificado correctamente", true)
+        props.onNavigate('/component-list')
     }
 
 

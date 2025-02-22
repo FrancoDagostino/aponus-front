@@ -42,7 +42,7 @@ export const ComponentListModule: FC<IComponentListModuleProps> = (props) => {
             />
 
             {/* <ComponentList data={props.componentListStore.componentList} componentEdit={moduleHook.onEditComponentHandler} /> */}
-            <ComponentListTable data={props.componentListStore.reportComponentScheme} />
+            <ComponentListTable data={props.componentListStore.reportComponentScheme} onEdit={moduleHook.onEditComponentHandler} />
         </>
     )
 }

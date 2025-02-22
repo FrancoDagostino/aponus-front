@@ -22,6 +22,7 @@ import { SalesAddStack } from "./feature/sales/stacks/salesAdd.stacks";
 import { SaleListStack } from "./feature/salesList/stacks/salesList.stacks";
 import { AuditoriaStack } from "./feature/auditoria/stacks/auditoria.stack";
 import { UserStack } from "./feature/users/stacks/user.stacks";
+import { DashboardStack } from "./feature/dashboard/stacks/dashboard.stacks";
 interface IRouterProps {
     stores: IStores
 }
@@ -45,7 +46,8 @@ export const Router: FC<IRouterProps> = ({
         salesListStore,
         userStore,
         uiHook,
-        auditoriaStore
+        auditoriaStore,
+        dashboardStore
 
     },
 }) => {
@@ -87,7 +89,7 @@ export const Router: FC<IRouterProps> = ({
                                                 ProductListStack({ uiHook, permissions: permissions.productList, rol: authStore.rol, categoryStore, productListStore }),
                                                 ComponentListStack({ permissions: permissions.componentList, rol: authStore.rol, componentListStore, stockStore, uiHook }),
                                                 ComponentAddStack({ uiHook, permissions: permissions.componentAdd, rol: authStore.rol, componentAddStore, stockStore }),
-                                                MovementListStack({ permissions: permissions.movementList, rol: authStore.rol, movementListStore }),
+                                                MovementListStack({ permissions: permissions.movementList, rol: authStore.rol, movementListStore, uiStore: uiHook }),
                                                 MovementAddtStack({ permissions: permissions.movementAdd, rol: authStore.rol, movementAddStore, uiHook }),
                                                 EntityListStack({ permissions: permissions.entityList, rol: authStore.rol, entityListStore, uiHook }),
                                                 EntityAddStack({ permissions: permissions.entityAdd, rol: authStore.rol, entityAddStore, uiHook }),
@@ -97,7 +99,8 @@ export const Router: FC<IRouterProps> = ({
                                                 SalesAddStack({ permissions: permissions.productAdd, movementAddStore, rol: authStore.rol, salesAddStore, uiHook }),
                                                 SaleListStack({ salesListStore, uiHook }),
                                                 AuditoriaStack({ uiHook, auditoriaStore }),
-                                                UserStack({ uiHook, userStore })
+                                                UserStack({ uiHook, userStore }),
+                                                DashboardStack({ uiHook, dashboardStore })
                                             ]
                                         }
                                     </Switch>

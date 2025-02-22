@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { IMovementListStore } from "../store/useMovementList.store";
-
+import { IMovimientoStock } from "../model/movementList.model";
+import { IUiHook } from "../../ui/hooks/useUi.hook";
 
 export interface IMovementListView {
     idMovement: number,
@@ -14,18 +15,53 @@ export interface IMovementListView {
 
 interface IMovementListProps {
     movementListStore: IMovementListStore;
+    uiStore: IUiHook
+    onNavigate: (path: string) => void
 }
 
 interface IMovementListHook {
     movementListState: IMovementListView[]
     onEditMovementHandler: (id: number) => void
-
+    onViewMovementHandler: (row: IMovimientoStock) => void
+    movementViewState: IMovimientoStock
+    openModalView: boolean
+    onOpenModalView: () => void
+    onCloseModalView: () => void
+    onNewFileMovementHandler: (file: File, idMovimiento: number) => void
+    onDeleteFileHandler: (idMovimiento: string, nombreArchivo: string) => void
 }
 
 export const useMovementListHook = (props: IMovementListProps): IMovementListHook => {
     const [movementListState, setMovementListState] = useState<IMovementListView[]>([])
-
-
+    const [openModalView, setOpenModalView] = useState(false)
+    const [movementViewState, setMovementViewState] = useState<IMovimientoStock>({
+        idMovimiento: 0,
+        usuarioCreacion: "",
+        usuarioModificacion: "",
+        fechaHoraCreado: "",
+        fechaHoraUltimaModificacion: "",
+        idProveedorOrigen: 0,
+        idProveedorDestino: 0,
+        origen: "",
+        destino: "",
+        tipo: "",
+        proveedorDestino: {
+            apellido: "",
+            nombre: "",
+            nombreClave: "",
+            idFiscal: "",
+            idTipo: 0,
+            idCategoria: 0,
+            tipo: {},
+            categoria: {},
+            idEntidad: 0
+        },
+        Suministros: [],
+        infoArchivos: [],
+        archivos: [],
+        idEstado: 0,
+        estado: ""
+    })
 
     useEffect(() => {
         onInit()
@@ -50,13 +86,47 @@ export const useMovementListHook = (props: IMovementListProps): IMovementListHoo
         setMovementListState(newObj)
     }
 
+    const onOpenModalView = () => {
+        setOpenModalView(true)
+    }
+
+    const onCloseModalView = () => {
+        setOpenModalView(false)
+    }
+
+    const onViewMovementHandler = (row: IMovimientoStock) => {
+        console.log(row)
+        setMovementViewState(row)
+        onOpenModalView()
+    }
 
     const onEditMovementHandler = (id: number) => {
-        id
+        props.onNavigate(`/movement-add/${id}`)
+    }
+
+    const onNewFileMovementHandler = async (file: File, idMovimiento: number) => {
+        props.uiStore.showLoading()
+        const result = await props.movementListStore.newFileMovementAction(file, idMovimiento)
+        props.uiStore.hideLoading()
+        if (result.isError) return;
+    }
+
+    const onDeleteFileHandler = async (idMovimiento: string, nombreArchivo: string) => {
+        props.uiStore.showLoading()
+        const result = await props.movementListStore.deleteFileAction(idMovimiento, nombreArchivo)
+        props.uiStore.hideLoading()
+        if (result.isError) return;
     }
     return {
         movementListState,
-        onEditMovementHandler
+        onEditMovementHandler,
+        onViewMovementHandler,
+        movementViewState,
+        openModalView,
+        onOpenModalView,
+        onCloseModalView,
+        onNewFileMovementHandler,
+        onDeleteFileHandler
     }
 
 }

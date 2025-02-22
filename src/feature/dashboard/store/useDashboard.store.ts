@@ -3,7 +3,7 @@ import { TResult, createResultUtil } from "../../../utils/result.util"
 interface IDashboardStoreProps {
     dashboardService: IDashboardService
 }
-interface IDashboardStore {
+export interface IDashboardStore {
     getComprasAction: () => Promise<TResult<null, null>>
 }
 

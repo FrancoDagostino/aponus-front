@@ -16,6 +16,7 @@ interface IPurchaseAddHookProps {
     uiHook: IUiHook
     salesAddStore: ISalesAddStore
     movementAddStore: IMovementAddStore;
+    onNavigate: (url: string) => void;
 }
 
 export interface IFormData {
@@ -180,8 +181,18 @@ export const useSalesAddHook = (props: IPurchaseAddHookProps): ISalesAddHook => 
             archivos: salesDataState.files
         }
         props.uiHook.showLoading()
-        await props.salesAddStore.createSalesAction(objPurchase, salesDataState.files)
+        const result = await props.salesAddStore.createSalesAction(objPurchase, salesDataState.files)
         props.uiHook.hideLoading()
+        if (result.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al crear la venta",
+                type: "alert",
+            })
+            return
+        }
+        props.uiHook.onSetSnackbar("Venta creada correctamente", true)
+        props.onNavigate('/sales-list')
     }
 
     const onClickQuotationHandler = () => {

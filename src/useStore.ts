@@ -35,6 +35,9 @@ import { IAuditoriaStore, useAuditoriaStore } from "./feature/auditoria/store/us
 import { useAuditoriaService } from "./feature/auditoria/services/useAuditoria.service";
 import { IUserStore, useUserStore } from "./feature/users/store/useUser.store";
 import { useUserService } from "./feature/users/services/useUser.service";
+import { IDashboardStore, useDashboardStore } from "./feature/dashboard/store/useDashboard.store";
+import { useDashboardService } from "./feature/dashboard/services/useDashboard.service";
+
 export interface IStores {
     authStore: IAuthStore
     navigationStore: INavigationStore
@@ -55,6 +58,7 @@ export interface IStores {
     uiHook: IUiHook
     auditoriaStore: IAuditoriaStore
     userStore: IUserStore
+    dashboardStore: IDashboardStore
 }
 
 export const useStore = (): IStores => {
@@ -162,6 +166,12 @@ export const useStore = (): IStores => {
             restClient: useRestClient()
         })
     })
+
+    const dashboardStore = useDashboardStore({
+        dashboardService: useDashboardService({
+            restClient: useRestClient()
+        })
+    })
     const uiHook = useUiHook()
     const navigationStore = useNavigationStore()
 
@@ -184,6 +194,7 @@ export const useStore = (): IStores => {
         salesListStore,
         uiHook,
         auditoriaStore,
-        userStore
+        userStore,
+        dashboardStore
     }
 }

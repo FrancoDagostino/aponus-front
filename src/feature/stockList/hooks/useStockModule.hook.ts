@@ -99,19 +99,57 @@ export const useStockModuleHook = (props: IStockModuleProps): IStockModule => {
     };
     props.uiHook.showLoading()
     if (newStock.destino !== "Cantidad") {
-
-      await props.stockStore.postDbUpdateStockAction(newStockUpdate);
-      await props.stockStore.getDbStockListForDescriptionAction(
+      props.uiHook.showLoading()
+      const result = await props.stockStore.postDbUpdateStockAction(newStockUpdate);
+      props.uiHook.hideLoading()
+      if (result.isError) {
+        props.uiHook.showAlert({
+          title: "Error",
+          message: "Error al actualizar el stock",
+          type: "alert",
+        })
+        return
+      }
+      props.uiHook.showLoading()
+      const result2 = await props.stockStore.getDbStockListForDescriptionAction(
         idDescriptionFounded
       );
-
+      props.uiHook.hideLoading()
+      if (result2.isError) {
+        props.uiHook.showAlert({
+          title: "Error",
+          message: "Error al actualizar el stock",
+          type: "alert",
+        })
+        return
+      }
     }
     else {
-      await props.stockStore.getStockProductListForTypeAndDescriptionAction(idTypeProductFounded, idDescriptionFounded);
-      await props.stockStore.updateStockProductAction(valueNewStock, newStock.id)
-    }
-    props.uiHook.hideLoading()
+      props.uiHook.showLoading()
+      const result3 = await props.stockStore.getStockProductListForTypeAndDescriptionAction(idTypeProductFounded, idDescriptionFounded);
+      props.uiHook.hideLoading()
+      if (result3.isError) {
+        props.uiHook.showAlert({
+          title: "Error",
+          message: "Error al actualizar el stock",
+          type: "alert",
+        })
+        return
+      }
+      props.uiHook.showLoading()
+      const result4 = await props.stockStore.updateStockProductAction(valueNewStock, newStock.id)
+      props.uiHook.hideLoading()
 
+      if (result4.isError) {
+        props.uiHook.showAlert({
+          title: "Error",
+          message: "Error al actualizar el stock",
+          type: "alert",
+        })
+        return
+      }
+    }
+    props.uiHook.onSetSnackbar("Stock actualizado correctamente", true)
     onCloseEditModalHandler();
     setOpenSnackBar(true);
   };

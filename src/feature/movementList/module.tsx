@@ -3,12 +3,15 @@ import { MovementListableComponent } from "./components/MovementListTable.compon
 import { useMovementListHook } from "./hooks/useModule.hook";
 import { IMovementListStore } from "./store/useMovementList.store";
 import AddIcon from '@mui/icons-material/Add';
+import { MovementViewModalComponent } from "./components/MovementViewModal.componen";
+import { IUiHook } from "../ui/hooks/useUi.hook";
 
 interface IMovementListProps {
     movementListStore: IMovementListStore;
     permissions: string[]
     rol: string
     onNavigate: (url: string) => void;
+    uiStore: IUiHook
 }
 
 export const MovementListModule = (props: IMovementListProps) => {
@@ -33,7 +36,19 @@ export const MovementListModule = (props: IMovementListProps) => {
                     </Button>
                 </Grid>
             </Grid>
-            <MovementListableComponent onEditMovementHandler={useModule.onEditMovementHandler} movementList={useModule.movementListState} searchValue="" />
+            <MovementListableComponent
+                onEditMovementHandler={useModule.onEditMovementHandler}
+                onViewMovementHandler={useModule.onViewMovementHandler}
+                movementList={props.movementListStore.movementList}
+                searchValue=""
+            />
+            <MovementViewModalComponent
+                movement={useModule.movementViewState}
+                isOpen={useModule.openModalView}
+                handleClose={useModule.onCloseModalView}
+                onNewFileMovementHandler={useModule.onNewFileMovementHandler}
+                onDeleteFileHandler={useModule.onDeleteFileHandler}
+            />
         </>
 
     )

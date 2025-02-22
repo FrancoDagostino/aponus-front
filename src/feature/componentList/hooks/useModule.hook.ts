@@ -14,7 +14,7 @@ interface IComponentListModuleProps {
 interface IComponentListHook {
     idDescriptionFounded: string
     onChangeTabsHandler: (idDescription: string) => Promise<void>
-    onEditComponentHandler: (idDescription: number, idInsumo: string) => void
+    onEditComponentHandler: (idInsumo: string) => void
 }
 
 export const useComponentListHook = (props: IComponentListModuleProps): IComponentListHook => {
@@ -40,8 +40,9 @@ export const useComponentListHook = (props: IComponentListModuleProps): ICompone
         props.uiHook.hideLoading()
     };
 
-    const onEditComponentHandler = (idDescription: number, idInsumo: string) => {
-        props.onNavigate(`/component-add/${idDescription}*${idInsumo}`)
+    const onEditComponentHandler = (idInsumo: string) => {
+        console.log(idDescriptionFounded)
+        props.onNavigate(`/component-add/${idDescriptionFounded}*${idInsumo}`)
     }
     return {
         idDescriptionFounded,

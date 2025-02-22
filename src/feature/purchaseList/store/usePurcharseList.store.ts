@@ -11,6 +11,8 @@ export interface IPurchaseListStoreProps {
 export interface IPurchaseListStore {
     purchaseListState: IPucharse[]
     getPurchaseListAction: () => Promise<TResult<null, null>>
+    removeFileAction: (idCompra: string, hashArchivo: string) => Promise<TResult<null, null>>
+    saveFileAction: (idCompra: string, file: File) => Promise<TResult<null, null>>
 }
 
 
@@ -25,10 +27,23 @@ export const usePurchaseListStore = (props: IPurchaseListStoreProps): IPurchaseL
         return createResultUtil.success(null)
     }
 
+    const removeFileAction = async (idCompra: string, hashArchivo: string) => {
+        const result = await props.usePurchaseListService.removeFile(idCompra, hashArchivo)
+        if (result.isError) return createResultUtil.error(null)
+        return createResultUtil.success(null)
+    }
+
+    const saveFileAction = async (idCompra: string, file: File) => {
+        const result = await props.usePurchaseListService.saveFile(idCompra, file)
+        if (result.isError) return createResultUtil.error(null)
+        return createResultUtil.success(null)
+    }
 
     return {
         purchaseListState,
-        getPurchaseListAction
+        getPurchaseListAction,
+        removeFileAction,
+        saveFileAction
     }
 
 

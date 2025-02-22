@@ -29,4 +29,18 @@ export const MovementAddtStack = (props: IMovementAddStackProps) => [
             />
         )}
     />,
+    <Route
+        exact
+        key="/movements-add"
+        path="/movements-add"
+        render={(route) => (
+            <MovementAddModule
+                permissions={props.permissions}
+                rol={props.rol}
+                movementAddStore={props.movementAddStore}
+                onNavigate={route.history.push}
+                uiHook={props.uiHook}
+            />
+        )}
+    />,
 ]

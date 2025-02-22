@@ -30,7 +30,7 @@ export const SalesListModule: FC<ISalesListModuleProps> = (props) => {
                 </Button>
             </Box>
             <SalesDataGridComponent salesList={props.salesListStore.salesList} searchValue={""} onViewSale={salesListHook.onViewSale} onRemoveSale={() => { }} />
-            <SalesViewModalComponent isOpen={salesListHook.isOpenViewSales} handleClose={salesListHook.onCloseViewSales} sales={salesListHook.salesList} />
+            <SalesViewModalComponent onDeleteFileHandler={salesListHook.onDeleteFileHandler} onSaveFileHandler={salesListHook.onSaveFileHandler} onPayHandler={salesListHook.onPayHandler} isOpen={salesListHook.isOpenViewSales} handleClose={salesListHook.onCloseViewSales} sales={salesListHook.salesList} />
         </>
 
     )

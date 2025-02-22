@@ -112,7 +112,14 @@ export const useMovementAddHook = (props: IMovementAddHookProps): IMovementAddHo
         props.uiHook.showLoading()
         const result = await props.movementAddStore.createNewMovementAction(formData)
         props.uiHook.hideLoading()
-        if (result.isError) return
+        if (result.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al crear el movimiento",
+                type: "alert",
+            })
+            return
+        }
         props.uiHook.onSetSnackbar("Movimiento creado correctamente", true)
         props.onNavigate('/movements-list')
     }

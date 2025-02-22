@@ -187,8 +187,16 @@ export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => 
             geoIdCountry: idGeoname
         })
         props.uiHook.showLoading()
-        await props.entityAddStore.getProvinceListAction(idGeoname.toString())
+        const result = await props.entityAddStore.getProvinceListAction(idGeoname.toString())
         props.uiHook.hideLoading()
+        if (result.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al obtener la lista de provincias",
+                type: "alert",
+            })
+            return
+        }
     }
 
     const onChangeProvince = async (idGeoname: number, geoName: string, countryCode: string, adminCode: string) => {
@@ -220,8 +228,15 @@ export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => 
         if (props.entityId !== "0") {
             const result = await props.entityAddStore.editEntityAction(formData, Number(props.entityId))
             props.uiHook.hideLoading()
-            if (result.isError)
-                props.uiHook.onSetSnackbar("Entidad creada correctamente", true)
+            if (result.isError) {
+                props.uiHook.showAlert({
+                    title: "Error",
+                    message: "Error al editar la entidad",
+                    type: "alert",
+                })
+                return
+            }
+            props.uiHook.onSetSnackbar("Entidad creada correctamente", true)
             props.onNavigate('/entity-list')
 
 
@@ -229,9 +244,17 @@ export const useEntityAddHook = (props: IEntityAddHookProps): IEntityAddHook => 
             props.uiHook.showLoading()
             const result = await props.entityAddStore.addNewEntityAction(formData)
             props.uiHook.hideLoading()
-            result
+            if (result.isError) {
+                props.uiHook.showAlert({
+                    title: "Error",
+                    message: "Error al agregar la entidad",
+                    type: "alert",
+                })
+                return
+            }
+            props.uiHook.onSetSnackbar("Entidad creada correctamente", true)
+            props.onNavigate('/entity-list')
         }
-
 
     }
 

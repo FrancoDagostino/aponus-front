@@ -11,6 +11,7 @@ interface IPurchaseAddHookProps {
     uiHook: IUiHook
     purchaseAddStore: IPurchaseAddStore
     movementAddStore: IMovementAddStore;
+    onNavigate: (url: string) => void;
 }
 
 export interface IFormData {
@@ -135,8 +136,18 @@ export const usePurchaseAddHook = (props: IPurchaseAddHookProps): IPurchaseAddHo
         }
 
         props.uiHook.showLoading()
-        await props.purchaseAddStore.createPurchaseAction(objPurchase, purchaseDataState.ready, purchaseDataState.files)
+        const result = await props.purchaseAddStore.createPurchaseAction(objPurchase, purchaseDataState.ready, purchaseDataState.files)
         props.uiHook.hideLoading()
+        if (result.isError) {
+            props.uiHook.showAlert({
+                title: "Error",
+                message: "Error al crear la compra",
+                type: "alert",
+            })
+            return
+        }
+        props.uiHook.onSetSnackbar("Compra creada correctamente", true)
+        props.onNavigate('/purchase-list')
     }
     return {
         purchaseDataState,
