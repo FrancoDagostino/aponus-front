@@ -46,7 +46,10 @@ export const SalesViewModalComponent: FC<ISalesViewModalComponentProps> = (props
         }
     }
 
+    console.log("salesviewModal", props.sales)
+
     const handleSave = () => {
+        console.log(props.sales.idVenta.toString(), selectedFile)
         props.onSaveFileHandler(props.sales.idVenta.toString(), selectedFile!)
     }
 
@@ -98,7 +101,7 @@ export const SalesViewModalComponent: FC<ISalesViewModalComponentProps> = (props
                             <Typography>Listado de Cuotas</Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <SaleDetailComponent paymentList={props.sales.cuotas} onPayHandler={props.onPayHandler} />
+                            <SaleDetailComponent idVenta={props.sales.idVenta.toString()} paymentList={props.sales.cuotas} onPayHandler={props.onPayHandler} />
                         </AccordionDetails>
                     </Accordion>
                     <Accordion>

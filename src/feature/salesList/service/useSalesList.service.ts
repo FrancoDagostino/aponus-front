@@ -11,7 +11,7 @@ export interface ISalesListService {
     getSalesList: () => Promise<TResponse<ISale[], null>>
     removeFile: (idVenta: string, hashArchivo: string) => Promise<TResponse<null, null>>
     saveFile: (idVenta: string, file: File) => Promise<TResponse<null, null>>
-    payCuota: (idVenta: string, numeroCuota: number) => Promise<TResponse<null, null>>
+    payCuota: (idVenta: string, idCuota: number) => Promise<TResponse<null, null>>
 }
 
 export const useSalesListService = (props: ISalesListServiceProps): ISalesListService => {
@@ -31,15 +31,19 @@ export const useSalesListService = (props: ISalesListServiceProps): ISalesListSe
     }
 
     const saveFile = async (idVenta: string, file: File) => {
-        const url = `${urlBase}/Sales/SaveFile`;
-        const response = await props.restClient.post<null, null>(url, { idVenta, file }, undefined)
+        const url = `${urlBase}/Sales/Files/Upload`;
+
+        const formData = new FormData();
+        formData.append("idVenta", idVenta);
+        formData.append("archivos", file);
+        const response = await props.restClient.post<null, null>(url, formData, undefined)
         if (response.isError) return createResponseUtil.error(response.data, response.status)
         return createResponseUtil.success(response.data, response.status)
     }
 
-    const payCuota = async (idVenta: string, numeroCuota: number) => {
-        const url = `${urlBase}/Sales/PayCuota`;
-        const response = await props.restClient.post<null, null>(url, { idVenta, numeroCuota }, undefined)
+    const payCuota = async (idVenta: string, idCuota: number) => {
+        const url = `${urlBase}/Sales/Bills/New`;
+        const response = await props.restClient.post<null, null>(url, { idVenta, idCuota: idCuota }, undefined)
         if (response.isError) return createResponseUtil.error(response.data, response.status)
         return createResponseUtil.success(response.data, response.status)
     }
@@ -49,4 +53,4 @@ export const useSalesListService = (props: ISalesListServiceProps): ISalesListSe
         saveFile,
         payCuota
     }
-}   
+}

@@ -16,7 +16,6 @@ interface IPurchaseAddHookProps {
     uiHook: IUiHook
     salesAddStore: ISalesAddStore
     movementAddStore: IMovementAddStore;
-    onNavigate: (url: string) => void;
 }
 
 export interface IFormData {
@@ -117,9 +116,6 @@ export const useSalesAddHook = (props: IPurchaseAddHookProps): ISalesAddHook => 
     };
 
     const onAddSupplyItemHandler = (supplyItem: ISupplyItem[]) => {
-        console.log(supplyItem)
-
-
         const total = supplyItem.reduce((sum, item) => {
             return sum + item.mont * parseInt(item.quantity, 10);
         }, 0);
@@ -181,25 +177,16 @@ export const useSalesAddHook = (props: IPurchaseAddHookProps): ISalesAddHook => 
             archivos: salesDataState.files
         }
         props.uiHook.showLoading()
-        const result = await props.salesAddStore.createSalesAction(objPurchase, salesDataState.files)
+        await props.salesAddStore.createSalesAction(objPurchase, salesDataState.files)
         props.uiHook.hideLoading()
-        if (result.isError) {
-            props.uiHook.showAlert({
-                title: "Error",
-                message: "Error al crear la venta",
-                type: "alert",
-            })
-            return
-        }
-        props.uiHook.onSetSnackbar("Venta creada correctamente", true)
-        props.onNavigate('/sales-list')
     }
 
     const onClickQuotationHandler = () => {
         const objQuotation: IQuotation = {
             cantidadCuotas: salesDataState.quantityCuote,
             montoVenta: salesDataState.totalMont,
-            interes: salesDataState.interest
+            interes: salesDataState.interest,
+            idEntidad: salesDataState.idBilling
         }
         props.uiHook.showLoading()
         props.salesAddStore.getQuotationAction(objQuotation)

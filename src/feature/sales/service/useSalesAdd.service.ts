@@ -30,6 +30,7 @@ export interface IQuotation {
     cantidadCuotas: number,
     montoVenta: number,
     interes: number,
+    idEntidad: number
 }
 
 

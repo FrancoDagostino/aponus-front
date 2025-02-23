@@ -147,7 +147,7 @@ export const usePurchaseAddHook = (props: IPurchaseAddHookProps): IPurchaseAddHo
             return
         }
         props.uiHook.onSetSnackbar("Compra creada correctamente", true)
-        props.onNavigate('/purchase-list')
+        props.onNavigate('/pucharse-list')
     }
     return {
         purchaseDataState,

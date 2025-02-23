@@ -13,19 +13,13 @@ export interface IListadoComponentes {
 export interface IEspecificaciones {
   idDescripcion: string;
   IdComponente: string;
-  espesor: string;
-  perfil: string;
-  diametro: string;
-  Altura: string;
-  tolerancia: string;
   recibido: string;
   pintura: string;
   proceso: string;
   granallado: string;
-  largo: string;
-  ancho: string;
   moldeado: string;
-  diametroNominal: string;
+  pendiente: string
+  NombreInsumo: string
 }
 
 export interface IPostUpdateStock {

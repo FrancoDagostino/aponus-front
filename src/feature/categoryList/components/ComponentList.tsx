@@ -16,13 +16,21 @@ interface ICategoryListComponentProps {
 const ComponentList: FC<ICategoryListComponentProps> = (props) => {
 
     const onEditCategoryHandler = (row: IComponentDescription) => {
-        props.onOpenModal(`Edición del componente ${row.nombreDescripcion}`, row.idDescripcion);
+        props.onOpenModal(`Edicion del componente ${row.nombreDescripcion}`, row.idDescripcion);
     }
 
     const columnsCategoryComputed: Array<TableColumn<IComponentDescription>> = [
         {
             name: "Listado Componentes",
             cell: (row) => <p>{row.nombreDescripcion}</p>,
+        },
+        {
+            name: "Almacenamiento",
+            cell: (row) => <p>{row.idAlmacenamiento}</p>,
+        },
+        {
+            name: "Fraccionamiento",
+            cell: (row) => <p>{row.idFraccionamiento}</p>,
         },
         {
             name: "Acciones",

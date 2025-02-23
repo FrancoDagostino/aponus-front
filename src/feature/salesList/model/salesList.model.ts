@@ -31,6 +31,9 @@ export interface ICuota {
     idEstadoCuota: number;
     fechaPago?: string;
     estadoCuota: IEstadoCuota;
+    estado: string;
+    idVenta: number;
+    idCuota: number;
     pagos: IPago[];
 }
 

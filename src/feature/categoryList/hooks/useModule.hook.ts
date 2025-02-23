@@ -33,7 +33,7 @@ interface ICategoryModule {
     isOpenComponent: boolean
     addOrUpdateComponent: IAddOrUpdateComponent
     onOpenModalComponentHandler: (labelModal: string, idComponent: string) => void
-    onAddOrUpdateComponentHandler: (component: string) => Promise<void>
+    onAddOrUpdateComponentHandler: (component: string, storage: string, fraction: string) => Promise<void>
     onCloseModalComponentHandler: () => void
 }
 export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule => {
@@ -160,10 +160,10 @@ export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule 
         props.uiHook.onSetSnackbar("Componente eliminado correctamente", true)
     }
 
-    const onAddOrUpdateComponentHandler = async (component: string) => {
+    const onAddOrUpdateComponentHandler = async (component: string, storage: string, fraction: string) => {
         setIsOpenComponent(false)
         props.uiHook.showLoading()
-        const result = await props.categoryStore.addComponentAction(component, addOrUpdateComponent.idDescription)
+        const result = await props.categoryStore.addComponentAction(component, addOrUpdateComponent.idDescription, storage, fraction)
         props.uiHook.hideLoading()
         if (result.isError) {
             props.uiHook.showAlert({

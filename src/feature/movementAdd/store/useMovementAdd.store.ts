@@ -6,7 +6,7 @@ import { IMovimientoStock } from "../../movementList/model/movementList.model";
 
 export interface IMovementAddStore {
     supplyList: ISuppliesList[]
-    createNewMovementAction: (dataInput: any) => Promise<TResult<null, null>>
+    createNewMovementAction: (dataInput: any) => Promise<TResult<null, string>>
     getSupplyListAction: () => Promise<TResult<null, null>>
     getEntityListAction: (id: string) => Promise<TResult<IEntity[], null>>
     getMovementListAction: () => Promise<TResult<IMovimientoStock, null>>
@@ -31,7 +31,7 @@ export const useMovementAddStore = (props: IMovementAddStoreProps): IMovementAdd
 
     const createNewMovementAction: IMovementAddStore["createNewMovementAction"] = async (dataInput: any) => {
         const result = await props.movementAddService.postCreateNewMovement(dataInput)
-        if (result.isError) return createResultUtil.error(null)
+        if (result.isError) return createResultUtil.error(result.data ?? "")
         return createResultUtil.success(null)
     }
 

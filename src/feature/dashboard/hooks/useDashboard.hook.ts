@@ -1,6 +1,6 @@
 import { IDashboardStore } from "../store/useDashboard.store"
 import { IUiHook } from "../../ui/hooks/useUi.hook"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 
 
 
@@ -9,9 +9,14 @@ interface IDashboardHookProps {
     uiHook: IUiHook
 }
 
+interface IDashboardHook {
+    idDescriptionFounded: string
+    onChangeTabsHandler: (idDescription: string) => Promise<void>
+}
 
-export const useDashboardHook = (props: IDashboardHookProps) => {
+export const useDashboardHook = (props: IDashboardHookProps): IDashboardHook => {
 
+    const [idDescriptionFounded, setIdDescriptionFounded] = useState<string>("");
 
 
     useEffect(() => {
@@ -19,13 +24,23 @@ export const useDashboardHook = (props: IDashboardHookProps) => {
     }, [])
     const onInit = async () => {
         props.uiHook.showLoading()
-        const result = await props.dashboardStore.getComprasAction()
+        const result = await props.dashboardStore.getPendingSalesAction()
+        await props.dashboardStore.getProductsAction()
+        await props.dashboardStore.getDescriptionAction()
         props.uiHook.hideLoading()
         if (result.isError) return
-        console.log(result.data)
     }
+
+    const onChangeTabsHandler = async (idDescription: string) => {
+        props.uiHook.showLoading()
+        setIdDescriptionFounded(idDescription);
+        await props.dashboardStore.getSupplieListAction(Number(idDescription))
+        props.uiHook.hideLoading()
+    };
+
     return {
-        onInit
+        idDescriptionFounded,
+        onChangeTabsHandler
     }
 }
 

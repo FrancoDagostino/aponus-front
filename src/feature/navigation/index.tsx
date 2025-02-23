@@ -13,6 +13,7 @@ interface IMenuWrappersProps {
 
 //TODO: cambiar el status
 const Menu: FC<IMenuWrappersProps> = (props) => {
+    console.log("props.authStore.rol", props.authStore.rol)
     const moduleHook = useModuleHook()
     return (
         <>
@@ -23,7 +24,7 @@ const Menu: FC<IMenuWrappersProps> = (props) => {
                     </div>
                     {
                         props.navigationStore.menuItem.map(item => (
-                            <ItemMenuComponent item={item} onLogoutHandler={props.authStore.logOutAction} onNavigate={moduleHook.onClickMenuItemHandler} key={item.id} />
+                            <ItemMenuComponent userRole={props.authStore.rol} item={item} onLogoutHandler={props.authStore.logOutAction} onNavigate={moduleHook.onClickMenuItemHandler} key={item.id} />
                         ))
                     }
                 </div>

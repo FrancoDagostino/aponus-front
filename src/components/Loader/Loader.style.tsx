@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 interface IBackDropModalShadowProps {
-    $isOpen: boolean;
+  $isOpen: boolean;
 }
 
 export const BackDropShadow = styled.div<IBackDropModalShadowProps>`
@@ -15,7 +15,7 @@ export const BackDropShadow = styled.div<IBackDropModalShadowProps>`
   margin: 0px;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: 9999;
   transition: opacity 0.3s ease-in;
   background: "white10";
   backdrop-filter: blur(5px);

@@ -1,5 +1,6 @@
 import { IRestClient, urlBase } from "../../../utils/clients/useRest.client";
 import { createResponseUtil, TResponse } from "../../../utils/response.util";
+import { IUser } from "../model/user.model";
 
 export interface ILoginUserPost {
     usuario: string;
@@ -11,14 +12,14 @@ interface IAuthenticationServiceProps {
 }
 
 export interface IAuthenticationService {
-    onLogin: (dataInput: ILoginUserPost) => Promise<TResponse<string, any>>
+    onLogin: (dataInput: ILoginUserPost) => Promise<TResponse<IUser, any>>
 }
 
 export const useAuthenticationService = (props: IAuthenticationServiceProps): IAuthenticationService => {
 
     const onLogin: IAuthenticationService["onLogin"] = async (dataInput: ILoginUserPost) => {
         const url = `${urlBase}/users/login`;
-        const response = await props.restClient.post<string, any>(url, dataInput, undefined);
+        const response = await props.restClient.post<IUser, any>(url, dataInput, undefined);
         if (response.isSuccess) return createResponseUtil.success(response.data, response.status);
         return createResponseUtil.error(response.data, response.status)
     }

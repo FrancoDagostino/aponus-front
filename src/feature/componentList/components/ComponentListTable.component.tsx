@@ -18,7 +18,6 @@ const getColumns = (rows: IRow[], callback: (idInsumo: string) => void) => {
     const resultColumn = resultRows.length
         ? resultRows[0].map((cell, index) => ({
             name: cell.header,
-            width: "130px",
             selector: (cellParam: ICell[]) => cellParam[index].value,
             cell: (cells: ICell[], rowIndex: number) => {
                 const currentRow = rows[rowIndex]

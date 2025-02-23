@@ -171,7 +171,7 @@ export const MovementFormComponent: FC<IMovementFormProps> = (props) => {
                         />
                         <CloudUploadIcon sx={{ fontSize: 48, mb: 1 }} />
                         <Typography variant="body1">
-                            Arrastre y suelte archivos PDF aquí o haga clic para seleccionar
+                            Arrastre y suelte archivos aquí o haga clic para seleccionar
                         </Typography>
                     </Box>
                     {fileError && (
@@ -245,7 +245,6 @@ export const MovementFormComponent: FC<IMovementFormProps> = (props) => {
                         variant="contained"
                         fullWidth
                         onClick={() => onSaveHandler()}
-                        disabled={supplyList.length === 0}
                     >
                         Guardar
                     </Button>

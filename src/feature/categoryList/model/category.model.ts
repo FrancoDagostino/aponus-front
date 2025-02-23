@@ -14,4 +14,5 @@ export interface IComponentDescription {
     idDescripcion: string;
     nombreDescripcion: string;
     idAlmacenamiento: string;
+    idFraccionamiento: string;
 }

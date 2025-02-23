@@ -38,16 +38,16 @@ export interface ICategoryService {
     deleteCategoryType: (idType: string) => Promise<TResponse<null, null>>
     getComponentList: () => Promise<TResponse<IComponentDescription[], null>>;
     deleteComponent: (idAlmacenamiento: string) => Promise<TResponse<null, null>>;
-    addComponent: (description: string, idType: string) => Promise<TResponse<void, null>>;
+    addComponent: (description: string, idType: string, storage: string, fraction: string) => Promise<TResponse<void, null>>;
 }
 
 export const useCategoryService = (props: IStockListServiceProps): ICategoryService => {
 
 
-    const addComponent: ICategoryService["addComponent"] = async (description: string, idDescription: string) => {
+    const addComponent: ICategoryService["addComponent"] = async (description: string, idDescription: string, storage: string, fraction: string) => {
         console.log("llego")
         const url = `${urlBase}/Categories/Supplies/Descriptions/Save`
-        const result = await props.restClient.post<void, null>(url, { nombreDescripcion: description, IdDescripcion: idDescription }, undefined)
+        const result = await props.restClient.post<void, null>(url, { nombreDescripcion: description, IdDescripcion: idDescription, idAlmacenamiento: storage, idFraccionamiento: fraction }, undefined)
         if (result.isSuccess) return createResponseUtil.success(result.data, result.status)
         return createResponseUtil.error(result.data, result.status)
     }

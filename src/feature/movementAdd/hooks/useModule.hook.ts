@@ -115,7 +115,7 @@ export const useMovementAddHook = (props: IMovementAddHookProps): IMovementAddHo
         if (result.isError) {
             props.uiHook.showAlert({
                 title: "Error",
-                message: "Error al crear el movimiento",
+                message: result.data ?? "Error al crear el movimiento",
                 type: "alert",
             })
             return

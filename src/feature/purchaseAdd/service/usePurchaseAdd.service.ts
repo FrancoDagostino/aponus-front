@@ -39,12 +39,11 @@ export const usePurchaseAddService = (props: IPurchaseAddServiceProps): IPurchas
         const formData = new FormData();
         formData.append("usuarioCreacion", inputData.idUsuario);
         formData.append("destino", `${receivedMerchandise ? "recibido" : "pendiente"}`);
+        formData.append("origen", "");
         formData.append("idProveedorDestino", inputData.idProveedor);
-        inputData.detallesCompra.forEach(item => {
-            formData.append("suministros[]", JSON.stringify({
-                idSuministro: item.idInsumo,
-                cantidad: item.cantidad
-            }));
+        inputData.detallesCompra.forEach((item, index) => {
+            formData.append(`Suministros[${index}].idSuministro`, item.idInsumo);
+            formData.append(`Suministros[${index}].cantidad`, item.cantidad.toString());
         });
 
         files.forEach(file => {

@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import {
     Table,
     TableBody,
@@ -16,10 +16,18 @@ import { CheckOutlined } from '@mui/icons-material';
 
 interface ISaleDetailComponentProps {
     paymentList: ISale["cuotas"]
-    onPayHandler: (idVenta: string, numeroCuota: number) => void
+    idVenta: string
+    onPayHandler: (idVenta: string, idCuota: number) => void
 }
 
 export const SaleDetailComponent: FC<ISaleDetailComponentProps> = (props) => {
+    //console.log("paymentList", props.paymentList)
+    const [paymentList, setPaymentList] = useState<ISale["cuotas"]>(props.paymentList)
+
+    useEffect(() => {
+        setPaymentList(props.paymentList)
+    }, [props.paymentList])
+
     return (
         <TableContainer component={Paper} sx={{ maxWidth: "auto" }}>
             <Table aria-label="tabla de pagos">
@@ -33,7 +41,7 @@ export const SaleDetailComponent: FC<ISaleDetailComponentProps> = (props) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {props.paymentList.map((payment) => (
+                    {paymentList.map((payment) => (
                         <TableRow key={payment.numeroCuota}>
                             <TableCell sx={{ textAlign: "center" }}>
                                 {payment.fechaVencimiento}
@@ -45,7 +53,7 @@ export const SaleDetailComponent: FC<ISaleDetailComponentProps> = (props) => {
                             <TableCell sx={{ textAlign: "center" }}>{payment.estadoCuota.descripcion}</TableCell>
                             <TableCell sx={{ textAlign: "center" }}>
                                 <Tooltip title="Pagada">
-                                    <IconButton color="primary" onClick={() => props.onPayHandler(payment.idEstadoCuota.toString(), payment.numeroCuota)}>
+                                    <IconButton color="primary" onClick={() => props.onPayHandler(payment.idVenta.toString(), payment.idCuota)}>
                                         <CheckOutlined />
                                     </IconButton>
                                 </Tooltip>

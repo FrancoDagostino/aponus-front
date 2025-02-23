@@ -1,31 +1,26 @@
 import { FC, useEffect, useState } from "react";
-import DeleteIcon from '@mui/icons-material/Delete'
 import './dataGrid.css'
-import { Tooltip, IconButton, TablePagination, TableContainer, Table, TableHead, Grid, Paper, TableBody, TableCell, TableRow, useMediaQuery } from "@mui/material";
-import { Search } from "@mui/icons-material";
-import { IMovimientoStock } from "../model/movementList.model";
-
+import { TablePagination, TableContainer, Table, TableHead, Grid, Paper, TableBody, TableCell, TableRow, useMediaQuery } from "@mui/material";
+import { IPendingSales } from "../models/dashboard.model"
 interface IActivityDataGridComponentProps {
-    movementList: IMovimientoStock[]
+    pendingSales: IPendingSales[]
     searchValue: string
-    onEditMovementHandler: (id: number) => void
-    onViewMovementHandler: (row: IMovimientoStock) => void
-    // handleOpen: (row: any, isDisabled: boolean) => void
 }
 
-export const MovementListableComponent: FC<IActivityDataGridComponentProps> = (props) => {
+export const PendingSalesTableComponent: FC<IActivityDataGridComponentProps> = (props) => {
+    console.log(props.pendingSales)
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const totalPages = props.movementList.length
+    const totalPages = props.pendingSales.length
     const minScreen = useMediaQuery('(min-width: 1300px)');
     useEffect(() => {
         setPage(0)
     }, [props.searchValue])
 
 
-    const startIndex = (page + 1) * rowsPerPage
+    const startIndex = (page) * rowsPerPage
     const endIndex = startIndex + rowsPerPage
-    const currentData = props.movementList.slice(startIndex, endIndex)
+    const currentData = props.pendingSales.slice(startIndex, endIndex)
     const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number,) => {
         event?.preventDefault()
         setPage(newPage);
@@ -38,6 +33,7 @@ export const MovementListableComponent: FC<IActivityDataGridComponentProps> = (p
         setPage(0);
     };
 
+    console.log(currentData)
 
     return (
         <>
@@ -48,35 +44,20 @@ export const MovementListableComponent: FC<IActivityDataGridComponentProps> = (p
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Fecha</TableCell>
-                                    <TableCell>Proveedor</TableCell>
-                                    <TableCell>Origen</TableCell>
-                                    <TableCell>Destino</TableCell>
+                                    <TableCell>Cliente</TableCell>
+                                    <TableCell>Monto Total</TableCell>
+                                    <TableCell>Saldo Pendiente</TableCell>
                                     <TableCell>Estado</TableCell>
-                                    <TableCell>Usuario</TableCell>
-                                    <TableCell>Acciones</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
                                 {currentData.map((row) => (
-                                    <TableRow key={row.idMovimiento}>
-                                        <TableCell sx={{ textAlign: "center" }}>{row.fechaHoraCreado}</TableCell>
-                                        <TableCell sx={{ textAlign: "center" }}>{row.proveedorDestino?.nombre}</TableCell>
-                                        <TableCell sx={{ textAlign: "center" }}>{row.origen}</TableCell>
-                                        <TableCell sx={{ textAlign: "center" }}>{row.destino}</TableCell>
+                                    <TableRow key={row.fecha}>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.fecha}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.cliente}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.montoTotal}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.saldoPendiente}</TableCell>
                                         <TableCell sx={{ textAlign: "center" }}>{row.estado}</TableCell>
-                                        <TableCell sx={{ textAlign: "center" }}>{row.usuarioCreacion}</TableCell>
-                                        <TableCell sx={{ textAlign: "center" }}>
-                                            <Tooltip title="Ver">
-                                                <IconButton color="primary" onClick={() => props.onViewMovementHandler(row)}>
-                                                    <Search />
-                                                </IconButton>
-                                            </Tooltip>
-                                            <Tooltip title="Eliminar">
-                                                <IconButton color="error" onClick={() => { }}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-                                            </Tooltip>
-                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>

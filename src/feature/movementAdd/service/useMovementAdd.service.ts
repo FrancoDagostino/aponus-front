@@ -10,7 +10,7 @@ export interface IMovementAddServiceProps {
 }
 
 export interface IMovementAddService {
-    postCreateNewMovement: (dataInput: IFormData) => Promise<TResponse<null, null>>
+    postCreateNewMovement: (dataInput: IFormData) => Promise<TResponse<null, string>>
     getSupplyList: () => Promise<TResponse<ISuppliesList[], null>>
     getProviderList: (id: string) => Promise<TResponse<IEntity[], null>>
     getMovementList: () => Promise<TResponse<IMovimientoStock[], null>>
@@ -42,7 +42,7 @@ export const useMovementAddService = (props: IMovementAddServiceProps): IMovemen
             formData.append("archivos", file);
         });
 
-        const response = await props.restClient.post<null, null>(url, formData, undefined);
+        const response = await props.restClient.post<null, string>(url, formData, undefined);
         if (response.isSuccess) return createResponseUtil.success(response.data, response.status);
         return createResponseUtil.error(response.data, response.status);
     }

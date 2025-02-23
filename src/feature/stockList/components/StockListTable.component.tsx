@@ -74,17 +74,13 @@ const StockListableComponent: React.FC<IProductListComponentProps> = (
 
   // Lista de propiedades para verificar
   const propertiesToCheck: Array<keyof IEspecificaciones> = [
+    "NombreInsumo",
     "pintura",
     "proceso",
     "recibido",
-    "tolerancia",
     "granallado",
-    "diametro",
-    "Altura",
-    "largo",
-    "espesor",
     "moldeado",
-    "diametroNominal"
+    "pendiente",
   ];
 
   // Agregar columnas basadas en la existencia de sus datos

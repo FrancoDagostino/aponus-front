@@ -1,4 +1,4 @@
-import { Button, Modal, Box, Typography, TextField } from "@mui/material";
+import { Button, Modal, Box, Typography, TextField, Select, MenuItem, FormControl, InputLabel } from "@mui/material";
 import { FC, useState } from "react";
 
 const style = {
@@ -16,20 +16,22 @@ const style = {
 interface ModalComponentDescriptionComponentProps {
     onClose: () => void;
     isOpen: boolean;
-    onAddOrUpdateComponent: (component: string) => void;
+    onAddOrUpdateComponent: (component: string, storage: string, fraction: string) => void;
     modalLabel: string;
 }
 
 const ModalComponentDescriptionComponent: FC<ModalComponentDescriptionComponentProps> = (props) => {
     const [valueInput, setValueInput] = useState<string>("");
-
+    const [storage, setStorage] = useState<string>("UD");
+    const [fraction, setFraction] = useState<string>("CM");
+    const isEditing = props.modalLabel.includes('Edicion');
     const handleClose = () => {
         setValueInput("");
         props.onClose();
     };
 
     const handlerSave = () => {
-        props.onAddOrUpdateComponent(valueInput);
+        props.onAddOrUpdateComponent(valueInput, storage, fraction);
         setValueInput("");
     };
 
@@ -54,12 +56,42 @@ const ModalComponentDescriptionComponent: FC<ModalComponentDescriptionComponentP
                         variant="outlined"
                         value={valueInput}
                         onChange={(e) => setValueInput(e.target.value)}
+                        fullWidth
+                        sx={{ marginBottom: 2 }}
                     />
+                    {!isEditing && (
+                        <Box sx={{ display: 'flex', gap: 2, marginBottom: 2 }}>
+                            <FormControl fullWidth>
+                                <InputLabel>Almacenamiento</InputLabel>
+                                <Select
+                                    value={storage}
+                                    label="Almacenamiento"
+                                    onChange={(e) => setStorage(e.target.value)}
+                                >
+                                    <MenuItem value="UD">Unidad</MenuItem>
+                                    <MenuItem value="KG">Kilogramo</MenuItem>
+                                </Select>
+                            </FormControl>
+                            <FormControl fullWidth>
+                                <InputLabel>Fraccionamiento</InputLabel>
+                                <Select
+                                    value={fraction}
+                                    label="Fraccionamiento"
+                                    onChange={(e) => setFraction(e.target.value)}
+                                >
+                                    <MenuItem value="CM">Centimetro</MenuItem>
+                                    <MenuItem value="UD">Unidad</MenuItem>
+                                    <MenuItem value="">Sin Fraccionamiento</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </Box>
+                    )}
                     <Button
-                        sx={{ marginLeft: "20px", marginTop: "15px" }}
+                        sx={{ marginTop: "15px" }}
                         variant="contained"
                         disabled={!valueInput}
                         onClick={handlerSave}
+                        fullWidth
                     >
                         Guardar
                     </Button>

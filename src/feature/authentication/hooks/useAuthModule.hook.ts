@@ -38,7 +38,7 @@ export const useAuthModuleHook = (props: IUseAuthModuleHookProps): IUseAuthModul
             return
         }
 
-        return props.onNavigate('/');
+        return props.onNavigate('/dashboard');
     }
 
     const onLogOutHandler: IUseAuthModuleHook["onLogOutHandler"] = async () => {

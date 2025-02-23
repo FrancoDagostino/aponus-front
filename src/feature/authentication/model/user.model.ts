@@ -36,7 +36,6 @@
 // }
 
 export interface IUser {
-    username: string;
-    actualizarPassword: boolean;
-    tkn: string;
+    token: string;
+    rol: string;
 }

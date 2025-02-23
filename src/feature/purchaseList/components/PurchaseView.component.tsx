@@ -1,10 +1,9 @@
 import { FC, useState } from 'react';
-import { Accordion, AccordionDetails, AccordionSummary, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, Tooltip, TableCell, TableRow, TableBody, Table, TableContainer, Typography, Stack, TableHead, Paper, styled } from '@mui/material';
-import { CloudUpload, Download, ExpandMoreOutlined } from '@mui/icons-material';
+import { Accordion, AccordionDetails, AccordionSummary, Button, Dialog, DialogActions, DialogContent, DialogTitle, TableCell, TableRow, TableBody, Table, TableContainer, Typography, Stack, TableHead, Paper, styled } from '@mui/material';
+import { CloudUpload, ExpandMoreOutlined } from '@mui/icons-material';
 import { IPucharse } from '../model/pucharseList.model';
 import { PucharseDetailComponent } from './PucharseDetail.component';
 import { PucharseDetailSupplyComponent } from './PucharseDetailSupply.component';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 
 const VisuallyHiddenInput = styled("input")`
@@ -47,23 +46,22 @@ export const PurchaseViewModalComponent: FC<IPurchaseViewModalComponentProps> = 
         props.onSaveFileHandler(props.purchase.idCompra.toString(), selectedFile!)
     }
 
-
-    const handleDownload = async (url: string, filename: string) => {
-        try {
-            const response = await fetch(url);
-            const blob = await response.blob();
-            const downloadUrl = window.URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = downloadUrl;
-            link.setAttribute('download', filename); // Nombre del archivo que se descargará
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            window.URL.revokeObjectURL(downloadUrl);
-        } catch (error) {
-            console.error('Error al descargar el archivo:', error);
-        }
-    };
+    // const handleDownload = async (url: string, filename: string) => {
+    //     try {
+    //         const response = await fetch(url);
+    //         const blob = await response.blob();
+    //         const downloadUrl = window.URL.createObjectURL(blob);
+    //         const link = document.createElement('a');
+    //         link.href = downloadUrl;
+    //         link.setAttribute('download', filename); // Nombre del archivo que se descargará
+    //         document.body.appendChild(link);
+    //         link.click();
+    //         document.body.removeChild(link);
+    //         window.URL.revokeObjectURL(downloadUrl);
+    //     } catch (error) {
+    //         console.error('Error al descargar el archivo:', error);
+    //     }
+    // };
 
 
     return (

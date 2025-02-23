@@ -92,6 +92,8 @@ export const useSalesLIstHook = (props: ISalesListHookProps): ISalesListHook => 
                 type: "alert",
             })
         }
+        props.uiHook.onSetSnackbar("Archivo guardado correctamente", true)
+        setIsOpenViewSales(false)
     }
 
     const onPayHandler = async (idVenta: string, numeroCuota: number) => {
@@ -104,7 +106,16 @@ export const useSalesLIstHook = (props: ISalesListHookProps): ISalesListHook => 
                 message: "Error al pagar la cuota",
                 type: "alert",
             })
+
+            return
         }
+
+        setSalesList({
+            ...salesList,
+            cuotas: salesList.cuotas.map(cuota => cuota.numeroCuota === numeroCuota ? { ...cuota, estadoCuota: { ...cuota.estadoCuota, descripcion: "PAGADO" } } : cuota)
+        })
+
+
     }
 
 

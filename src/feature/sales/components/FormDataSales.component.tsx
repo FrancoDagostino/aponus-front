@@ -46,7 +46,7 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
 
     const handleAddSupply = () => {
         const availableSupplyFound = props.availableSupplies.find(supply => supply.idProducto === selectedSupply)!
-
+        console.log(availableSupplyFound)
         const newSupply: ISupplyItem = {
             id: availableSupplyFound.idProducto,
             name: availableSupplyFound.nombre,
@@ -174,7 +174,14 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
                         variant="standard"
                         name="interest"
                         value={props.formData.interest}
-                        onChange={props.onChangePurchaseDateHandler}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            if (value === '' || /^\d*\.?\d*$/.test(value)) {
+                                props.onChangePurchaseDateHandler(e);
+                            }
+                        }}
+                        type="text"
+                        inputProps={{ inputMode: 'decimal', pattern: '[0-9]*' }}
                     />
                 </Grid>
 
@@ -200,7 +207,14 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
                         variant="standard"
                         name="mont"
                         value={props.formData.mont}
-                        onChange={props.onChangePurchaseDateHandler}
+                        onChange={(e) => {
+                            const value = e.target.value;
+                            if (value === '' || /^\d*\.?\d*$/.test(value)) {
+                                props.onChangePurchaseDateHandler(e);
+                            }
+                        }}
+                        type="text"
+                        inputProps={{ inputMode: 'decimal', pattern: '[0-9]*' }}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -211,6 +225,7 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
                         name="totalMont"
                         value={props.formData.totalMont}
                         onChange={props.onChangePurchaseDateHandler}
+                        disabled={true}
                     />
                 </Grid>
                 <Grid item xs={12} md={6}>
@@ -221,11 +236,7 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
                         Cotizar
                     </Button>
                 </Grid>
-                <Grid item xs={12} md={12}>
-                    {props.quatationList.length > 0 && (
-                        <QuatationListComponent quatationList={props.quatationList} />
-                    )}
-                </Grid>
+
                 <Box
                     sx={{
                         border: '1px dashed rgba(255, 255, 255, 0.23)',
@@ -315,6 +326,11 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
                             </ListItem>
                         ))}
                     </List>
+                    <Grid item xs={12} md={12}>
+                        {props.quatationList.length > 0 && (
+                            <QuatationListComponent quatationList={props.quatationList} />
+                        )}
+                    </Grid>
                 </Grid>
                 <Grid item justifyContent={"flex-end"} xs={12} marginBottom={5}>
                     <Button

@@ -16,6 +16,8 @@ interface ISalesListModuleProps {
 
 export const SalesListModule: FC<ISalesListModuleProps> = (props) => {
     const salesListHook = useSalesLIstHook(props)
+
+    console.log("salesList", props.salesListStore.salesList)
     return (
         <>
             <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>

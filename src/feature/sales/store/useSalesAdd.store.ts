@@ -46,6 +46,7 @@ export const useSalesAddStore = (props: ISalesAddStoreProps): ISalesAddStore => 
         const result = await props.useSalesAddService.productList();
         if (result.isError) return createResultUtil.error(null);
         setProductList(result.data)
+        setQuatationList([])
         return createResultUtil.success(null)
     }
 

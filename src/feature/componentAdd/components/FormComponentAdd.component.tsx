@@ -132,6 +132,7 @@ const FormComponentAdd: FC<IFormComponentAddProps> = (props) => {
                             label="Fraccionamiento"
                             onChange={(e) => props.onChangeComponentFormHandler(e.target.value, "idFraccionamiento")}
                             sx={{ fontFamily: "Rubik-SemiBold" }}
+                            disabled={props.isEdit}
                         >
                             <MenuItem value={"CM"}>Centimetro</MenuItem>
                             <MenuItem value={"KG"}>Kilogramo</MenuItem>
@@ -150,6 +151,7 @@ const FormComponentAdd: FC<IFormComponentAddProps> = (props) => {
                             label="Almacenamiento"
                             onChange={(e) => props.onChangeComponentFormHandler(e.target.value, "idAlmacenamiento")}
                             sx={{ fontFamily: "Rubik-SemiBold" }}
+                            disabled={props.isEdit}
                         >
                             <MenuItem value={"KG"}>Kilogramo</MenuItem>
                             <MenuItem value={"UD"}>Unidad</MenuItem>

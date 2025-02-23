@@ -9,15 +9,27 @@ import AppsIcon from '@mui/icons-material/Apps';
 import WavesIcon from '@mui/icons-material/Waves';
 import GroupIcon from '@mui/icons-material/Group';
 import ShopIcon from '@mui/icons-material/Shop';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import HomeIcon from '@mui/icons-material/Home';
 
 interface IItemMenu {
     item: IMenuItem
     onNavigate: (path: string) => void;
     onLogoutHandler: () => void;
+    userRole: string;
 }
 
 export const ItemMenuComponent = (props: IItemMenu) => {
+    const hasPermission = (): boolean => {
+        // Verifica si el rol del usuario está incluido en los roles permitidos del ítem
+        return props.item.roles.includes(props.userRole);
+    }
+
     const renderIcon = () => {
+        if (!hasPermission()) {
+            return null; // No renderizar el ícono si no tiene permiso
+        }
+
         switch (props.item.icon) {
             case 'Stock':
                 return <InventoryIcon className="item-menu-icon" fontSize="large" />;
@@ -37,10 +49,19 @@ export const ItemMenuComponent = (props: IItemMenu) => {
                 return <GroupIcon className="item-menu-icon" fontSize="large" />;
             case 'PucharseList':
                 return <ShopIcon className="item-menu-icon" fontSize="large" />;
+            case 'SaleList':
+                return <AttachMoneyIcon className="item-menu-icon" fontSize="large" />;
+            case 'Dashboard':
+                return <HomeIcon className="item-menu-icon" fontSize="large" />;
             default:
-                break;
+                return null;
         }
     }
+
+    if (!hasPermission()) {
+        return null; // No renderizar nada si no tiene permiso
+    }
+
     return (
         <div className="item-menu-card" onClick={() => props.item.label === "Salir" ? props.onLogoutHandler() : props.onNavigate(props.item.path)} >
             {renderIcon()}

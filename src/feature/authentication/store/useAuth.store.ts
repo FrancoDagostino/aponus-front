@@ -31,8 +31,8 @@ export const useAuthStore = (props: IUseAuthStoreProps): IAuthStore => {
         const token: any = tokenUtil.get()
         if (!token) return setStatus('is not authenticated')
         setStatus('is authenticated')
-        const decode = { Rol: "" }
-        setRol(decode.Rol)
+        const storedRol = localStorage.getItem('userRole') || "";
+        setRol(storedRol)
     }
 
 
@@ -42,10 +42,10 @@ export const useAuthStore = (props: IUseAuthStoreProps): IAuthStore => {
             setStatus('is not authenticated');
             return createResultUtil.error(null)
         }
-        tokenUtil.set(response.data);
-        // const token: any = tokenUtil.get()
-        const decode = { Rol: "" }
+        tokenUtil.set(response.data.token);
+        const decode = { Rol: response.data.rol }
         setRol(decode.Rol)
+        localStorage.setItem('userRole', response.data.rol);
         setStatus('is authenticated');
         return createResultUtil.success(null)
     }
@@ -53,6 +53,7 @@ export const useAuthStore = (props: IUseAuthStoreProps): IAuthStore => {
     const logOutAction: IAuthStore["logOutAction"] = async () => {
         tokenUtil.del();
         setStatus('is not authenticated')
+        localStorage.removeItem('userRole');
         window.location.replace('')
         return createResultUtil.success(null);
     }

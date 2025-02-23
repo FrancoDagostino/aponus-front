@@ -16,7 +16,7 @@ export interface ICategoryStore {
     deleteCategoryTypeAction: (idType: string) => Promise<TResult<null, null>>
     deleteComponentAction: (idAlmacenamiento: string) => Promise<TResult<null, null>>;
     getComponentListAction: () => Promise<TResult<null, null>>;
-    addComponentAction: (description: string, idType: string) => Promise<TResult<null, null>>;
+    addComponentAction: (description: string, idType: string, storage: string, fraction: string) => Promise<TResult<null, null>>;
 }
 
 
@@ -33,8 +33,8 @@ export const useCategoryStore = (props: ICategoryStoreProps): ICategoryStore => 
 
 
 
-    const addComponentAction: ICategoryStore["addComponentAction"] = async (description: string, idType: string) => {
-        const result = await props.categoryService.addComponent(description, idType)
+    const addComponentAction: ICategoryStore["addComponentAction"] = async (description: string, idType: string, storage: string, fraction: string) => {
+        const result = await props.categoryService.addComponent(description, idType, storage, fraction)
         if (result.isError) return createResultUtil.error(result.data)
         return createResultUtil.success(null)
     }
