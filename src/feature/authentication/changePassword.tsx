@@ -1,18 +1,22 @@
-import { FC } from "react"
 import { IAuthStore } from "./store/useAuth.store"
-import { useAuthModuleHook } from "./hooks/useAuthModule.hook"
-import { TextField, Button, Box, Alert, CircularProgress } from "@mui/material"
+import { IUiHook } from "../ui/hooks/useUi.hook"
+import { Box, CircularProgress } from "@mui/material"
+import { TextField, Button, Alert } from "@mui/material"
 import { Link } from "react-router-dom"
-import './index.css'
-import { IUiHook, } from "../ui/hooks/useUi.hook"
-interface IAuthProps {
+import { useAuthModuleHook } from "./hooks/useAuthModule.hook"
+
+interface IModuleChangePasswordProps {
     authStore: IAuthStore
     uiHook: IUiHook
-    onNavigate: (url: string) => void
+    onNavigate: (path: string) => void
 }
 
-export const ModuleAuth: FC<IAuthProps> = (props) => {
+
+export const ModuleChangePassword = (props: IModuleChangePasswordProps) => {
     const moduleAuthHook = useAuthModuleHook({ authStore: props.authStore, onNavigate: props.onNavigate, uiHook: props.uiHook });
+
+    const isPasswordError = moduleAuthHook.passwordRecovery.password !== moduleAuthHook.passwordRecovery.confirmPassword
+
     return (
         <div className="login-container">
             <div className="login-head">
@@ -20,42 +24,32 @@ export const ModuleAuth: FC<IAuthProps> = (props) => {
             </div>
             <div className="login-form">
                 <Box
-                    component="form"
-                    className="login-container-form"
-                    onSubmit={(e: React.FormEvent<HTMLFormElement>) => moduleAuthHook.onLoginHandler(e)}>
-                    <TextField
-                        label="Usuario"
-                        variant="standard"
-                        margin="normal"
-                        onChange={(e) => moduleAuthHook.onChangeUserNameHandler(e.target.value)} />
-                    {
-                        !moduleAuthHook.isRecoverPassword && (
-                            <TextField
-                                label="Contraseña"
-                                type="password"
-                                variant="standard"
-                                margin="normal"
-                                onChange={(e) => moduleAuthHook.onChangePasswordHandler(e.target.value)} />
-                        )
-                    }
-                    {
-                        !moduleAuthHook.isRecoverPassword && (
-                            <label
-                                className="login-link-form"
-                                onClick={() => moduleAuthHook.onSetRecoverPasswordHandler()}>
-                                He olvidado mi contraseña
-                            </label>
-                        )
-                    }
-                    {
-                        moduleAuthHook.isRecoverPassword && (
-                            <label
-                                className="login-link-form"
-                                onClick={() => moduleAuthHook.onSetRecoverPasswordHandler()}>
-                                Volver
-                            </label>
-                        )
-                    }
+                    className="login-container-form">
+                    <Box mb={2}>
+                        <TextField
+                            label="Contraseña"
+                            type="password"
+                            variant="standard"
+                            margin="normal"
+                            name="password"
+                            value={moduleAuthHook.passwordRecovery.password}
+                            onChange={moduleAuthHook.onPasswordRecoveryHandler} />
+                    </Box>
+                    <Box mb={2}>
+                        <TextField
+                            label="Confirmar contraseña"
+                            type="password"
+                            variant="standard"
+                            margin="normal"
+                            name="confirmPassword"
+                            value={moduleAuthHook.passwordRecovery.confirmPassword}
+                            onChange={moduleAuthHook.onPasswordRecoveryHandler} />
+                    </Box>
+                    {isPasswordError && (
+                        <Alert severity="error" className="alert">
+                            Las contraseñas no coinciden.
+                        </Alert>
+                    )}
                     {
                         moduleAuthHook.isLoading === true ?
                             <Box className="login-container-progress">
@@ -73,8 +67,10 @@ export const ModuleAuth: FC<IAuthProps> = (props) => {
                                 <Button
                                     type="submit"
                                     variant="contained"
-                                    color="primary">
-                                    INICIAR SESIÓN
+                                    color="primary"
+                                    disabled={isPasswordError || moduleAuthHook.passwordRecovery.confirmPassword === "" || moduleAuthHook.passwordRecovery.password === ""}
+                                    onClick={() => moduleAuthHook.onChangePasswordHandlerRecover()}>
+                                    CAMBIAR CONTRASEÑA
                                 </Button>
                             )
                     }

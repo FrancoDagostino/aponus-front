@@ -23,3 +23,9 @@ export interface IDescriptions {
     idAlmacenamiento: string;
     idFraccionamiento: string;
 }
+
+
+export interface ISalesForMonth {
+    month: string;
+    ventas: string;
+}

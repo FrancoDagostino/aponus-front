@@ -1,6 +1,6 @@
 import { IDashboardService } from "../services/useDashboard.service"
 import { TResult, createResultUtil } from "../../../utils/result.util"
-import { IPendingSales, IProducts, IDescriptions } from "../models/dashboard.model"
+import { IPendingSales, IProducts, IDescriptions, ISalesForMonth } from "../models/dashboard.model"
 import { useState } from "react"
 import { IRowContainer } from "../../componentList/model/component.model"
 interface IDashboardStoreProps {
@@ -12,10 +12,12 @@ export interface IDashboardStore {
     getProductsAction: () => Promise<TResult<null, null>>
     getDescriptionAction: () => Promise<TResult<null, null>>
     getSupplieListAction: (idDescription: number) => Promise<TResult<null, null>>
+    getBarChartAction: () => Promise<TResult<null, null>>
     pendingSales: IPendingSales[]
     products: IProducts[]
     descriptions: IDescriptions[]
     supplieList: IRowContainer
+    barChart: ISalesForMonth[]
 }
 
 export const useDashboardStore = (props: IDashboardStoreProps): IDashboardStore => {
@@ -26,6 +28,7 @@ export const useDashboardStore = (props: IDashboardStoreProps): IDashboardStore 
     const [supplieList, setSupplieList] = useState<IRowContainer>({
         rowList: []
     })
+    const [barChart, setBarChart] = useState<ISalesForMonth[]>([])
     const getComprasAction = async () => {
         const result = await props.dashboardService.getCompras()
         if (result.isError) return createResultUtil.error(result.data)
@@ -59,15 +62,24 @@ export const useDashboardStore = (props: IDashboardStoreProps): IDashboardStore 
         setSupplieList(result.data)
         return createResultUtil.success(null)
     }
+
+    const getBarChartAction = async () => {
+        const result = await props.dashboardService.getBarChart()
+        if (result.isError) return createResultUtil.error(result.data)
+        setBarChart(result.data)
+        return createResultUtil.success(null)
+    }
     return {
         getComprasAction,
         getPendingSalesAction,
         getProductsAction,
         getDescriptionAction,
         getSupplieListAction,
+        getBarChartAction,
         pendingSales,
         products,
         descriptions,
-        supplieList
+        supplieList,
+        barChart
     }
 }

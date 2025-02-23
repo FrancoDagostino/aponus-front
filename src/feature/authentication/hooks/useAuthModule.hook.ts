@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { IAuthStore } from "../store/useAuth.store"
-
+import { IUiHook } from "../../ui/hooks/useUi.hook"
 interface IUseAuthModuleHook {
     username: string,
     password: string,
@@ -13,12 +13,20 @@ interface IUseAuthModuleHook {
     isLoadingHandler: (value: boolean) => void,
     onLoginHandler: (e: React.FormEvent<HTMLFormElement>) => void
     onLogOutHandler: () => void
+    onSetRecoverPasswordHandler: () => void
+    resetRecoverPasswordHandler: () => void
+    isRecoverPassword: boolean
+    onRecoverPasswordHandler: () => void
+    onPasswordRecoveryHandler: (event: React.ChangeEvent<HTMLInputElement>) => void
+    passwordRecovery: { password: string, confirmPassword: string, username: string }
+    onChangePasswordHandlerRecover: () => void
 }
 
 
 interface IUseAuthModuleHookProps {
     authStore: IAuthStore,
-    onNavigate: (url: string) => void
+    onNavigate: (url: string) => void,
+    uiHook: IUiHook
 }
 
 export const useAuthModuleHook = (props: IUseAuthModuleHookProps): IUseAuthModuleHook => {
@@ -26,7 +34,9 @@ export const useAuthModuleHook = (props: IUseAuthModuleHookProps): IUseAuthModul
     const [password, setPassword] = useState<string>('');
     const [error, setError] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isRecoverPassword, setIsRecoverPassword] = useState<boolean>(false);
 
+    const [passwordRecovery, setPasswordRecovery] = useState<{ password: string, confirmPassword: string, username: string }>({ password: '', confirmPassword: '', username: '' });
 
     const onLoginHandler: IUseAuthModuleHook['onLoginHandler'] = async (e) => {
         e.preventDefault();
@@ -37,9 +47,20 @@ export const useAuthModuleHook = (props: IUseAuthModuleHookProps): IUseAuthModul
             setError(true);
             return
         }
-
+        if (response.data.changePassword) {
+            return props.onNavigate('/changePassword')
+        }
         return props.onNavigate('/dashboard');
     }
+
+
+    const onPasswordRecoveryHandler: IUseAuthModuleHook['onPasswordRecoveryHandler'] = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = event.target;
+        setPasswordRecovery(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
 
     const onLogOutHandler: IUseAuthModuleHook["onLogOutHandler"] = async () => {
         const result = await props.authStore.logOutAction()
@@ -63,6 +84,33 @@ export const useAuthModuleHook = (props: IUseAuthModuleHookProps): IUseAuthModul
         setIsLoading(value)
     }
 
+    const onSetRecoverPasswordHandler = () => {
+        console.log("resetRecoverPasswordHandler")
+
+        setIsRecoverPassword(!isRecoverPassword)
+    }
+
+    const resetRecoverPasswordHandler = () => {
+        setIsRecoverPassword(false);
+        setPassword('');
+    }
+
+    const onRecoverPasswordHandler = async () => {
+        props.uiHook.showLoading()
+        const response = await props.authStore.recoverPasswordAction(username)
+        props.uiHook.hideLoading()
+        if (response.isError) return props.uiHook.onSetSnackbar("Error al enviar el correo", true)
+        props.uiHook.onSetSnackbar("Se envio un correo para recuperar su contraseña", true)
+    }
+
+    const onChangePasswordHandlerRecover = async () => {
+        props.uiHook.showLoading()
+        await props.authStore.onChangePasswordAction(props.authStore.username, passwordRecovery.password)
+        props.uiHook.hideLoading()
+        props.authStore.loginAction({ usuario: props.authStore.username, contraseña: passwordRecovery.password })
+        props.onNavigate('/dashboard')
+    }
+
     const RetryLoginComputed: boolean = !(username != '' && password != '');
 
     return {
@@ -77,5 +125,12 @@ export const useAuthModuleHook = (props: IUseAuthModuleHookProps): IUseAuthModul
         onChangePasswordHandler,
         errorHandler,
         isLoadingHandler,
+        onSetRecoverPasswordHandler,
+        resetRecoverPasswordHandler,
+        isRecoverPassword,
+        onRecoverPasswordHandler,
+        onPasswordRecoveryHandler,
+        passwordRecovery,
+        onChangePasswordHandlerRecover
     }
 }

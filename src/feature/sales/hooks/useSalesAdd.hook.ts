@@ -16,6 +16,7 @@ interface IPurchaseAddHookProps {
     uiHook: IUiHook
     salesAddStore: ISalesAddStore
     movementAddStore: IMovementAddStore;
+    onNavigate: (url: string) => void;
 }
 
 export interface IFormData {
@@ -166,19 +167,29 @@ export const useSalesAddHook = (props: IPurchaseAddHookProps): ISalesAddHook => 
                     precio: item.mont
                 }
             )),
-            pagos: [{
+            pagos: props.salesAddStore.quatationList.length === 0 ? [{
                 idMedioPago: salesDataState.idPaymentMethod,
                 monto: salesDataState.mont,
                 idEntidadPago: 1
-            }],
+            }] : [],
             montoTotal: salesDataState.totalMont,
             saldoPendiente: salesDataState.totalMont - salesDataState.mont,
             cuotas: props.salesAddStore.quatationList,
             archivos: salesDataState.files
         }
         props.uiHook.showLoading()
-        await props.salesAddStore.createSalesAction(objPurchase, salesDataState.files)
+        const result = await props.salesAddStore.createSalesAction(objPurchase, salesDataState.files)
         props.uiHook.hideLoading()
+        if (result.isError) {
+            props.uiHook.showAlert({
+                message: "Error al crear la venta",
+                type: "alert",
+                title: "Error"
+            })
+            return
+        }
+        props.uiHook.onSetSnackbar("Venta creada correctamente", true)
+        props.onNavigate("/sales-list")
     }
 
     const onClickQuotationHandler = () => {
@@ -193,6 +204,8 @@ export const useSalesAddHook = (props: IPurchaseAddHookProps): ISalesAddHook => 
         props.uiHook.hideLoading()
     }
 
+
+
     return {
         purchaseDataState: salesDataState,
         providerList,
@@ -203,6 +216,6 @@ export const useSalesAddHook = (props: IPurchaseAddHookProps): ISalesAddHook => 
         onRemoveFileHandler,
         onSaveHandler,
         handleDeleteSupply,
-        onClickQuotationHandler
+        onClickQuotationHandler,
     }
 }

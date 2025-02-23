@@ -37,7 +37,7 @@ export const PurchaseListModule: FC<IPucharseListModule> = (props) => {
                     Nueva Compra
                 </Button>
             </Box>
-            <PurchaseDataGridComponent onRemovePucharse={useModule.onRemovePurchase} onViewPucharse={useModule.onViewPurchase} purchaseList={props.purchaseListStore.purchaseListState} searchValue="" />
+            <PurchaseDataGridComponent onDownloadPDF={useModule.onDownloadPDF} onRemovePucharse={useModule.onRemovePurchase} onViewPucharse={useModule.onViewPurchase} purchaseList={props.purchaseListStore.purchaseListState} searchValue="" />
             <PurchaseViewModalComponent onSaveFileHandler={useModule.onSaveFile} onDeleteFileHandler={useModule.onRemoveFile} isOpen={useModule.isOpenViewPucharse} handleClose={useModule.onCloseViewPucharse} purchase={useModule.purchaseState} />
         </>
 

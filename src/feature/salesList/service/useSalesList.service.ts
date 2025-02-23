@@ -12,6 +12,7 @@ export interface ISalesListService {
     removeFile: (idVenta: string, hashArchivo: string) => Promise<TResponse<null, null>>
     saveFile: (idVenta: string, file: File) => Promise<TResponse<null, null>>
     payCuota: (idVenta: string, idCuota: number) => Promise<TResponse<null, null>>
+    updateStateSale: (idVenta: string) => Promise<TResponse<null, null>>
 }
 
 export const useSalesListService = (props: ISalesListServiceProps): ISalesListService => {
@@ -47,10 +48,19 @@ export const useSalesListService = (props: ISalesListServiceProps): ISalesListSe
         if (response.isError) return createResponseUtil.error(response.data, response.status)
         return createResponseUtil.success(response.data, response.status)
     }
+
+
+    const updateStateSale = async (idVenta: string) => {
+        const url = `${urlBase}/Sales/${idVenta}/State/Update`;
+        const response = await props.restClient.post<null, null>(url, undefined, undefined)
+        if (response.isError) return createResponseUtil.error(response.data, response.status)
+        return createResponseUtil.success(response.data, response.status)
+    }
     return {
         getSalesList,
         removeFile,
         saveFile,
-        payCuota
+        payCuota,
+        updateStateSale
     }
 }

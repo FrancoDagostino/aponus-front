@@ -73,7 +73,7 @@ export const Router: FC<IRouterProps> = ({
                         ? (
                             <Switch>
                                 {
-                                    AuthStack({ authStore })
+                                    AuthStack({ authStore, uiHook, isChangePassword: authStore.changePassword, username: authStore.username })
                                 }
                             </Switch>
                         ) : (

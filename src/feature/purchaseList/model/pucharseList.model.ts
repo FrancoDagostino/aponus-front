@@ -62,6 +62,7 @@ export interface DetallesCompra {
     idCompra: number;
     idInsumo: string;
     cantidad: number;
+    nombreInsumo: string;
 }
 
 export interface Estado {

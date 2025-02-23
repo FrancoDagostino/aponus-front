@@ -26,7 +26,12 @@ export const useDashboardHook = (props: IDashboardHookProps): IDashboardHook => 
         props.uiHook.showLoading()
         const result = await props.dashboardStore.getPendingSalesAction()
         await props.dashboardStore.getProductsAction()
+        props.uiHook.hideLoading()
+        props.uiHook.showLoading()
         await props.dashboardStore.getDescriptionAction()
+        props.uiHook.hideLoading()
+        props.uiHook.showLoading()
+        await props.dashboardStore.getBarChartAction()
         props.uiHook.hideLoading()
         if (result.isError) return
     }

@@ -6,6 +6,10 @@ export interface ISale {
     montoTotal: number;
     saldoPendiente: number;
     idEstadoVenta: number;
+    estado: {
+        descripcion: string;
+        idEstado: number;
+    };
     cliente: Cliente;
     detallesVenta: IDetallesVenta[];
     pagos: IPago[];

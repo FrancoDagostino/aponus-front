@@ -38,4 +38,5 @@
 export interface IUser {
     token: string;
     rol: string;
+    changePassword: boolean;
 }

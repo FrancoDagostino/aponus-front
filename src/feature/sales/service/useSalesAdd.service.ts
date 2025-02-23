@@ -63,23 +63,25 @@ export const useSalesAddService = (props: ISalesAddServiceProps): ISalesAddServi
         const url = `${urlBase}/Sales/Save`;
         const response = await props.restClient.post<null, null>(url, inputData, undefined)
         if (response.isError) return createResponseUtil.error(response.data, response.status)
-        const urlMovments = `${urlBase}/Movments/new`;
+        return createResponseUtil.success(response.data, response.status)
+        files
+        // const urlMovments = `${urlBase}/Movments/new`;
 
-        const formData = new FormData();
-        formData.append("idCliente", inputData.idCliente);
-        inputData.detallesVenta.forEach(item => {
-            formData.append("suministros[]", JSON.stringify({
-                idSuministro: item.idProducto,
-                cantidad: item.cantidad
-            }));
-        });
+        // const formData = new FormData();
+        // formData.append("idCliente", inputData.idCliente);
+        // inputData.detallesVenta.forEach(item => {
+        //     formData.append("suministros[]", JSON.stringify({
+        //         idSuministro: item.idProducto,
+        //         cantidad: item.cantidad
+        //     }));
+        // });
 
-        files.forEach(file => {
-            formData.append("archivos", file);
-        });
-        const responseMovments = await props.restClient.post<null, null>(urlMovments, formData, undefined);
-        if (responseMovments.isSuccess) return createResponseUtil.success(responseMovments.data, responseMovments.status);
-        return createResponseUtil.error(responseMovments.data, responseMovments.status);
+        // files.forEach(file => {
+        //     formData.append("archivos", file);
+        // });
+        // const responseMovments = await props.restClient.post<null, null>(urlMovments, formData, undefined);
+        // if (responseMovments.isSuccess) return createResponseUtil.success(responseMovments.data, responseMovments.status);
+        // return createResponseUtil.error(responseMovments.data, responseMovments.status);
     }
 
     const getQuotation = async (inputData: IQuotation) => {
@@ -89,10 +91,11 @@ export const useSalesAddService = (props: ISalesAddServiceProps): ISalesAddServi
         return createResponseUtil.success(response.data, response.status)
     }
 
+
     return {
         createPurchase,
         productList,
         billingList,
-        getQuotation
+        getQuotation,
     }
 }

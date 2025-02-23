@@ -10,6 +10,7 @@ export interface ISalesListStore {
     removeFileAction: (idVenta: string, hashArchivo: string) => Promise<TResult<null, null>>
     saveFileAction: (idVenta: string, file: File) => Promise<TResult<null, null>>
     payCuotaAction: (idVenta: string, numeroCuota: number) => Promise<TResult<null, null>>
+    updateStateSaleAction: (idVenta: string) => Promise<TResult<null, null>>
 }
 
 export interface ISalesListStoreProps {
@@ -43,12 +44,20 @@ export const useSalesListStore = (props: ISalesListStoreProps): ISalesListStore 
         if (result.isError) return createResultUtil.error(result.data)
         return createResultUtil.success(null)
     }
+    const updateStateSaleAction = async (idVenta: string) => {
+        const result = await props.salesListService.updateStateSale(idVenta)
+        if (result.isError) return createResultUtil.error(null)
+        setSalesList(salesList.map(sale => sale.idVenta === parseInt(idVenta) ? { ...sale, estado: { descripcion: "FINALIZADA", idEstado: 2 } } : sale))
+        return createResultUtil.success(null)
+    }
+
 
     return {
         salesList,
         getSalesListAction,
         removeFileAction,
         saveFileAction,
-        payCuotaAction
+        payCuotaAction,
+        updateStateSaleAction
     }
 }

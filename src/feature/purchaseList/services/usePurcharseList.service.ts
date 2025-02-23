@@ -31,7 +31,7 @@ export const usePurchaseListService = (props: IPurchaseListServiceProps): IPurch
     }
 
     const saveFile = async (idCompra: string, file: File) => {
-        const url = `${urlBase}/Purchase/SaveFile`;
+        const url = `${urlBase}/Purchase/File/New`;
         const response = await props.restClient.post<null, null>(url, { idCompra, file }, undefined)
         if (response.isError) return createResponseUtil.error(response.data, response.status)
         return createResponseUtil.success(response.data, response.status)

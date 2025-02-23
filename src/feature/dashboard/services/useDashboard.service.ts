@@ -1,7 +1,7 @@
 import { IRestClient, urlBase } from "../../../utils/clients/useRest.client"
 import { createResponseUtil, TResponse } from "../../../utils/response.util"
 import { IRowContainer } from "../../componentList/model/component.model"
-import { IPendingSales, IProducts, IDescriptions } from "../models/dashboard.model"
+import { IPendingSales, IProducts, IDescriptions, ISalesForMonth } from "../models/dashboard.model"
 
 
 
@@ -16,6 +16,7 @@ export interface IDashboardService {
     getProducts: () => Promise<TResponse<IProducts[], any>>
     getDescription: () => Promise<TResponse<IDescriptions[], any>>
     getSupplieList: (idDescription: number) => Promise<TResponse<IRowContainer, null>>
+    getBarChart: () => Promise<TResponse<ISalesForMonth[], any>>
 }
 
 export const useDashboardService = (props: IDashboardServiceProps): IDashboardService => {
@@ -54,11 +55,19 @@ export const useDashboardService = (props: IDashboardServiceProps): IDashboardSe
         if (response.isSuccess) return createResponseUtil.success(response.data, response.status)
         return createResponseUtil.error(response.data, response.status)
     }
+
+    const getBarChart = async () => {
+        const url = `${urlBase}/Dashboard/SalesAvg`
+        const response = await props.restClient.get<ISalesForMonth[], null>(url, undefined)
+        if (response.isSuccess) return createResponseUtil.success(response.data, response.status)
+        return createResponseUtil.error(response.data, response.status)
+    }
     return {
         getCompras,
         getPendingSales,
         getProducts,
         getDescription,
-        getSupplieList
+        getSupplieList,
+        getBarChart
     }
 }

@@ -8,7 +8,7 @@ import TabsCategoryComponentType from "../stockList/components/TabsCategoryType.
 import { ComponentListTable } from "../componentList/components/ComponentListTable.component"
 import { Accordion, AccordionSummary, AccordionDetails } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
+import BarChart from "./components/BarChart.component"
 interface IDashboardModuleProps {
     dashboardStore: IDashboardStore
     uiHook: IUiHook
@@ -16,7 +16,10 @@ interface IDashboardModuleProps {
 }
 
 
+
+
 export const DashboardModule: FC<IDashboardModuleProps> = (props) => {
+    console.log(props.dashboardStore.barChart)
     const useModule = useDashboardHook({
         dashboardStore: props.dashboardStore,
         uiHook: props.uiHook
@@ -24,6 +27,8 @@ export const DashboardModule: FC<IDashboardModuleProps> = (props) => {
     useModule
     return (
         <div style={{ marginBottom: '20px' }}>
+            <BarChart data={props.dashboardStore.barChart} />
+
             <Accordion>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <h2>Ventas Pendientes</h2>

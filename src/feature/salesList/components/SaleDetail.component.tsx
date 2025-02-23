@@ -42,7 +42,7 @@ export const SaleDetailComponent: FC<ISaleDetailComponentProps> = (props) => {
                 </TableHead>
                 <TableBody>
                     {paymentList.map((payment) => (
-                        <TableRow key={payment.numeroCuota}>
+                        <TableRow key={payment.idCuota}>
                             <TableCell sx={{ textAlign: "center" }}>
                                 {payment.fechaVencimiento}
                             </TableCell>

@@ -3,6 +3,7 @@ import './dataGrid.css'
 import { Tooltip, IconButton, TablePagination, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Grid, useMediaQuery } from "@mui/material";
 import Search from "@mui/icons-material/Search";
 import { IPucharse } from "../model/pucharseList.model";
+import { Download } from "@mui/icons-material";
 
 
 interface IPurchaseDataGridComponentProps {
@@ -10,6 +11,7 @@ interface IPurchaseDataGridComponentProps {
     searchValue: string
     onViewPucharse: (row: IPucharse) => void
     onRemovePucharse: (id: string) => void
+    onDownloadPDF: (row: IPucharse) => void
 }
 
 export const PurchaseDataGridComponent: FC<IPurchaseDataGridComponentProps> = (props) => {
@@ -65,6 +67,11 @@ export const PurchaseDataGridComponent: FC<IPurchaseDataGridComponentProps> = (p
                                             <Tooltip title="Ver">
                                                 <IconButton color="primary" onClick={() => props.onViewPucharse(row)}>
                                                     <Search />
+                                                </IconButton>
+                                            </Tooltip>
+                                            <Tooltip title="Descargar PDF">
+                                                <IconButton color="primary" onClick={() => props.onDownloadPDF(row)}>
+                                                    <Download />
                                                 </IconButton>
                                             </Tooltip>
                                         </TableCell>

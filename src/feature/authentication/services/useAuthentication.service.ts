@@ -13,6 +13,8 @@ interface IAuthenticationServiceProps {
 
 export interface IAuthenticationService {
     onLogin: (dataInput: ILoginUserPost) => Promise<TResponse<IUser, any>>
+    onRecoverPassword: (username: string) => Promise<TResponse<IUser, any>>
+    onChangePassword: (username: string, password: string) => Promise<TResponse<IUser, any>>
 }
 
 export const useAuthenticationService = (props: IAuthenticationServiceProps): IAuthenticationService => {
@@ -24,7 +26,26 @@ export const useAuthenticationService = (props: IAuthenticationServiceProps): IA
         return createResponseUtil.error(response.data, response.status)
     }
 
+    const onRecoverPassword: IAuthenticationService["onRecoverPassword"] = async (username: string) => {
+        const url = `${urlBase}/users/password/reset/${username}`;
+        const response = await props.restClient.post<IUser, any>(url, undefined, undefined);
+        if (response.isSuccess) return createResponseUtil.success(response.data, response.status);
+        return createResponseUtil.error(response.data, response.status)
+    }
+
+    const onChangePassword: IAuthenticationService["onChangePassword"] = async (username: string, password: string) => {
+        const url = `${urlBase}/users/changepassword`;
+        const response = await props.restClient.post<IUser, any>(url, {
+            usuario: username,
+            contraseña: password
+        }, undefined);
+        if (response.isSuccess) return createResponseUtil.success(response.data, response.status);
+        return createResponseUtil.error(response.data, response.status)
+    }
+
     return {
-        onLogin
+        onLogin,
+        onRecoverPassword,
+        onChangePassword
     }
 }
