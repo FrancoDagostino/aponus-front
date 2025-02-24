@@ -62,7 +62,9 @@ export const SalesDataGridComponent: FC<ISalesDataGridComponentProps> = (props) 
                                 {currentData.map((row) => (
                                     <TableRow key={row.idVenta}>
                                         <TableCell sx={{ textAlign: "center" }}>{row.fechaHora}</TableCell>
-                                        <TableCell sx={{ textAlign: "center" }}>{row.cliente.nombre} {row.cliente.apellido}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>
+                                            {row.cliente.nombreClave !== "" ? row.cliente.nombreClave : `${row.cliente.nombre} ${row.cliente.apellido}`}
+                                        </TableCell>
                                         <TableCell sx={{ textAlign: "center" }}>{row.saldoPendiente}</TableCell>
                                         <TableCell sx={{ textAlign: "center" }}>{row.montoTotal}</TableCell>
                                         <TableCell sx={{ textAlign: "center" }}>{row.estado.descripcion}</TableCell>

@@ -21,7 +21,6 @@ interface ISaleDetailComponentProps {
 }
 
 export const SaleDetailComponent: FC<ISaleDetailComponentProps> = (props) => {
-    //console.log("paymentList", props.paymentList)
     const [paymentList, setPaymentList] = useState<ISale["cuotas"]>(props.paymentList)
 
     useEffect(() => {

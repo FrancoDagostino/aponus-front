@@ -11,6 +11,7 @@ interface ExpandableTableContextProps {
   handleSelectListDescription: (idType: string) => Promise<IListadoDescripciones[]>;
   handlAddOrUpdateDescription: (description: string, idType: string) => void;
   handleUpdateDescription: (idDescription: number, description: string) => void;
+  onRemoveDescriptionHandler: (idDescription: number) => Promise<void>
 }
 
 const ExpandableTableContext = createContext<ExpandableTableContextProps>({
@@ -19,6 +20,7 @@ const ExpandableTableContext = createContext<ExpandableTableContextProps>({
   handleSelectListDescription: () => { return new Promise<IListadoDescripciones[]>((resolve) => { resolve([]); }); },
   handlAddOrUpdateDescription: () => { },
   handleUpdateDescription: () => { },
+  onRemoveDescriptionHandler: () => { return new Promise<void>((resolve) => { resolve(); }); },
 });
 
 interface ExpandableTableProviderProps {
@@ -56,6 +58,10 @@ export const ExpandableTableProvider: FC<ExpandableTableProviderProps> = (
 
     await props.categoryStore.updateDescriptionAction(idDescription, description);
   }
+
+  const onRemoveDescriptionHandler = async (idDescription: number) => {
+    await props.categoryStore.deleteDescriptionAction(idDescription);
+  }
   return (
     <ExpandableTableContext.Provider
       value={{
@@ -64,6 +70,7 @@ export const ExpandableTableProvider: FC<ExpandableTableProviderProps> = (
         handleSelectListDescription,
         handlAddOrUpdateDescription,
         handleUpdateDescription,
+        onRemoveDescriptionHandler
       }}
     >
       {props.children}

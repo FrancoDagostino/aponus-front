@@ -8,7 +8,6 @@ interface IActivityDataGridComponentProps {
 }
 
 export const PendingSalesTableComponent: FC<IActivityDataGridComponentProps> = (props) => {
-    console.log(props.pendingSales)
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const totalPages = props.pendingSales.length
@@ -32,8 +31,6 @@ export const PendingSalesTableComponent: FC<IActivityDataGridComponentProps> = (
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-
-    console.log(currentData)
 
     return (
         <>

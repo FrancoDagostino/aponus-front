@@ -17,6 +17,7 @@ export interface ICategoryStore {
     deleteComponentAction: (idAlmacenamiento: string) => Promise<TResult<null, null>>;
     getComponentListAction: () => Promise<TResult<null, null>>;
     addComponentAction: (description: string, idType: string, storage: string, fraction: string) => Promise<TResult<null, null>>;
+    deleteDescriptionAction: (idDescription: number) => Promise<TResult<null, null>>;
 }
 
 
@@ -103,6 +104,20 @@ export const useCategoryStore = (props: ICategoryStoreProps): ICategoryStore => 
         return createResultUtil.success(null)
     }
 
+    const deleteDescriptionAction: ICategoryStore["deleteDescriptionAction"] = async (idDescription: number) => {
+        const result = await props.categoryService.deleteDescription(idDescription)
+        if (result.isError) return createResultUtil.error(result.data)
+        setDescriptionList(descriptionList.filter(description => description.idDescripcion !== idDescription))
+        setCategoryList(categoryList.map(category => {
+            return {
+                descripcionTipo: category.descripcionTipo,
+                idTipo: category.idTipo,
+                productos: [Math.random()]
+            }
+        }))
+        return createResultUtil.success(null)
+    }
+
     return {
         categoryList,
         descriptionList,
@@ -115,6 +130,7 @@ export const useCategoryStore = (props: ICategoryStoreProps): ICategoryStore => 
         deleteCategoryTypeAction,
         getComponentListAction,
         deleteComponentAction,
-        addComponentAction
+        addComponentAction,
+        deleteDescriptionAction
     }
 }

@@ -41,7 +41,6 @@ export const useComponentListHook = (props: IComponentListModuleProps): ICompone
     };
 
     const onEditComponentHandler = (idInsumo: string) => {
-        console.log(idDescriptionFounded)
         props.onNavigate(`/component-add/${idDescriptionFounded}*${idInsumo}`)
     }
     return {

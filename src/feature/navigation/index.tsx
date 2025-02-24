@@ -13,7 +13,6 @@ interface IMenuWrappersProps {
 
 //TODO: cambiar el status
 const Menu: FC<IMenuWrappersProps> = (props) => {
-    console.log("props.authStore.rol", props.authStore.rol)
     const moduleHook = useModuleHook()
     return (
         <>

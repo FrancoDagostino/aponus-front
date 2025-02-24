@@ -16,7 +16,6 @@ interface IMovementDetailSupplyComponentProps {
 }
 
 export const MovementDetailSupplyComponent: FC<IMovementDetailSupplyComponentProps> = (props) => {
-    console.log(props.suministros)
     return (
         <TableContainer component={Paper} sx={{ maxWidth: "auto" }}>
             <Table aria-label="tabla de detalles">

@@ -31,6 +31,7 @@ interface IMovementAddHookProps {
 
 }
 
+
 interface IMovementAddHook {
     formData: IFormData
     providerList: IProviderList[]
@@ -50,6 +51,7 @@ export const useMovementAddHook = (props: IMovementAddHookProps): IMovementAddHo
         files: [],
         supplyItem: []
     })
+
 
     useEffect(() => {
         onInit()

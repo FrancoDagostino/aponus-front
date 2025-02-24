@@ -42,11 +42,12 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
     const [supplyQuantity, setSupplyQuantity] = useState<string>('')
     const [supplyList, setSupplyList] = useState<ISupplyItem[]>([])
     const [fileError, setFileError] = useState<string>('')
+    const [productQuantity, setProductQuantity] = useState<number>(0)
+
     const fileInputRef = useRef<HTMLInputElement>(null)
 
     const handleAddSupply = () => {
         const availableSupplyFound = props.availableSupplies.find(supply => supply.idProducto === selectedSupply)!
-        console.log(availableSupplyFound)
         const newSupply: ISupplyItem = {
             id: availableSupplyFound.idProducto,
             name: availableSupplyFound.nombre,
@@ -62,8 +63,14 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
 
         setSelectedSupply('')
         setSupplyQuantity('')
-
+        setProductQuantity(0)
         props.onAddSupplyItemHandler(supply)
+    }
+
+    const onChangeProductQuantity = (e: string) => {
+        setSelectedSupply(e)
+        const selectedSupply = props.availableSupplies.find(supply => supply.idProducto === e)!
+        setProductQuantity(selectedSupply.cantidad)
     }
 
     const handleDeleteSupply = (id: string) => {
@@ -289,7 +296,7 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
                             <Select
                                 value={selectedSupply}
                                 label="Productos"
-                                onChange={(e) => setSelectedSupply(e.target.value)}
+                                onChange={(e) => onChangeProductQuantity(e.target.value)}
                             >
                                 {props.availableSupplies.map((supply) => (
                                     <MenuItem key={supply.idProducto} value={supply.idProducto}>
@@ -315,7 +322,9 @@ export const FormDataSalesComponent: FC<IFormDataPurchaseComponentProps> = (prop
                             Agregar
                         </Button>
                     </Box>
-
+                    <Typography variant="body2" sx={{ mt: 1 }}>
+                        Cantidad disponible: {productQuantity}
+                    </Typography>
                     <List>
                         {supplyList.map((item) => (
                             <ListItem key={item.id} divider>

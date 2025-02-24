@@ -29,7 +29,7 @@ export const CategoryListModule: FC<ICategoryModuleProps> = (props) => {
         <>
             <Box sx={{ width: '100%' }}>
                 <Tabs value={tabValue} onChange={handleTabChange}>
-                    <Tab label="Categorías" />
+                    <Tab label="Productos" />
                     <Tab label="Componentes" />
                 </Tabs>
             </Box>
@@ -37,7 +37,7 @@ export const CategoryListModule: FC<ICategoryModuleProps> = (props) => {
             {tabValue === 0 && (
                 <>
                     <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
-                        <h1>Listado de Stock</h1>
+                        <h1>Categorias de Productos</h1>
                         <Button
                             sx={{ height: 50, width: 300, marginLeft: "20px", marginTop: "15px", gap: 1 }}
                             variant="contained"
@@ -59,7 +59,7 @@ export const CategoryListModule: FC<ICategoryModuleProps> = (props) => {
             {tabValue === 1 && (
                 <Box>
                     <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-between' }}>
-                        <h1>Listado de Componentes</h1>
+                        <h1>Descripciones de Componentes</h1>
                         <Button
                             sx={{ height: 50, width: 300, marginLeft: "20px", marginTop: "15px", gap: 1 }}
                             variant="contained"

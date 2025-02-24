@@ -39,13 +39,19 @@ export interface ICategoryService {
     getComponentList: () => Promise<TResponse<IComponentDescription[], null>>;
     deleteComponent: (idAlmacenamiento: string) => Promise<TResponse<null, null>>;
     addComponent: (description: string, idType: string, storage: string, fraction: string) => Promise<TResponse<void, null>>;
+    deleteDescription: (idDescription: number) => Promise<TResponse<null, null>>;
 }
 
 export const useCategoryService = (props: IStockListServiceProps): ICategoryService => {
 
+    const deleteDescription: ICategoryService["deleteDescription"] = async (idDescription: number) => {
+        const url = `${urlBase}/Categories/Products/Descriptions/${idDescription}/Delete`
+        const result = await props.restClient.post<null, null>(url, undefined, undefined)
+        if (result.isSuccess) return createResponseUtil.success(result.data, result.status)
+        return createResponseUtil.error(result.data, result.status)
+    }
 
     const addComponent: ICategoryService["addComponent"] = async (description: string, idDescription: string, storage: string, fraction: string) => {
-        console.log("llego")
         const url = `${urlBase}/Categories/Supplies/Descriptions/Save`
         const result = await props.restClient.post<void, null>(url, { nombreDescripcion: description, IdDescripcion: idDescription, idAlmacenamiento: storage, idFraccionamiento: fraction }, undefined)
         if (result.isSuccess) return createResponseUtil.success(result.data, result.status)
@@ -68,7 +74,7 @@ export const useCategoryService = (props: IStockListServiceProps): ICategoryServ
 
     const deleteCategoryType: ICategoryService["deleteCategoryType"] = async (idType: string) => {
         const url = `${urlBase}/Categories/Products/Types/${idType}/Delete`
-        const result = await props.restClient.get<null, null>(url, undefined)
+        const result = await props.restClient.post<null, null>(url, undefined, undefined)
         if (result.isSuccess) return createResponseUtil.success(result.data, result.status)
         return createResponseUtil.error(result.data, result.status)
     }
@@ -138,6 +144,7 @@ export const useCategoryService = (props: IStockListServiceProps): ICategoryServ
         deleteCategoryType,
         getComponentList,
         deleteComponent,
-        addComponent
+        addComponent,
+        deleteDescription
     }
 } 

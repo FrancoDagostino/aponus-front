@@ -65,7 +65,6 @@ export const useSalesLIstHook = (props: ISalesListHookProps): ISalesListHook => 
         props.uiHook.hideLoading()
     }
     const onViewSale = (row: ISale) => {
-        console.log(row)
         setSalesList(row)
         setIsOpenViewSales(true)
     }

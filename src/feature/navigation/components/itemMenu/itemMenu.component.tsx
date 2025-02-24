@@ -11,6 +11,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import ShopIcon from '@mui/icons-material/Shop';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import HomeIcon from '@mui/icons-material/Home';
+import ArticleIcon from '@mui/icons-material/Article';
 
 interface IItemMenu {
     item: IMenuItem
@@ -53,6 +54,8 @@ export const ItemMenuComponent = (props: IItemMenu) => {
                 return <AttachMoneyIcon className="item-menu-icon" fontSize="large" />;
             case 'Dashboard':
                 return <HomeIcon className="item-menu-icon" fontSize="large" />;
+            case 'Auditoria':
+                return <ArticleIcon className="item-menu-icon" fontSize="large" />;
             default:
                 return null;
         }

@@ -46,10 +46,7 @@ export const SalesViewModalComponent: FC<ISalesViewModalComponentProps> = (props
         }
     }
 
-    console.log("salesviewModal", props.sales)
-
     const handleSave = () => {
-        console.log(props.sales.idVenta.toString(), selectedFile)
         props.onSaveFileHandler(props.sales.idVenta.toString(), selectedFile!)
     }
 

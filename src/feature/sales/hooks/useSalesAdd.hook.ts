@@ -83,9 +83,6 @@ export const useSalesAddHook = (props: IPurchaseAddHookProps): ISalesAddHook => 
         props.uiHook.hideLoading()
 
 
-        console.log(result.data)
-
-
         setProviderList(result.data.map(provider => {
             return {
                 id: provider.idEntidad,

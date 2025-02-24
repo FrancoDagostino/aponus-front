@@ -60,7 +60,7 @@ export const MovementListableComponent: FC<IActivityDataGridComponentProps> = (p
                                 {currentData.map((row) => (
                                     <TableRow key={row.idMovimiento}>
                                         <TableCell sx={{ textAlign: "center" }}>{row.fechaHoraCreado}</TableCell>
-                                        <TableCell sx={{ textAlign: "center" }}>{row.proveedorDestino?.nombre}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.proveedorDestino?.nombreClave !== "" ? row.proveedorDestino?.nombreClave : `${row.proveedorDestino?.nombre} ${row.proveedorDestino?.apellido}`}</TableCell>
                                         <TableCell sx={{ textAlign: "center" }}>{row.origen}</TableCell>
                                         <TableCell sx={{ textAlign: "center" }}>{row.destino}</TableCell>
                                         <TableCell sx={{ textAlign: "center" }}>{row.estado}</TableCell>

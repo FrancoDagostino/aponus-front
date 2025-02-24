@@ -85,8 +85,6 @@ export const useAuthModuleHook = (props: IUseAuthModuleHookProps): IUseAuthModul
     }
 
     const onSetRecoverPasswordHandler = () => {
-        console.log("resetRecoverPasswordHandler")
-
         setIsRecoverPassword(!isRecoverPassword)
     }
 

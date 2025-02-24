@@ -19,7 +19,6 @@ interface IDashboardModuleProps {
 
 
 export const DashboardModule: FC<IDashboardModuleProps> = (props) => {
-    console.log(props.dashboardStore.barChart)
     const useModule = useDashboardHook({
         dashboardStore: props.dashboardStore,
         uiHook: props.uiHook

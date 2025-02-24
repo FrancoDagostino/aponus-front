@@ -17,6 +17,7 @@ const menuItem: IMenuItem[] = [
     { id: 10, label: "Gestion  Ventas", icon: "SaleList", path: "/sales-list", tooltip: "Gestion  de Ventas", roles: ["admin", "vendedor"] },
     { id: 8, label: "Gestion  Entidades", icon: "EntityList", path: "/entity-list", tooltip: "Gestion  de Entidades", roles: ["admin", "vendedor"] },
     { id: 1, label: "Gestion  Categorias", icon: "Category", path: "/category-list", tooltip: "Categorias", roles: ["admin", "gestor_stock"] },
+    { id: 12, label: "Auditoria", icon: "Auditoria", path: "/auditoria", tooltip: "Auditoria", roles: ["admin"] },
     { id: 3, label: "Registrar Usuario", icon: "AddUser", path: "/user", tooltip: "Registrar Usuario", roles: ["admin"] },
     { id: 4, label: "Salir", icon: "Power", path: "/asd", tooltip: "Salir", roles: ["admin", "vendedor", "gestor_stock", "consultor_stock", "solo_lectura"] },
 ]

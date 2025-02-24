@@ -35,6 +35,7 @@ interface ICategoryModule {
     onOpenModalComponentHandler: (labelModal: string, idComponent: string) => void
     onAddOrUpdateComponentHandler: (component: string, storage: string, fraction: string) => Promise<void>
     onCloseModalComponentHandler: () => void
+    onRemoveDescriptionHandler: (idDescription: number) => Promise<void>
 }
 export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule => {
 
@@ -176,6 +177,14 @@ export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule 
         props.uiHook.onSetSnackbar("Componente agregado correctamente", true)
     }
 
+    const onRemoveDescriptionHandler = async (idDescription: number) => {
+        props.uiHook.showLoading()
+        await props.categoryStore.deleteDescriptionAction(idDescription)
+        props.uiHook.hideLoading()
+
+    }
+
+
 
     return {
         addOrUpdateCategory,
@@ -190,6 +199,7 @@ export const useModuleCategory = (props: ICategoryModuleProps): ICategoryModule 
         addOrUpdateComponent,
         onOpenModalComponentHandler,
         onAddOrUpdateComponentHandler,
-        onCloseModalComponentHandler
+        onCloseModalComponentHandler,
+        onRemoveDescriptionHandler
     }
 }

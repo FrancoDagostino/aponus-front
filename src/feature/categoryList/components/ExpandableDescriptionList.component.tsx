@@ -16,7 +16,7 @@ import { useExpandableTableContext } from "../../../context/ExpandableTableProvi
 const ExpandableDescriptionListComponentProps: FC<
   ExpanderComponentProps<IListadoCategorias>
 > = (props) => {
-  const { handleSelectListDescription, handlAddOrUpdateDescription, handleUpdateDescription } =
+  const { handleSelectListDescription, handlAddOrUpdateDescription, handleUpdateDescription, onRemoveDescriptionHandler } =
     useExpandableTableContext();
 
   const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -72,7 +72,7 @@ const ExpandableDescriptionListComponentProps: FC<
           >
             <EditIcon />
           </IconButton>
-          <IconButton aria-label="delete" color="secondary">
+          <IconButton aria-label="delete" color="secondary" onClick={() => onRemoveDescriptionHandler(row.idDescripcion)}>
             <DeleteIcon />
           </IconButton>
         </>

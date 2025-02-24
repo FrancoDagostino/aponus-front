@@ -60,7 +60,7 @@ export const PurchaseDataGridComponent: FC<IPurchaseDataGridComponentProps> = (p
                                 {currentData.map((row) => (
                                     <TableRow key={row.idCompra}>
                                         <TableCell sx={{ textAlign: "center" }}>{row.fechaHora}</TableCell>
-                                        <TableCell sx={{ textAlign: "center" }}>{row.proveedor.nombre} {row.proveedor.apellido}</TableCell>
+                                        <TableCell sx={{ textAlign: "center" }}>{row.proveedor.nombreClave !== "" ? row.proveedor.nombreClave : `${row.proveedor.nombre} ${row.proveedor.apellido}`}</TableCell>
                                         <TableCell sx={{ textAlign: "center" }}>{row.saldoPendiente}</TableCell>
                                         <TableCell sx={{ textAlign: "center" }}>{row.montoTotal}</TableCell>
                                         <TableCell sx={{ textAlign: "center" }}>

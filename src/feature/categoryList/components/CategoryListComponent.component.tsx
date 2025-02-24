@@ -16,7 +16,6 @@ interface ICategoryListComponentProps {
 
 const CategoryListComponent: FC<ICategoryListComponentProps> = (props) => {
 
-  console.log(props.data)
   const onEditCategoryHandler = (row: IListadoCategorias) => {
     props.onOpenModal(`Edición de la categoría ${row.descripcionTipo}`, row.idTipo);
   }

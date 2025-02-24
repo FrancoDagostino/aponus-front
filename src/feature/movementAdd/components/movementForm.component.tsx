@@ -14,6 +14,13 @@ interface SupplyItem {
     quantity: string;
 }
 
+interface IProcessQuantities {
+    recibido: number;
+    pintura: number;
+    proceso: number;
+    moldeado: number;
+    pendiente: number;
+}
 interface IMovementFormProps {
     availableSupplies: ISuppliesList[]
     formData: IFormData
@@ -32,11 +39,29 @@ export const MovementFormComponent: FC<IMovementFormProps> = (props) => {
     const [selectedSupply, setSelectedSupply] = useState<string>('')
     const [supplyQuantity, setSupplyQuantity] = useState<string>('')
     const [supplyList, setSupplyList] = useState<ISupplyItem[]>([])
-
+    const [processQuantities, setProcessQuantities] = useState<IProcessQuantities>({
+        recibido: 0,
+        pintura: 0,
+        proceso: 0,
+        moldeado: 0,
+        pendiente: 0
+    })
     useEffect(() => {
         setSupplyList(props.formData.supplyItem)
     }, [])
 
+
+    const onChangeComponentQuantities = (e: string) => {
+        setSelectedSupply(e)
+        const selectedSupply = props.availableSupplies.find(supply => supply.idInsumo === e)!
+        setProcessQuantities({
+            recibido: selectedSupply.granallado,
+            pintura: selectedSupply.pintura,
+            proceso: selectedSupply.proceso,
+            moldeado: selectedSupply.moldeado,
+            pendiente: selectedSupply.pendiente
+        })
+    }
 
     const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {
@@ -85,6 +110,9 @@ export const MovementFormComponent: FC<IMovementFormProps> = (props) => {
     const onSaveHandler = () => {
         props.onSaveHandler()
     }
+
+    // Example data for process quantities
+
 
     return (
         <Box sx={{ my: 4, ml: 4, mr: 4 }}>
@@ -147,6 +175,17 @@ export const MovementFormComponent: FC<IMovementFormProps> = (props) => {
                         </Select>
                     </FormControl>
 
+                    <Typography variant="subtitle1" gutterBottom>
+                        Cantidades Disponibles
+                    </Typography>
+                    <Typography variant="body2" sx={{ mb: 2 }}>
+                        Recibido: {processQuantities.recibido},
+                        Pintura: {processQuantities.pintura},
+                        Proceso: {processQuantities.proceso},
+                        Moldeado: {processQuantities.moldeado},
+                        Pendiente: {processQuantities.pendiente}
+                    </Typography>
+
                     <Box
                         sx={{
                             border: '1px dashed rgba(255, 255, 255, 0.23)',
@@ -202,7 +241,7 @@ export const MovementFormComponent: FC<IMovementFormProps> = (props) => {
                                 labelId="supply-label"
                                 value={selectedSupply}
                                 label="Componentes"
-                                onChange={(e) => setSelectedSupply(e.target.value)}
+                                onChange={(e) => onChangeComponentQuantities(e.target.value)}
                             >
                                 {props.availableSupplies.map((supply) => (
                                     <MenuItem key={supply.idInsumo} value={supply.idInsumo.toString()}>

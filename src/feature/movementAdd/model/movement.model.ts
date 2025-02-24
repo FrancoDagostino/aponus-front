@@ -1,6 +1,11 @@
 export interface ISuppliesList {
     idInsumo: string,
-    nombre: string
+    nombre: string,
+    granallado: number,
+    pintura: number,
+    proceso: number,
+    moldeado: number,
+    pendiente: number
 }
 
 export interface IEntity {

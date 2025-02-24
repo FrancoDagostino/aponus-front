@@ -8,7 +8,6 @@ interface IActivityDataGridComponentProps {
 }
 
 export const ProductsTableComponent: FC<IActivityDataGridComponentProps> = (props) => {
-    console.log(props.products)
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const totalPages = props.products.length
@@ -32,8 +31,6 @@ export const ProductsTableComponent: FC<IActivityDataGridComponentProps> = (prop
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-
-    console.log(currentData)
 
     return (
         <>

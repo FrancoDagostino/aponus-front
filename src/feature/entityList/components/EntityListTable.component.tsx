@@ -63,6 +63,9 @@ export const EntityTableListComponent: FC<IEntityListComponentProps> = (props) =
                 columns={columnsCategoryComputed}
                 data={props.data}
                 entityName="Listado Categoría"
+                pagination
+                paginationPerPage={10}
+                paginationDefaultPage={1}
             />
         </>
     );

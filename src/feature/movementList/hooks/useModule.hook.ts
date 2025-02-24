@@ -95,7 +95,6 @@ export const useMovementListHook = (props: IMovementListProps): IMovementListHoo
     }
 
     const onViewMovementHandler = (row: IMovimientoStock) => {
-        console.log(row)
         setMovementViewState(row)
         onOpenModalView()
     }
